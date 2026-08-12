@@ -9,8 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PrivateRouteImport } from './routes/_private'
+import { Route as PrivateHomeRouteImport } from './routes/_private/home'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 
+const PrivateRoute = PrivateRouteImport.update({
+  id: '/_private',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivateHomeRoute = PrivateHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => PrivateRoute,
+} as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/_public/',
   path: '/',
@@ -19,28 +30,47 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/home': typeof PrivateHomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+  '/home': typeof PrivateHomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_private': typeof PrivateRouteWithChildren
+  '/_private/home': typeof PrivateHomeRoute
   '/_public/': typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/home'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_public/'
+  to: '/' | '/home'
+  id: '__root__' | '/_private' | '/_private/home' | '/_public/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  PrivateRoute: typeof PrivateRouteWithChildren
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_private': {
+      id: '/_private'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PrivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_private/home': {
+      id: '/_private/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof PrivateHomeRouteImport
+      parentRoute: typeof PrivateRoute
+    }
     '/_public/': {
       id: '/_public/'
       path: '/'
@@ -51,7 +81,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface PrivateRouteChildren {
+  PrivateHomeRoute: typeof PrivateHomeRoute
+}
+
+const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateHomeRoute: PrivateHomeRoute,
+}
+
+const PrivateRouteWithChildren =
+  PrivateRoute._addFileChildren(PrivateRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
+  PrivateRoute: PrivateRouteWithChildren,
   PublicIndexRoute: PublicIndexRoute,
 }
 export const routeTree = rootRouteImport

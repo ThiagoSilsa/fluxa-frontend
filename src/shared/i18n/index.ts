@@ -6,6 +6,8 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import commonEn from './locales/en.json'
 import commonPt from './locales/pt.json'
+import loginEn from '#/features/login/i18n/en.json'
+import loginPt from '#/features/login/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -14,10 +16,12 @@ i18n
     resources: {
       pt: {
         common: commonPt,
+        login: loginPt,
       },
 
       en: {
         common: commonEn,
+        login: loginEn,
       },
     },
 
@@ -25,7 +29,7 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common'],
+    ns: ['common', 'login'],
 
     defaultNS: 'common',
 

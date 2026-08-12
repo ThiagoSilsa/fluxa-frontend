@@ -1,18 +1,22 @@
-// import { createFileRoute, Outlet } from '@tanstack/react-router'
-// import { AuthGuard } from '#/app/guards/auth-guard'
+// Router
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-// export const Route = createFileRoute('/_private')({
-//   component: RouteComponent,
-// })
+// Guards
+import { AuthGuard } from '#/app/guards/auth-guard'
 
-// function RouteComponent() {
+// Widgets
+import { MainLayout } from '#/widgets/main-layout/main-layout'
 
-//   // TODO: Adicionar layout principal da aplicação, com menu lateral, barra superior, etc.
-//   return (
-//     <AuthGuard>
-//       {/* <MainLayout> */}
-//         <Outlet />
-//       {/* </MainLayout> */}
-//     </AuthGuard>
-//   )
-// }
+export const Route = createFileRoute('/_private')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return (
+    <AuthGuard>
+      <MainLayout>
+        <Outlet />
+      </MainLayout>
+    </AuthGuard>
+  )
+}

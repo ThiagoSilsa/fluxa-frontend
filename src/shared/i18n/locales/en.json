@@ -1,4 +1,11 @@
 {
+  "actions": {
+    "logout": "Sign out"
+  },
+  "home": {
+    "title": "Home",
+    "description": "This page is under construction."
+  },
   "errors": {
     "invalidCredentials": "Invalid credentials",
     "validation": "Validation error",

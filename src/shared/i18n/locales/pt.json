@@ -1,4 +1,11 @@
 {
+  "actions": {
+    "logout": "Sair"
+  },
+  "home": {
+    "title": "Início",
+    "description": "Esta página está em construção."
+  },
   "errors": {
     "invalidCredentials": "Credenciais inválidas",
     "validation": "Erro de validação",

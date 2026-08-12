@@ -1,0 +1,27 @@
+{
+  "page": {
+    "title": "Sign in",
+    "description": "Access your account to continue"
+  },
+  "form": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@company.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "errors": {
+      "invalid-email": "Enter a valid email",
+      "invalid-password": "Enter your password",
+      "post-login-setup": "Could not load your data. Please try again."
+    }
+  },
+  "companyChoice": {
+    "title": "Choose a company",
+    "description": "Your account is linked to more than one company. Select one to continue.",
+    "unnamed": "Unnamed company",
+    "back": "Go back"
+  }
+}
