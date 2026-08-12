@@ -4,10 +4,16 @@ dist
 dist-ssr
 *.local
 .env
-.nitro
 .tanstack
 .wrangler
 .output
 .vinxi
 __unconfig*
 todos.json
+.vscode
+.temp
+automated-commit.py
+/src/routeTree.gen.ts
+
+# Ignore
+*.txt
