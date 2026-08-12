@@ -13,7 +13,7 @@ interface PublicPageShellProps {
  */
 export function PublicPageShell({ children }: PublicPageShellProps) {
   return (
-    <main className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-4">
+    <main className="bg-background flex h-dvh min-h-full w-dvw flex-col items-center justify-center gap-6">
       {children}
     </main>
   )

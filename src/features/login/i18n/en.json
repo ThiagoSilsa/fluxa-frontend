@@ -23,5 +23,14 @@
     "description": "Your account is linked to more than one company. Select one to continue.",
     "unnamed": "Unnamed company",
     "back": "Go back"
+  },
+  "banner": {
+    "logo": "Fluxa",
+    "title": "Welcome to Fluxa",
+    "description": "Fluxa is a platform for managing your company's finances and operations. Please sign in to continue."
+  },
+  "login":{
+    "welcome": "Welcome back!",
+    "description": "Please sign in to your account to continue."
   }
 }

@@ -23,5 +23,14 @@
     "description": "Sua conta está vinculada a mais de uma empresa. Selecione uma para entrar.",
     "unnamed": "Empresa sem nome",
     "back": "Voltar"
+  },
+  "banner": {
+    "logo": "Fluxa",
+    "title": "Bem-vindo ao Fluxa",
+    "description": "O Fluxa é uma plataforma para gerenciar as finanças e operações da sua empresa. Por favor, faça login para continuar."
+  },
+  "login": {
+    "welcome": "Bem-vindo de volta!",
+    "description": "Por favor, faça login na sua conta para continuar."
   }
 }

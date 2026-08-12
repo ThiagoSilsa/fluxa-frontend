@@ -72,7 +72,7 @@ export function LoginCard() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>{t('page.title')}</CardTitle>
         <CardDescription>{t('page.description')}</CardDescription>
