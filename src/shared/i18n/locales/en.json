@@ -2,6 +2,8 @@
   "errors": {
     "invalidCredentials": "Invalid credentials",
     "validation": "Validation error",
-    "unexpected": "Unexpected error"
+    "unexpected": "Unexpected error",
+    "generic": "An unexpected error occurred",
+    "invalid-token": "Invalid or expired session"
   }
 }

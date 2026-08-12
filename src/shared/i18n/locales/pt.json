@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "invalidCredentials": "Credenciais inválidas",
+    "validation": "Erro de validação",
+    "unexpected": "Erro inesperado",
+    "generic": "Ocorreu um erro inesperado",
+    "invalid-token": "Sessão inválida ou expirada"
+  }
+}

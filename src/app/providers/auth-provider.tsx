@@ -16,10 +16,6 @@ import type { AuthContextValue, AuthSession, AuthUser } from '#/shared/types/aut
 // Lib
 import { clearAuthSession, getStoredAuthSession, setAuthSession } from '#/shared/lib/auth-storage'
 import { isTokenValid } from '#/shared/lib/auth-token'
-import { connectSocket, disconnectSocket } from '#/shared/lib/socket'
-
-// Media cache
-import { clearMediaCache } from '#/features/inbox/lib/media-cache'
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
@@ -37,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (storedSession) {
       setToken(storedSession.accessToken)
       setUser(storedSession.user)
-      connectSocket(storedSession.accessToken)
+      // TODO: Reconectar o WebSocket de presença (connectSocket) quando a feature de presença for implementada.
     } else {
       clearAuthSession()
       setToken(null)
@@ -59,14 +55,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthSession(session)
     setToken(session.accessToken)
     setUser(session.user)
-    connectSocket(session.accessToken)
-
-    // Limpa cache de mídia da sessão anterior
-    clearMediaCache()
+    // TODO: Reconectar o WebSocket de presença (connectSocket) quando a feature de presença for implementada.
+    // TODO: Limpar o cache de mídia da sessão anterior quando a feature de inbox for implementada.
   }
 
   const logout = () => {
-    disconnectSocket()
+    // TODO: Desconectar o WebSocket de presença (disconnectSocket) quando a feature de presença for implementada.
     clearAuthSession()
     setToken(null)
     setUser(null)

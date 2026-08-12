@@ -4,31 +4,19 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 // i18n
 import { useTranslation } from 'react-i18next'
 
-// Providers
-import { useAuth } from './auth-provider'
-
-// Hooks
-import { useSettingsQuery } from '#/features/settings/hooks/use-settings-query'
-
 // Lib
-import {
-  LANGUAGE_OVERRIDE_KEY,
-  localeToLanguage,
-  resolveLanguage,
-} from '#/shared/lib/resolve-language.lib'
+import { LANGUAGE_OVERRIDE_KEY, localeToLanguage } from '#/shared/lib/language.lib'
 
 // Types
 import type { ReactNode } from 'react'
-import type { AppLanguage } from '#/shared/lib/resolve-language.lib'
+import type { AppLanguage } from '#/shared/lib/language.lib'
 
 type LanguagePreference = {
   /** Idioma em uso agora. */
   language: AppLanguage
-  /** Idioma que a empresa definiu, quando ela definiu um que existe aqui. */
-  companyLanguage: AppLanguage | undefined
-  /** Escolha manual de quem usa, ou `null` quando se está seguindo a empresa. */
+  /** Escolha manual de quem usa, ou `null` quando se está seguindo o idioma detectado. */
   override: AppLanguage | null
-  /** Troca o idioma. `null` apaga a escolha e volta a seguir a empresa. */
+  /** Troca o idioma. `null` apaga a escolha e volta ao idioma detectado. */
   setLanguage: (next: AppLanguage | null) => void
 }
 
@@ -38,12 +26,12 @@ const LanguageContext = createContext<LanguagePreference | null>(null)
 function readOverride(): AppLanguage | null {
   if (typeof window === 'undefined') return null
 
-  return localeToLanguage(window.localStorage.getItem(LANGUAGE_OVERRIDE_KEY)) ?? null
+  return localeToLanguage(window.localStorage.getItem(LANGUAGE_OVERRIDE_KEY))
 }
 
 /**
- * Decide o idioma da interface a partir da escolha de quem usa e do idioma da
- * empresa.
+ * Decide o idioma da interface a partir da escolha manual e do idioma do
+ * navegador.
  *
  * Fica acima do `AuthGuard` porque o seletor também aparece no login, onde não
  * há empresa — ali vale o idioma de partida, e o provedor não consulta nada.
@@ -53,27 +41,24 @@ function readOverride(): AppLanguage | null {
  * idioma da empresa fosse aplicado por esse caminho, viraria escolha manual, e
  * a opção "Padrão" perderia como se distinguir de uma escolha de verdade.
  */
+// TODO: Aplicar o idioma definido pela empresa quando a feature de settings existir (useSettingsQuery).
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation()
-  const { isAuthenticated } = useAuth()
-
-  const settingsQuery = useSettingsQuery({ enabled: isAuthenticated })
-  const companyLocale = settingsQuery.data?.company?.locale
 
   /*
+    O idioma detectado fica fixo na montagem: a escolha manual sobrescreve o
+    idioma corrente (o i18next muda `i18n.language`), então "Padrão" precisa
+    voltar ao idioma do navegador, e não ao último idioma aplicado.
+
     O que está guardado vira estado, e não leitura direta a cada renderização:
     escolher "Padrão" estando já no idioma da empresa não muda o idioma, então
     o i18next não emitiria evento nenhum — e o seletor continuaria marcando a
     escolha antiga.
   */
+  const [initialLanguage] = useState<AppLanguage>(() => localeToLanguage(i18n.language) ?? 'en')
   const [override, setOverride] = useState<AppLanguage | null>(readOverride)
-  const companyLanguage = localeToLanguage(companyLocale)
 
-  const language = resolveLanguage({
-    override,
-    companyLocale,
-    fallback: i18n.language,
-  })
+  const language = override ?? initialLanguage
 
   useEffect(() => {
     if (i18n.language !== language) {
@@ -93,16 +78,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo<LanguagePreference>(
-    () => ({ language, companyLanguage, override, setLanguage }),
-    [language, companyLanguage, override, setLanguage],
+    () => ({ language, override, setLanguage }),
+    [language, override, setLanguage],
   )
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
 
 /**
- * Preferência de idioma: o que está em uso, o que a empresa definiu e como
- * trocar.
+ * Preferência de idioma: o que está em uso e como trocar.
  *
  * @returns A preferência de idioma.
  */
