@@ -86,6 +86,7 @@ export function LoginCard() {
               type="email"
               autoComplete="email"
               placeholder={t('form.emailPlaceholder')}
+              aria-invalid={!!errors.email}
               {...register('email')}
             />
             {errors.email?.message && (
@@ -103,6 +104,7 @@ export function LoginCard() {
                 placeholder={t('form.passwordPlaceholder')}
                 className="pr-10"
                 {...register('password')}
+                aria-invalid={!!errors.password}
               />
               <Button
                 type="button"

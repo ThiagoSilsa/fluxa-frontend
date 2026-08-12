@@ -10,6 +10,9 @@ export const LANGUAGE_OVERRIDE_KEY = 'languageOverride'
 /** Idiomas suportados pela interface. */
 export type AppLanguage = 'pt' | 'en'
 
+/** Idiomas suportados, na ordem exibida no seletor de idioma. */
+export const APP_LANGUAGES: AppLanguage[] = ['pt', 'en']
+
 /**
  * Normaliza um locale (ex.: `pt-BR`, `en-US`) para um idioma da interface.
  *

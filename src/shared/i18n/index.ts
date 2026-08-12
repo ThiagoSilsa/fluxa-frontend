@@ -6,6 +6,8 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import commonEn from './locales/en.json'
 import commonPt from './locales/pt.json'
+import languageSelectorEn from '#/shared/components/language-selector/i18n/en.json'
+import languageSelectorPt from '#/shared/components/language-selector/i18n/pt.json'
 import loginEn from '#/features/login/i18n/en.json'
 import loginPt from '#/features/login/i18n/pt.json'
 
@@ -17,11 +19,13 @@ i18n
       pt: {
         common: commonPt,
         login: loginPt,
+        languageSelector: languageSelectorPt,
       },
 
       en: {
         common: commonEn,
         login: loginEn,
+        languageSelector: languageSelectorEn,
       },
     },
 
@@ -29,7 +33,7 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common', 'login'],
+    ns: ['common', 'login', 'languageSelector'],
 
     defaultNS: 'common',
 

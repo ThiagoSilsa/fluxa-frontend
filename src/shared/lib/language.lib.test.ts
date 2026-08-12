@@ -2,7 +2,13 @@
 import { describe, expect, it } from 'vitest'
 
 // Lib
-import { localeToLanguage } from './language.lib'
+import { APP_LANGUAGES, localeToLanguage } from './language.lib'
+
+describe('APP_LANGUAGES', () => {
+  it('lista os idiomas suportados', () => {
+    expect(APP_LANGUAGES).toEqual(['pt', 'en'])
+  })
+})
 
 describe('localeToLanguage', () => {
   it('retorna null para valores vazios', () => {
