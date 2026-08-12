@@ -27,7 +27,7 @@
   "banner": {
     "logo": "Fluxa",
     "title": "Bem-vindo ao Fluxa",
-    "description": "O Fluxa é uma plataforma para gerenciar as finanças e operações da sua empresa. Por favor, faça login para continuar."
+    "description": "O Fluxa é uma plataforma de controle de acesso da sua empresa. Por favor, faça login para continuar."
   },
   "login": {
     "welcome": "Bem-vindo de volta!",
