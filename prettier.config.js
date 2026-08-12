@@ -4,7 +4,18 @@
 const config = {
   semi: false,
   singleQuote: true,
-  trailingComma: "all",
-};
+  trailingComma: 'all',
 
-export default config;
+  printWidth: 100,
+  tabWidth: 2,
+
+  useTabs: false,
+
+  arrowParens: 'always',
+
+  bracketSpacing: true,
+
+  plugins: ['prettier-plugin-tailwindcss'],
+}
+
+export default config

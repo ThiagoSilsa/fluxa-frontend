@@ -1,23 +1,34 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import { devtools } from '@tanstack/devtools-vite'
 
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { nitro } from 'nitro/vite'
-import contentCollections from '@content-collections/vite'
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    contentCollections(),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      spa: {
+        enabled: true,
+        prerender: {
+          outputPath: '/index.html',
+          crawlLinks: false,
+          retryCount: 0,
+        },
+      },
+    }),
     viteReact(),
   ],
+  test: {
+    environment: 'jsdom',
+    css: false,
+    globals: true,
+    pool: 'threads',
+  },
 })
 
 export default config
