@@ -104,13 +104,22 @@ export function useLoginHandlers() {
   })
 
   const handleSubmit = async (values: LoginSchema) => {
-    await mutation.mutateAsync(values)
+    try {
+      await mutation.mutateAsync(values)
+    } catch {
+      // O erro já foi tratado em `onError` (toast). Evita rejeição não
+      // tratada no submit do formulário.
+    }
   }
 
   // Entra na empresa escolhida: reenvia a credencial + companyId.
   const chooseCompany = async (companyId: string) => {
     if (!pendingCredentials) return
-    await mutation.mutateAsync({ ...pendingCredentials, companyId })
+    try {
+      await mutation.mutateAsync({ ...pendingCredentials, companyId })
+    } catch {
+      // O erro já foi tratado em `onError` (toast).
+    }
   }
 
   // Volta da escolha: descarta a credencial pendente e limpa o erro.
