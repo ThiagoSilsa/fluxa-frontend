@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalidCredentials": "Invalid credentials",
+    "validation": "Validation error",
+    "unexpected": "Unexpected error"
+  }
+}
