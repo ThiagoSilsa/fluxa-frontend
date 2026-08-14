@@ -10,6 +10,8 @@ import languageSelectorEn from '#/shared/components/language-selector/i18n/en.js
 import languageSelectorPt from '#/shared/components/language-selector/i18n/pt.json'
 import loginEn from '#/features/login/i18n/en.json'
 import loginPt from '#/features/login/i18n/pt.json'
+import mainLayoutEn from '#/widgets/main-layout/i18n/en.json'
+import mainLayoutPt from '#/widgets/main-layout/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -20,12 +22,14 @@ i18n
         common: commonPt,
         login: loginPt,
         languageSelector: languageSelectorPt,
+        mainLayout: mainLayoutPt,
       },
 
       en: {
         common: commonEn,
         login: loginEn,
         languageSelector: languageSelectorEn,
+        mainLayout: mainLayoutEn,
       },
     },
 
@@ -33,7 +37,7 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common', 'login', 'languageSelector'],
+    ns: ['common', 'login', 'languageSelector', 'mainLayout'],
 
     defaultNS: 'common',
 

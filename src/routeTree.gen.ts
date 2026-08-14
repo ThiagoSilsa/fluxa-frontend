@@ -11,7 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivateRouteImport } from './routes/_private'
 import { Route as PrivateHomeRouteImport } from './routes/_private/home'
+import { Route as PrivateRequestsRouteImport } from './routes/_private/requests'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PrivateManagementDepartmentsRouteImport } from './routes/_private/management/departments'
+import { Route as PrivateManagementDevicesRouteImport } from './routes/_private/management/devices'
+import { Route as PrivateManagementImportsRouteImport } from './routes/_private/management/imports'
+import { Route as PrivateManagementRolesRouteImport } from './routes/_private/management/roles'
+import { Route as PrivateManagementUsersRouteImport } from './routes/_private/management/users'
+import { Route as PrivateManagementVehiclesRouteImport } from './routes/_private/management/vehicles'
 
 const PrivateRoute = PrivateRouteImport.update({
   id: '/_private',
@@ -22,32 +29,121 @@ const PrivateHomeRoute = PrivateHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => PrivateRoute,
 } as any)
+const PrivateRequestsRoute = PrivateRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => PrivateRoute,
+} as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/_public/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivateManagementDepartmentsRoute =
+  PrivateManagementDepartmentsRouteImport.update({
+    id: '/management/departments',
+    path: '/management/departments',
+    getParentRoute: () => PrivateRoute,
+  } as any)
+const PrivateManagementDevicesRoute =
+  PrivateManagementDevicesRouteImport.update({
+    id: '/management/devices',
+    path: '/management/devices',
+    getParentRoute: () => PrivateRoute,
+  } as any)
+const PrivateManagementImportsRoute =
+  PrivateManagementImportsRouteImport.update({
+    id: '/management/imports',
+    path: '/management/imports',
+    getParentRoute: () => PrivateRoute,
+  } as any)
+const PrivateManagementRolesRoute = PrivateManagementRolesRouteImport.update({
+  id: '/management/roles',
+  path: '/management/roles',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateManagementUsersRoute = PrivateManagementUsersRouteImport.update({
+  id: '/management/users',
+  path: '/management/users',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateManagementVehiclesRoute =
+  PrivateManagementVehiclesRouteImport.update({
+    id: '/management/vehicles',
+    path: '/management/vehicles',
+    getParentRoute: () => PrivateRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/home': typeof PrivateHomeRoute
+  '/requests': typeof PrivateRequestsRoute
+  '/management/departments': typeof PrivateManagementDepartmentsRoute
+  '/management/devices': typeof PrivateManagementDevicesRoute
+  '/management/imports': typeof PrivateManagementImportsRoute
+  '/management/roles': typeof PrivateManagementRolesRoute
+  '/management/users': typeof PrivateManagementUsersRoute
+  '/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/home': typeof PrivateHomeRoute
+  '/requests': typeof PrivateRequestsRoute
+  '/management/departments': typeof PrivateManagementDepartmentsRoute
+  '/management/devices': typeof PrivateManagementDevicesRoute
+  '/management/imports': typeof PrivateManagementImportsRoute
+  '/management/roles': typeof PrivateManagementRolesRoute
+  '/management/users': typeof PrivateManagementUsersRoute
+  '/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_private': typeof PrivateRouteWithChildren
   '/_private/home': typeof PrivateHomeRoute
+  '/_private/requests': typeof PrivateRequestsRoute
   '/_public/': typeof PublicIndexRoute
+  '/_private/management/departments': typeof PrivateManagementDepartmentsRoute
+  '/_private/management/devices': typeof PrivateManagementDevicesRoute
+  '/_private/management/imports': typeof PrivateManagementImportsRoute
+  '/_private/management/roles': typeof PrivateManagementRolesRoute
+  '/_private/management/users': typeof PrivateManagementUsersRoute
+  '/_private/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home'
+  fullPaths:
+    | '/'
+    | '/home'
+    | '/requests'
+    | '/management/departments'
+    | '/management/devices'
+    | '/management/imports'
+    | '/management/roles'
+    | '/management/users'
+    | '/management/vehicles'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home'
-  id: '__root__' | '/_private' | '/_private/home' | '/_public/'
+  to:
+    | '/'
+    | '/home'
+    | '/requests'
+    | '/management/departments'
+    | '/management/devices'
+    | '/management/imports'
+    | '/management/roles'
+    | '/management/users'
+    | '/management/vehicles'
+  id:
+    | '__root__'
+    | '/_private'
+    | '/_private/home'
+    | '/_private/requests'
+    | '/_public/'
+    | '/_private/management/departments'
+    | '/_private/management/devices'
+    | '/_private/management/imports'
+    | '/_private/management/roles'
+    | '/_private/management/users'
+    | '/_private/management/vehicles'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -71,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateHomeRouteImport
       parentRoute: typeof PrivateRoute
     }
+    '/_private/requests': {
+      id: '/_private/requests'
+      path: '/requests'
+      fullPath: '/requests'
+      preLoaderRoute: typeof PrivateRequestsRouteImport
+      parentRoute: typeof PrivateRoute
+    }
     '/_public/': {
       id: '/_public/'
       path: '/'
@@ -78,15 +181,71 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_private/management/departments': {
+      id: '/_private/management/departments'
+      path: '/management/departments'
+      fullPath: '/management/departments'
+      preLoaderRoute: typeof PrivateManagementDepartmentsRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/management/devices': {
+      id: '/_private/management/devices'
+      path: '/management/devices'
+      fullPath: '/management/devices'
+      preLoaderRoute: typeof PrivateManagementDevicesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/management/imports': {
+      id: '/_private/management/imports'
+      path: '/management/imports'
+      fullPath: '/management/imports'
+      preLoaderRoute: typeof PrivateManagementImportsRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/management/roles': {
+      id: '/_private/management/roles'
+      path: '/management/roles'
+      fullPath: '/management/roles'
+      preLoaderRoute: typeof PrivateManagementRolesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/management/users': {
+      id: '/_private/management/users'
+      path: '/management/users'
+      fullPath: '/management/users'
+      preLoaderRoute: typeof PrivateManagementUsersRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/management/vehicles': {
+      id: '/_private/management/vehicles'
+      path: '/management/vehicles'
+      fullPath: '/management/vehicles'
+      preLoaderRoute: typeof PrivateManagementVehiclesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
   }
 }
 
 interface PrivateRouteChildren {
   PrivateHomeRoute: typeof PrivateHomeRoute
+  PrivateRequestsRoute: typeof PrivateRequestsRoute
+  PrivateManagementDepartmentsRoute: typeof PrivateManagementDepartmentsRoute
+  PrivateManagementDevicesRoute: typeof PrivateManagementDevicesRoute
+  PrivateManagementImportsRoute: typeof PrivateManagementImportsRoute
+  PrivateManagementRolesRoute: typeof PrivateManagementRolesRoute
+  PrivateManagementUsersRoute: typeof PrivateManagementUsersRoute
+  PrivateManagementVehiclesRoute: typeof PrivateManagementVehiclesRoute
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateHomeRoute: PrivateHomeRoute,
+  PrivateRequestsRoute: PrivateRequestsRoute,
+  PrivateManagementDepartmentsRoute: PrivateManagementDepartmentsRoute,
+  PrivateManagementDevicesRoute: PrivateManagementDevicesRoute,
+  PrivateManagementImportsRoute: PrivateManagementImportsRoute,
+  PrivateManagementRolesRoute: PrivateManagementRolesRoute,
+  PrivateManagementUsersRoute: PrivateManagementUsersRoute,
+  PrivateManagementVehiclesRoute: PrivateManagementVehiclesRoute,
 }
 
 const PrivateRouteWithChildren =
