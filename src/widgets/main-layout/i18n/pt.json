@@ -1,0 +1,35 @@
+{
+  "navbar": {
+    "toggleMenu": "Abrir menu"
+  },
+  "sidebar": {
+    "company": {
+      "label": "Empresa da sessão"
+    },
+    "language": "Idioma",
+    "logout": "Sair",
+    "search": {
+      "placeholder": "Buscar páginas",
+      "noResults": "Nenhuma página encontrada"
+    },
+    "items": {
+      "home": "Home",
+      "home-desc": "Visão geral do dashboard",
+      "requests": "Solicitações",
+      "requests-desc": "Solicitações de acesso e bloqueio",
+      "management": "Gerenciamento",
+      "users": "Usuários",
+      "users-desc": "Gerencie usuários do sistema",
+      "roles": "Cargos",
+      "roles-desc": "Gerencie cargos e permissões",
+      "departments": "Departamentos",
+      "departments-desc": "Gerencie departamentos",
+      "vehicles": "Veículos",
+      "vehicles-desc": "Gerencie veículos",
+      "imports": "Importações",
+      "imports-desc": "Importações em lote",
+      "devices": "Dispositivos",
+      "devices-desc": "Gerencie dispositivos"
+    }
+  }
+}

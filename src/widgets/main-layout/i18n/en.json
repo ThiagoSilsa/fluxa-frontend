@@ -1,0 +1,35 @@
+{
+  "navbar": {
+    "toggleMenu": "Toggle menu"
+  },
+  "sidebar": {
+    "company": {
+      "label": "Session company"
+    },
+    "language": "Language",
+    "logout": "Sign out",
+    "search": {
+      "placeholder": "Search pages",
+      "noResults": "No pages found"
+    },
+    "items": {
+      "home": "Home",
+      "home-desc": "Dashboard overview",
+      "requests": "Requests",
+      "requests-desc": "Access and block requests",
+      "management": "Management",
+      "users": "Users",
+      "users-desc": "Manage system users",
+      "roles": "Roles",
+      "roles-desc": "Manage roles and permissions",
+      "departments": "Departments",
+      "departments-desc": "Manage departments",
+      "vehicles": "Vehicles",
+      "vehicles-desc": "Manage vehicles",
+      "imports": "Imports",
+      "imports-desc": "Batch imports",
+      "devices": "Devices",
+      "devices-desc": "Manage devices"
+    }
+  }
+}

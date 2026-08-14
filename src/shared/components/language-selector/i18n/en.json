@@ -1,0 +1,12 @@
+{
+  "label": "Interface language",
+  "follow-company": "Default",
+  "languages": {
+    "pt": "Portuguese",
+    "en": "English"
+  },
+  "short": {
+    "pt": "PT",
+    "en": "EN"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "page": {
+    "title": "Entrar",
+    "description": "Acesse sua conta para continuar"
+  },
+  "form": {
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "voce@empresa.com",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "Sua senha",
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha",
+    "submit": "Entrar",
+    "submitting": "Entrando...",
+    "errors": {
+      "invalid-email": "Informe um e-mail válido",
+      "invalid-password": "Informe sua senha",
+      "post-login-setup": "Não foi possível carregar seus dados. Tente novamente."
+    }
+  },
+  "companyChoice": {
+    "title": "Escolha a empresa",
+    "description": "Sua conta está vinculada a mais de uma empresa. Selecione uma para entrar.",
+    "unnamed": "Empresa sem nome",
+    "back": "Voltar"
+  },
+  "banner": {
+    "logo": "Fluxa",
+    "title": "Bem-vindo ao Fluxa",
+    "description": "O Fluxa é uma plataforma de controle de acesso da sua empresa. Por favor, faça login para continuar."
+  },
+  "login": {
+    "welcome": "Bem-vindo de volta!",
+    "description": "Por favor, faça login na sua conta para continuar."
+  }
+}
