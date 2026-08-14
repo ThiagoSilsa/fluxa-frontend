@@ -4,7 +4,7 @@
 
 :root {
   --background: oklch(0.9940 0 0);
-  --foreground: oklch(16.029% 0.00168 16.738);
+  --foreground: oklch(0 0 0);
   --card: oklch(0.9940 0 0);
   --card-foreground: oklch(0 0 0);
   --popover: oklch(0.9911 0 0);
@@ -38,7 +38,7 @@
   --font-sans: Plus Jakarta Sans, sans-serif;
   --font-serif: Lora, serif;
   --font-mono: IBM Plex Mono, monospace;
-  --radius: 1.4rem;
+  --radius: 0.9rem;
   --shadow-x: 0;
   --shadow-y: 1px;
   --shadow-blur: 3px;
@@ -93,7 +93,7 @@
   --font-sans: Plus Jakarta Sans, sans-serif;
   --font-serif: Lora, serif;
   --font-mono: IBM Plex Mono, monospace;
-  --radius: 1.4rem;
+  --radius: 0.9rem;
   --shadow-x: 0;
   --shadow-y: 1px;
   --shadow-blur: 3px;
