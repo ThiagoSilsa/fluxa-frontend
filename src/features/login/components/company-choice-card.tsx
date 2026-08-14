@@ -14,8 +14,8 @@ import {
   CardTitle,
 } from '#/shared/components/ui/card'
 
-// Feature
-import { CompanyAvatar } from './company-avatar'
+// Shared
+import { CompanyAvatar } from '#/shared/components/company-avatar'
 
 // Types
 import type { LoginCompanyChoice } from '../types/login.types'

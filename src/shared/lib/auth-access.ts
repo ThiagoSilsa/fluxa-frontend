@@ -1,10 +1,17 @@
 // Types
+import type { AccessRequirements, AuthUser } from '#/shared/types/auth.types'
 
 /**
- * Verifica se o usuario atende aos requisitos de acesso.
- * Regra: role tem precedencia sobre permissions.
+ * Verifica se o usuário atende aos requisitos de acesso.
+ *
+ * Regra: role tem precedência sobre permissions. Requisitos vazios → acesso
+ * liberado (itens sem restrição aparecem para todos).
+ *
+ * @param user Usuário da sessão (null quando deslogado).
+ * @param requirements Requisitos de acesso (roles e/ou permissions).
+ * @returns `true` quando o usuário pode acessar.
  */
-export function canAccess(user: any | null, requirements: any) {
+export function canAccess(user: AuthUser | null, requirements: AccessRequirements): boolean {
   const roles = requirements.roles ?? []
   const permissions = requirements.permissions ?? []
 

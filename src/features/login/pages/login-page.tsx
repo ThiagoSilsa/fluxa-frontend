@@ -1,12 +1,13 @@
-// UI
-import { PublicPageShell } from '#/shared/components/public-page-shell'
+// Theme
 import { ThemeProvider } from 'next-themes'
-
-// Feature
-import { LoginCard } from '../components/login-card'
 import ThemeToggle from '#/shared/components/ThemeToggle'
+
+// Components
+import { PublicPageShell } from '#/shared/components/public-page-shell'
+import { LoginCard } from '../components/login-card'
 import { LanguageSelector } from '#/shared/components/language-selector'
 
+// i18n
 import { useTranslation } from 'react-i18next'
 
 /**

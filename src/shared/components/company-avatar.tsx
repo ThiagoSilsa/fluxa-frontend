@@ -1,5 +1,6 @@
 // Utils
 import { cn } from '#/lib/utils'
+import { getInitials } from '#/shared/utils/get-initials'
 
 interface CompanyAvatarProps {
   name: string | null
@@ -10,14 +11,6 @@ interface CompanyAvatarProps {
  * Avatar de empresa: círculo com as iniciais do nome.
  */
 export function CompanyAvatar({ name, className }: CompanyAvatarProps) {
-  const initials = (name ?? '')
-    .split(' ')
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
-
   return (
     <span
       className={cn(
@@ -26,7 +19,7 @@ export function CompanyAvatar({ name, className }: CompanyAvatarProps) {
       )}
       aria-hidden="true"
     >
-      {initials || '?'}
+      {getInitials(name ?? '') || '?'}
     </span>
   )
 }
