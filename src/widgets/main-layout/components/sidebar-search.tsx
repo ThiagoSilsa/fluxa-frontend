@@ -136,10 +136,10 @@ function SidebarSearchComponent({ items, open, setOpen }: SidebarSearchProps) {
         <TooltipTrigger asChild>
           <SidebarMenuButton
             onClick={() => setOpen(true)}
-            className="ml-2 cursor-pointer"
+            className="ml-4 cursor-pointer"
             aria-label={t('sidebar.search.placeholder')}
           >
-            <Search className="ml-2 h-4 w-4" />
+            <Search className="h-5 w-5" />
           </SidebarMenuButton>
         </TooltipTrigger>
         <TooltipContent side="right">{t('sidebar.search.placeholder')}</TooltipContent>

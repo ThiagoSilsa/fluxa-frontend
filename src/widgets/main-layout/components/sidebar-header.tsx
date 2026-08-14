@@ -35,7 +35,7 @@ export function SidebarHeaderComponent(_props: SidebarHeaderProps) {
     <SidebarHeader className="border-sidebar-border border-b">
       <div className="flex flex-col gap-3 p-2">
         <div
-          className="flex cursor-pointer items-center gap-2"
+          className="flex cursor-pointer items-center gap-2 group-data-[collapsible=icon]:justify-center"
           onClick={handleLogoClick}
           role="button"
           tabIndex={0}
@@ -46,10 +46,9 @@ export function SidebarHeaderComponent(_props: SidebarHeaderProps) {
             }
           }}
         >
+          {/* No modo recolhido o Logo vira a marca "F". A empresa fica no
+              bloco abaixo (escondido quando recolhido) — nunca ao lado. */}
           <Logo size="sm" />
-          <span className="text-sidebar-accent-foreground/60 -mt-1 font-mono text-[10px] font-semibold tracking-widest">
-            SOMAR
-          </span>
         </div>
 
         {/*

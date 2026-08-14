@@ -9,9 +9,6 @@ import { filterSidebarItems } from '../lib/filter-sidebar-items'
 
 // Components
 import { RenderSidebarItems } from './sidebar-menu-itens'
-import { SidebarFooterSection } from './sidebar-footer'
-import { SidebarHeaderSection } from './sidebar-header'
-import SidebarSearch from './sidebar-search'
 import {
   ScrollArea,
   Sidebar,
@@ -22,8 +19,12 @@ import {
   useSidebar,
 } from '#/shared/components'
 
+import { SidebarHeaderSection } from './sidebar-header'
+import { SidebarFooterSection } from './sidebar-footer'
+
 // Providers
 import { useAuth } from '#/app/providers/auth-provider'
+import SidebarSearch from './sidebar-search'
 
 /**
  * Componente principal da sidebar: controle de autenticação, permissão e
