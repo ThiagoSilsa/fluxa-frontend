@@ -12,6 +12,13 @@
   "placeholder": {
     "description": "Esta página está em construção."
   },
+  "pagination": {
+    "limit": "Itens por página",
+    "first": "Primeira página",
+    "previous": "Página anterior",
+    "next": "Próxima página",
+    "last": "Última página"
+  },
   "errors": {
     "invalidCredentials": "Credenciais inválidas",
     "validation": "Erro de validação",

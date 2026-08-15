@@ -1,0 +1,101 @@
+{
+  "title": "Roles and permissions",
+  "subtitle": "Manage roles and their permissions.",
+  "search": {
+    "placeholder": "Search role by name"
+  },
+  "toolbar": {
+    "create": "New role",
+    "edit": "Edit",
+    "view": "View",
+    "deactivate": "Deactivate",
+    "managePermissions": "Manage permissions"
+  },
+  "empty": {
+    "title": "No roles found",
+    "description": "Try adjusting your search."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "card": {
+    "system_role": "System role"
+  },
+  "dialog": {
+    "create": {
+      "title": "Create role",
+      "description": "Fill in the details to create the role."
+    },
+    "edit": {
+      "title": "Edit role",
+      "description": "Update the role information."
+    },
+    "permissions": {
+      "title": "Role permissions",
+      "description": "Select the permissions that the \"{{role}}\" role will have."
+    }
+  },
+  "form": {
+    "read-only-hint": "This role is controlled by the system and cannot be edited.",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter the role name"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Enter the role description"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Please enter a role name.",
+      "name-min": "Name must have at least 2 characters.",
+      "name-max": "Name must be at most 255 characters.",
+      "description-max": "Description must be at most 500 characters."
+    }
+  },
+  "permissionsDialog": {
+    "empty": "No permissions available."
+  },
+  "confirm": {
+    "deactivate": {
+      "title": "Deactivate role",
+      "description": "Are you sure you want to deactivate the \"{{name}}\" role? This cannot be undone from the screen.",
+      "confirm": "Yes, deactivate",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Role created successfully.",
+    "update-success": "Role updated successfully.",
+    "deactivate-success": "Role deactivated successfully.",
+    "permission-assigned": "Permission granted.",
+    "permission-removed": "Permission removed."
+  },
+  "permissions": {
+    "MANAGE_COMPANY": "Manage company",
+    "MANAGE_USERS": "Manage users",
+    "MANAGE_ROLES": "Manage roles and permissions",
+    "MANAGE_VEHICLES": "Manage vehicles",
+    "MANAGE_VEHICLE_TYPES": "Manage vehicle types",
+    "MANAGE_DEPARTMENTS": "Manage departments",
+    "MANAGE_ENTRANCES": "Manage entrances",
+    "MANAGE_BLOCKS": "Manage blocks",
+    "MANAGE_ACCESS_REQUESTS": "Manage access requests",
+    "MANAGE_BLOCK_REQUESTS": "Manage block requests",
+    "MANAGE_IMPORTS": "Manage imports",
+    "MANAGE_DEVICES": "Manage devices",
+    "GRANT_FREE_PASS": "Grant free pass",
+    "PRINT_QRCODE": "Print QR code",
+    "VIEW_DASHBOARDS": "View dashboards",
+    "REGISTER_ENTRY": "Register entry",
+    "REGISTER_EXIT": "Register exit",
+    "REGISTER_DENIAL": "Register denial",
+    "CREATE_ACCESS_REQUEST": "Create access request",
+    "CANCEL_ACCESS_REQUEST": "Cancel access request",
+    "CREATE_BLOCK_REQUEST": "Create block request",
+    "MANUAL_CLOSE_ACCESS": "Manually close access",
+    "INITIAL_ENTRY": "Initial entry"
+  }
+}

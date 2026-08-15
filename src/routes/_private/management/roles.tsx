@@ -1,6 +1,9 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
+// Routes
+import { rolesSearchSchema } from '#/features/roles/routes/roles.route'
+
 // i18n
 import { useTranslation } from 'react-i18next'
 
@@ -8,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { PagePlaceholder } from '#/shared/components/page-placeholder'
 
 export const Route = createFileRoute('/_private/management/roles')({
+  validateSearch: rolesSearchSchema,
   component: RolesPage,
 })
 

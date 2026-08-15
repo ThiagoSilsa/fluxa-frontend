@@ -1,0 +1,101 @@
+{
+  "title": "Cargos e permissões",
+  "subtitle": "Gerencie os cargos e as permissões de cada um.",
+  "search": {
+    "placeholder": "Buscar cargo por nome"
+  },
+  "toolbar": {
+    "create": "Novo cargo",
+    "edit": "Editar",
+    "view": "Ver",
+    "deactivate": "Desativar",
+    "managePermissions": "Gerenciar permissões"
+  },
+  "empty": {
+    "title": "Nenhum cargo encontrado",
+    "description": "Tente ajustar a busca."
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  },
+  "card": {
+    "system_role": "Cargo do sistema"
+  },
+  "dialog": {
+    "create": {
+      "title": "Criar cargo",
+      "description": "Preencha os dados para criar o cargo."
+    },
+    "edit": {
+      "title": "Editar cargo",
+      "description": "Atualize as informações do cargo."
+    },
+    "permissions": {
+      "title": "Permissões do cargo",
+      "description": "Marque as permissões que o cargo \"{{role}}\" terá."
+    }
+  },
+  "form": {
+    "read-only-hint": "Este cargo é controlado pelo sistema e não pode ser editado.",
+    "name": {
+      "label": "Nome",
+      "placeholder": "Informe o nome do cargo"
+    },
+    "description": {
+      "label": "Descrição",
+      "placeholder": "Informe a descrição do cargo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "name-required": "Informe o nome do cargo.",
+      "name-min": "O nome deve ter pelo menos 2 caracteres.",
+      "name-max": "O nome deve ter no máximo 255 caracteres.",
+      "description-max": "A descrição deve ter no máximo 500 caracteres."
+    }
+  },
+  "permissionsDialog": {
+    "empty": "Nenhuma permissão disponível."
+  },
+  "confirm": {
+    "deactivate": {
+      "title": "Desativar cargo",
+      "description": "Tem certeza que deseja desativar o cargo \"{{name}}\"? A desativação não pode ser desfeita pela tela.",
+      "confirm": "Sim, desativar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Cargo criado com sucesso.",
+    "update-success": "Cargo atualizado com sucesso.",
+    "deactivate-success": "Cargo desativado com sucesso.",
+    "permission-assigned": "Permissão concedida.",
+    "permission-removed": "Permissão removida."
+  },
+  "permissions": {
+    "MANAGE_COMPANY": "Gerenciar empresa",
+    "MANAGE_USERS": "Gerenciar usuários",
+    "MANAGE_ROLES": "Gerenciar cargos e permissões",
+    "MANAGE_VEHICLES": "Gerenciar veículos",
+    "MANAGE_VEHICLE_TYPES": "Gerenciar tipos de veículos",
+    "MANAGE_DEPARTMENTS": "Gerenciar departamentos",
+    "MANAGE_ENTRANCES": "Gerenciar entradas",
+    "MANAGE_BLOCKS": "Gerenciar bloqueios",
+    "MANAGE_ACCESS_REQUESTS": "Gerenciar solicitações de acesso",
+    "MANAGE_BLOCK_REQUESTS": "Gerenciar solicitações de bloqueio",
+    "MANAGE_IMPORTS": "Gerenciar importações",
+    "MANAGE_DEVICES": "Gerenciar dispositivos",
+    "GRANT_FREE_PASS": "Conceder passe livre",
+    "PRINT_QRCODE": "Imprimir QR Code",
+    "VIEW_DASHBOARDS": "Ver painéis",
+    "REGISTER_ENTRY": "Registrar entrada",
+    "REGISTER_EXIT": "Registrar saída",
+    "REGISTER_DENIAL": "Registrar negativa",
+    "CREATE_ACCESS_REQUEST": "Criar solicitação de acesso",
+    "CANCEL_ACCESS_REQUEST": "Cancelar solicitação de acesso",
+    "CREATE_BLOCK_REQUEST": "Criar solicitação de bloqueio",
+    "MANUAL_CLOSE_ACCESS": "Encerrar acesso manualmente",
+    "INITIAL_ENTRY": "Entrada inicial"
+  }
+}

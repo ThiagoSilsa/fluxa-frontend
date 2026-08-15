@@ -12,6 +12,13 @@
   "placeholder": {
     "description": "This page is under construction."
   },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "last": "Last page"
+  },
   "errors": {
     "invalidCredentials": "Invalid credentials",
     "validation": "Validation error",

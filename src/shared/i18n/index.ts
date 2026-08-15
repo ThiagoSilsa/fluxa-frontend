@@ -12,6 +12,8 @@ import loginEn from '#/features/login/i18n/en.json'
 import loginPt from '#/features/login/i18n/pt.json'
 import mainLayoutEn from '#/widgets/main-layout/i18n/en.json'
 import mainLayoutPt from '#/widgets/main-layout/i18n/pt.json'
+import rolesEn from '#/features/roles/i18n/en.json'
+import rolesPt from '#/features/roles/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -23,6 +25,7 @@ i18n
         login: loginPt,
         languageSelector: languageSelectorPt,
         mainLayout: mainLayoutPt,
+        roles: rolesPt,
       },
 
       en: {
@@ -30,6 +33,7 @@ i18n
         login: loginEn,
         languageSelector: languageSelectorEn,
         mainLayout: mainLayoutEn,
+        roles: rolesEn,
       },
     },
 
@@ -37,7 +41,7 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common', 'login', 'languageSelector', 'mainLayout'],
+    ns: ['common', 'login', 'languageSelector', 'mainLayout', 'roles'],
 
     defaultNS: 'common',
 
