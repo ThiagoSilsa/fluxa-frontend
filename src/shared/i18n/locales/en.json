@@ -12,6 +12,10 @@
   "placeholder": {
     "description": "This page is under construction."
   },
+  "no-access": {
+    "title": "No access",
+    "description": "You don't have permission to access this page."
+  },
   "pagination": {
     "limit": "Items per page",
     "first": "First page",

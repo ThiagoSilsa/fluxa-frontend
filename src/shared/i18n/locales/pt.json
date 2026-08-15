@@ -12,6 +12,10 @@
   "placeholder": {
     "description": "Esta página está em construção."
   },
+  "no-access": {
+    "title": "Sem acesso",
+    "description": "Você não tem permissão para acessar esta página."
+  },
   "pagination": {
     "limit": "Itens por página",
     "first": "Primeira página",
