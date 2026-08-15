@@ -2,6 +2,9 @@
   "actions": {
     "logout": "Sair"
   },
+  "detail": {
+    "back": "Voltar"
+  },
   "home": {
     "title": "Início",
     "description": "Esta página está em construção."

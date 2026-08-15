@@ -2,6 +2,9 @@
   "actions": {
     "logout": "Sign out"
   },
+  "detail": {
+    "back": "Back"
+  },
   "home": {
     "title": "Home",
     "description": "This page is under construction."
