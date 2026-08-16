@@ -1,5 +1,5 @@
 // Utils
-import { cn } from '#/lib/utils'
+import { cn } from '#/shared/lib/utils'
 import { getInitials } from '#/shared/utils/get-initials'
 
 interface CompanyAvatarProps {

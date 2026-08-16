@@ -1,5 +1,5 @@
 // Utils
-import { cn } from '#/lib/utils'
+import { cn } from '#/shared/lib/utils'
 
 // Types
 import type { AppLanguage } from '#/shared/lib/language.lib'
