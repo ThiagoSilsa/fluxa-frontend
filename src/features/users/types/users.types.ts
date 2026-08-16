@@ -102,7 +102,8 @@ export type UserRoleOption = {
 /** Props do formulário de usuário (criação/vínculo/edição). */
 export type UserFormProps = {
   defaultValues: UserFormValues
-  onSubmit: (values: UserFormValues) => void
+  /** `isLink` indica modo "vincular" (pessoa já existente). */
+  onSubmit: (values: UserFormValues, isLink: boolean) => void
   onCancel?: () => void
   isSubmitting?: boolean
   submitLabel: string
