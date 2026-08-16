@@ -19,7 +19,7 @@ describe('buildUserSession', () => {
     vi.clearAllMocks()
   })
 
-  it('chama /auth/validate e enriquece a sessão com cargo e permissões', async () => {
+  it('chama /auth/validate e enriquece a sessão com cargo, permissões e isAdmin', async () => {
     mockMakeRequest.mockResolvedValue({
       id: 'u1',
       companyId: 'c1',
@@ -28,6 +28,7 @@ describe('buildUserSession', () => {
       type: 'EMPLOYEE',
       roleCodes: ['Administração'],
       permissions: ['MANAGE_COMPANY', 'MANAGE_USERS'],
+      isAdmin: true,
     })
 
     const session = await buildUserSession({
@@ -41,6 +42,7 @@ describe('buildUserSession', () => {
     expect(session.user.roleCodes).toEqual(['Administração'])
     expect(session.user.permissionCodes).toEqual(['MANAGE_COMPANY', 'MANAGE_USERS'])
     expect(session.user.type).toBe('EMPLOYEE')
+    expect(session.user.isAdmin).toBe(true)
   })
 
   it('preserva os dados da sessão básica quando o validate não traz campos novos', async () => {
@@ -51,6 +53,7 @@ describe('buildUserSession', () => {
       name: 'User',
       roleCodes: [],
       permissions: [],
+      isAdmin: false,
     })
 
     const session = await buildUserSession({
@@ -63,5 +66,6 @@ describe('buildUserSession', () => {
     expect(session.user.name).toBe('User')
     expect(session.user.roleCodes).toEqual([])
     expect(session.user.permissionCodes).toEqual([])
+    expect(session.user.isAdmin).toBe(false)
   })
 })

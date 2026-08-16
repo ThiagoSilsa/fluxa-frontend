@@ -23,6 +23,12 @@ export interface AuthUser {
   permissionCodes?: string[]
   /** Tipo da pessoa (`EMPLOYEE` | `VISITOR`), vindo do login. */
   type?: string
+  /**
+   * Se a pessoa tem cargo `is_admin` ativo na empresa da sessão (acesso
+   * total — governança especial de administradores, ADR 0004/0005). Vindo de
+   * `GET /auth/validate`.
+   */
+  isAdmin?: boolean
 }
 
 /** Sessão autenticada: token de acesso + pessoa. */
