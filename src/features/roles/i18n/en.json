@@ -6,6 +6,7 @@
   },
   "filters": {
     "status": {
+      "label": "Status",
       "all": "All",
       "active": "Active",
       "inactive": "Inactive"

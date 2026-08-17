@@ -37,6 +37,7 @@ import {
   EntityList,
   Header,
   Input,
+  Label,
   PageLayout,
   Select,
   SelectContent,
@@ -192,19 +193,24 @@ export function RolesPage() {
               />
             </div>
 
-            <Select
-              value={statusValue}
-              onValueChange={(value) => handleStatusChange(value as RoleStatusFilterValue)}
-            >
-              <SelectTrigger className="w-36">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
-                <SelectItem value="active">{t('filters.status.active')}</SelectItem>
-                <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2">
+              <Label className="text-muted-foreground shrink-0 text-xs font-medium">
+                {t('filters.status.label')}
+              </Label>
+              <Select
+                value={statusValue}
+                onValueChange={(value) => handleStatusChange(value as RoleStatusFilterValue)}
+              >
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                  <SelectItem value="active">{t('filters.status.active')}</SelectItem>
+                  <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </>
         }
         toolbar={

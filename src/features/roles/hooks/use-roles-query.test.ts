@@ -4,6 +4,9 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useRolesQuery } from './use-roles-query'
 
+// Types
+import type { RoleListParams } from '../types/roles.types'
+
 import type { ReactNode } from 'react'
 
 // Mock do service
@@ -83,5 +86,23 @@ describe('useRolesQuery', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(mockList).toHaveBeenCalledWith({ limit: 20, offset: 0 })
+  })
+
+  it('should refetch when isActive filter changes (different query key)', async () => {
+    mockList.mockResolvedValue({ limit: 20, offset: 0, data: [], count: 0 })
+
+    const { rerender } = renderHook(
+      ({ params }: { params: RoleListParams }) => useRolesQuery(params),
+      {
+        initialProps: { params: { isActive: true } },
+        wrapper: createQueryWrapper(),
+      },
+    )
+
+    await waitFor(() => expect(mockList).toHaveBeenCalledWith({ isActive: true }))
+
+    rerender({ params: { isActive: false } })
+
+    await waitFor(() => expect(mockList).toHaveBeenCalledWith({ isActive: false }))
   })
 })
