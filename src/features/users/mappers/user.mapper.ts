@@ -25,7 +25,6 @@ export function normalizeUserFormDefaults(user?: UserEntity): UserFormValues {
     password: '',
     phone: user?.phone ?? '',
     document: user?.document ?? '',
-    observation: user?.observation ?? '',
     type: user?.type ?? 'EMPLOYEE',
     isActive: user?.isActive ?? true,
     roleId: user?.role?.roleId ?? '',
@@ -49,7 +48,6 @@ export function toCreateUserPayload(values: UserFormValues): CreateUserPayload {
     password: values.password,
     phone: values.phone?.trim() || undefined,
     document: values.document?.trim() || undefined,
-    observation: values.observation?.trim() || undefined,
     roleId: values.roleId,
   }
 }
@@ -105,12 +103,6 @@ export function toUpdateUserPayload(
   const originalDocument = original.document?.trim() || null
   if (document !== originalDocument) {
     payload.document = document
-  }
-
-  const observation = values.observation?.trim() || null
-  const originalObservation = original.observation?.trim() || null
-  if (observation !== originalObservation) {
-    payload.observation = observation
   }
 
   if (values.type !== original.type) {

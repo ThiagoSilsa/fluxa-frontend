@@ -11,7 +11,7 @@ describe('useUserHandlers', () => {
     search: { isActive: undefined, type: undefined },
     createUser: { mutateAsync: vi.fn() },
     updateUser: { mutateAsync: vi.fn() },
-    deactivateUser: { mutateAsync: vi.fn() },
+    deleteUser: { mutateAsync: vi.fn() },
     changePassword: { mutateAsync: vi.fn() },
   }
 
@@ -21,7 +21,6 @@ describe('useUserHandlers', () => {
     email: 'maria@somar.local',
     phone: '11999999999',
     document: null,
-    observation: null,
     photoUrl: null,
     type: 'EMPLOYEE' as const,
     isActive: true,
@@ -135,7 +134,6 @@ describe('useUserHandlers', () => {
         password: 'senha123',
         phone: ' 11999999999 ',
         document: '',
-        observation: '',
         type: 'EMPLOYEE' as const,
         isActive: true,
         roleId: 'role-1',
@@ -168,7 +166,6 @@ describe('useUserHandlers', () => {
         password: 'senha123',
         phone: '11999999999',
         document: '',
-        observation: '',
         type: 'EMPLOYEE' as const,
         isActive: true,
         roleId: 'role-1',
@@ -202,7 +199,6 @@ describe('useUserHandlers', () => {
         password: '',
         phone: '11999999999',
         document: '',
-        observation: '',
         type: 'EMPLOYEE' as const,
         isActive: true,
         roleId: 'role-1',
@@ -234,7 +230,6 @@ describe('useUserHandlers', () => {
         password: '  novaSenha123  ',
         phone: '11999999999',
         document: '',
-        observation: '',
         type: 'EMPLOYEE' as const,
         isActive: true,
         roleId: 'role-1',
@@ -257,9 +252,9 @@ describe('useUserHandlers', () => {
   // handleConfirmDelete
   // -----------------------------------------------------------------------
   describe('handleConfirmDelete', () => {
-    it('should call deactivateUser and clear the target on success', async () => {
-      const deactivateUser = { mutateAsync: vi.fn().mockResolvedValue({ id: 'user-1' }) }
-      const { result } = renderHook(() => useUserHandlers({ ...defaultParams, deactivateUser }))
+    it('should call deleteUser and clear the target on success', async () => {
+      const deleteUser = { mutateAsync: vi.fn().mockResolvedValue(undefined) }
+      const { result } = renderHook(() => useUserHandlers({ ...defaultParams, deleteUser }))
 
       act(() => result.current.setDeleteTarget({ id: 'user-1', name: 'Maria' }))
       expect(result.current.deleteTarget).toEqual({ id: 'user-1', name: 'Maria' })
@@ -268,19 +263,19 @@ describe('useUserHandlers', () => {
         await result.current.handleConfirmDelete()
       })
 
-      expect(deactivateUser.mutateAsync).toHaveBeenCalledWith('user-1')
+      expect(deleteUser.mutateAsync).toHaveBeenCalledWith('user-1')
       expect(result.current.deleteTarget).toBeNull()
     })
 
-    it('should not call deactivateUser without a target', async () => {
-      const deactivateUser = { mutateAsync: vi.fn() }
-      const { result } = renderHook(() => useUserHandlers({ ...defaultParams, deactivateUser }))
+    it('should not call deleteUser without a target', async () => {
+      const deleteUser = { mutateAsync: vi.fn() }
+      const { result } = renderHook(() => useUserHandlers({ ...defaultParams, deleteUser }))
 
       await act(async () => {
         await result.current.handleConfirmDelete()
       })
 
-      expect(deactivateUser.mutateAsync).not.toHaveBeenCalled()
+      expect(deleteUser.mutateAsync).not.toHaveBeenCalled()
     })
   })
 })

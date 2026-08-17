@@ -6,11 +6,13 @@
   },
   "filters": {
     "status": {
+      "label": "Status",
       "all": "Todos",
       "active": "Ativos",
       "inactive": "Inativos"
     },
     "type": {
+      "label": "Tipo",
       "all": "Todos os tipos"
     }
   },
@@ -18,7 +20,7 @@
     "create": "Novo usuário",
     "edit": "Editar",
     "view": "Visualizar",
-    "deactivate": "Desativar"
+    "delete": "Excluir"
   },
   "empty": {
     "title": "Nenhum usuário encontrado",
@@ -87,10 +89,6 @@
       "label": "Documento",
       "placeholder": "Informe o documento"
     },
-    "observation": {
-      "label": "Observação",
-      "placeholder": "Informe uma observação"
-    },
     "type": {
       "label": "Tipo"
     },
@@ -122,23 +120,22 @@
       "password-max": "A senha deve ter no máximo 128 caracteres.",
       "phone-max": "O telefone deve ter no máximo 32 caracteres.",
       "document-max": "O documento deve ter no máximo 32 caracteres.",
-      "observation-max": "A observação deve ter no máximo 2000 caracteres.",
       "type-invalid": "Tipo inválido.",
       "roleId-required": "Selecione um cargo."
     }
   },
   "confirm": {
-    "deactivate": {
-      "title": "Desativar usuário",
-      "description": "Tem certeza que deseja desativar \"{{name}}\"? A pessoa perde o acesso a esta empresa; se participar de outras, continua com acesso a elas.",
-      "confirm": "Sim, desativar",
+    "delete": {
+      "title": "Excluir usuário",
+      "description": "Tem certeza que deseja excluir \"{{name}}\"? O vínculo com esta empresa será removido definitivamente; se esta for a única empresa da pessoa, ela será removida do sistema. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
       "cancel": "Cancelar"
     }
   },
   "notifications": {
     "create-success": "Usuário criado com sucesso.",
     "update-success": "Usuário atualizado com sucesso.",
-    "deactivate-success": "Usuário desativado com sucesso.",
+    "delete-success": "Usuário excluído com sucesso.",
     "password-reset-success": "Senha redefinida com sucesso."
   }
 }

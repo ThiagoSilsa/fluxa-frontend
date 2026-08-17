@@ -6,11 +6,13 @@
   },
   "filters": {
     "status": {
+      "label": "Status",
       "all": "All",
       "active": "Active",
       "inactive": "Inactive"
     },
     "type": {
+      "label": "Type",
       "all": "All types"
     }
   },
@@ -18,7 +20,7 @@
     "create": "New user",
     "edit": "Edit",
     "view": "View",
-    "deactivate": "Deactivate"
+    "delete": "Delete"
   },
   "empty": {
     "title": "No users found",
@@ -87,10 +89,6 @@
       "label": "Document",
       "placeholder": "Enter the document"
     },
-    "observation": {
-      "label": "Observation",
-      "placeholder": "Enter an observation"
-    },
     "type": {
       "label": "Type"
     },
@@ -122,23 +120,22 @@
       "password-max": "Password must be at most 128 characters.",
       "phone-max": "Phone must be at most 32 characters.",
       "document-max": "Document must be at most 32 characters.",
-      "observation-max": "Observation must be at most 2000 characters.",
       "type-invalid": "Invalid type.",
       "roleId-required": "Please select a role."
     }
   },
   "confirm": {
-    "deactivate": {
-      "title": "Deactivate user",
-      "description": "Are you sure you want to deactivate \"{{name}}\"? The person loses access to this company; if they take part in others, they keep access to them.",
-      "confirm": "Yes, deactivate",
+    "delete": {
+      "title": "Delete user",
+      "description": "Are you sure you want to delete \"{{name}}\"? The link with this company will be permanently removed; if this is the person's only company, the person will be removed from the system. This action cannot be undone.",
+      "confirm": "Yes, delete",
       "cancel": "Cancel"
     }
   },
   "notifications": {
     "create-success": "User created successfully.",
     "update-success": "User updated successfully.",
-    "deactivate-success": "User deactivated successfully.",
+    "delete-success": "User deleted successfully.",
     "password-reset-success": "Password reset successfully."
   }
 }

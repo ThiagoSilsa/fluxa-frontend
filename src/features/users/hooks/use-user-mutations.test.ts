@@ -13,7 +13,7 @@ const mockT = vi.fn((key: string) => {
   const translations: Record<string, string> = {
     'users:notifications.create-success': 'Usuário criado com sucesso.',
     'users:notifications.update-success': 'Usuário atualizado com sucesso.',
-    'users:notifications.deactivate-success': 'Usuário desativado com sucesso.',
+    'users:notifications.delete-success': 'Usuário excluído com sucesso.',
     'users:notifications.password-reset-success': 'Senha redefinida com sucesso.',
   }
   return translations[key] ?? key
@@ -42,13 +42,13 @@ vi.mock('sonner', () => ({
 // Mock do service
 const mockCreate = vi.fn()
 const mockUpdate = vi.fn()
-const mockDeactivate = vi.fn()
+const mockRemove = vi.fn()
 const mockChangePassword = vi.fn()
 vi.mock('../services/user.service', () => ({
   usersService: {
     create: (...args: unknown[]) => mockCreate(...args),
     update: (...args: unknown[]) => mockUpdate(...args),
-    deactivate: (...args: unknown[]) => mockDeactivate(...args),
+    remove: (...args: unknown[]) => mockRemove(...args),
     changePassword: (...args: unknown[]) => mockChangePassword(...args),
   },
 }))
@@ -141,20 +141,20 @@ describe('useUserMutations', () => {
     })
   })
 
-  describe('deactivateUser', () => {
-    it('should call deactivate service and show success toast', async () => {
-      mockDeactivate.mockResolvedValue({ id: 'user-1', isActive: false })
+  describe('deleteUser', () => {
+    it('should call remove service and show success toast', async () => {
+      mockRemove.mockResolvedValue(undefined)
 
       const { result } = renderHook(() => useUserMutations(), {
         wrapper: createQueryWrapper(),
       })
 
       await act(async () => {
-        await result.current.deactivateUser.mutateAsync('user-1')
+        await result.current.deleteUser.mutateAsync('user-1')
       })
 
-      expect(mockDeactivate).toHaveBeenCalledWith('user-1')
-      expect(mockToastSuccess).toHaveBeenCalledWith('Usuário desativado com sucesso.')
+      expect(mockRemove).toHaveBeenCalledWith('user-1')
+      expect(mockToastSuccess).toHaveBeenCalledWith('Usuário excluído com sucesso.')
     })
   })
 

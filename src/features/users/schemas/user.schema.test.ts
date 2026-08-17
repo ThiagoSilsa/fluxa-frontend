@@ -140,12 +140,11 @@ describe('userCreateFormSchema', () => {
   })
 
   describe('optional fields', () => {
-    it('should accept empty phone, document and observation', () => {
+    it('should accept empty phone and document', () => {
       const result = userCreateFormSchema.safeParse({
         ...MINIMAL_CREATE,
         phone: '',
         document: '',
-        observation: '',
       })
 
       expect(result.success).toBe(true)
@@ -155,15 +154,6 @@ describe('userCreateFormSchema', () => {
       const result = userCreateFormSchema.safeParse({
         ...MINIMAL_CREATE,
         phone: '1'.repeat(33),
-      })
-
-      expect(result.success).toBe(false)
-    })
-
-    it('should reject observation longer than 2000 characters', () => {
-      const result = userCreateFormSchema.safeParse({
-        ...MINIMAL_CREATE,
-        observation: 'A'.repeat(2001),
       })
 
       expect(result.success).toBe(false)

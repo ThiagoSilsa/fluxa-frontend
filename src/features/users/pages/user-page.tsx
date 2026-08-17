@@ -41,6 +41,7 @@ import {
   EntityList,
   Header,
   Input,
+  Label,
   PageLayout,
   Select,
   SelectContent,
@@ -111,7 +112,7 @@ export function UsersPage() {
   const roleOptions = useRoleOptions(isAdminActor)
 
   // --- Mutations ---
-  const { createUser, updateUser, deactivateUser, changePassword } = useUserMutations()
+  const { createUser, updateUser, deleteUser, changePassword } = useUserMutations()
 
   // --- Handlers ---
   const {
@@ -132,7 +133,7 @@ export function UsersPage() {
     search: { isActive: search.isActive, type: search.type },
     createUser,
     updateUser,
-    deactivateUser,
+    deleteUser,
     changePassword,
   })
 
@@ -199,33 +200,43 @@ export function UsersPage() {
               />
             </div>
 
-            <Select
-              value={statusValue}
-              onValueChange={(value) => handleStatusChange(value as UserStatusFilterValue)}
-            >
-              <SelectTrigger className="w-36">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
-                <SelectItem value="active">{t('filters.status.active')}</SelectItem>
-                <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2">
+              <Label className="text-muted-foreground shrink-0 text-xs font-medium">
+                {t('filters.status.label')}
+              </Label>
+              <Select
+                value={statusValue}
+                onValueChange={(value) => handleStatusChange(value as UserStatusFilterValue)}
+              >
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                  <SelectItem value="active">{t('filters.status.active')}</SelectItem>
+                  <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select
-              value={typeValue}
-              onValueChange={(value) => handleTypeChange(value as UserTypeFilterValue)}
-            >
-              <SelectTrigger className="w-44">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('filters.type.all')}</SelectItem>
-                <SelectItem value="EMPLOYEE">{t('types.EMPLOYEE')}</SelectItem>
-                <SelectItem value="VISITOR">{t('types.VISITOR')}</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2">
+              <Label className="text-muted-foreground shrink-0 text-xs font-medium">
+                {t('filters.type.label')}
+              </Label>
+              <Select
+                value={typeValue}
+                onValueChange={(value) => handleTypeChange(value as UserTypeFilterValue)}
+              >
+                <SelectTrigger className="w-44">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.type.all')}</SelectItem>
+                  <SelectItem value="EMPLOYEE">{t('types.EMPLOYEE')}</SelectItem>
+                  <SelectItem value="VISITOR">{t('types.VISITOR')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </>
         }
         toolbar={
@@ -269,19 +280,19 @@ export function UsersPage() {
         />
       ) : null}
 
-      {/* Confirmação de desativação */}
+      {/* Confirmação de exclusão (física — ADR 0005 §4) */}
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title={t('confirm.deactivate.title')}
-        description={t('confirm.deactivate.description', {
+        title={t('confirm.delete.title')}
+        description={t('confirm.delete.description', {
           name: deleteTarget?.name ?? '',
         })}
-        confirmLabel={t('confirm.deactivate.confirm')}
-        cancelLabel={t('confirm.deactivate.cancel')}
+        confirmLabel={t('confirm.delete.confirm')}
+        cancelLabel={t('confirm.delete.cancel')}
         onConfirm={handleConfirmDelete}
         variant="destructive"
-        isPending={deactivateUser.isPending}
+        isPending={deleteUser.isPending}
       />
     </PageLayout>
   )

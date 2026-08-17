@@ -31,7 +31,6 @@ const userFormBaseSchema = z.object({
   password: z.string().optional(),
   phone: optionalText(z.string({ message: 'form.errors.phone-max' }).max(32)),
   document: optionalText(z.string({ message: 'form.errors.document-max' }).max(32)),
-  observation: optionalText(z.string({ message: 'form.errors.observation-max' }).max(2000)),
   type: typeField,
   isActive: z.boolean(),
   /** '' = sem cargo (edição). */

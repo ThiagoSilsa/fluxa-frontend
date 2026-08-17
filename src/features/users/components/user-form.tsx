@@ -37,7 +37,6 @@ import {
   SelectTrigger,
   SelectValue,
   Switch,
-  Textarea,
 } from '#/shared/components'
 
 /** Valor sentinela da opção "Sem cargo" no Select de cargo. */
@@ -109,7 +108,7 @@ export function UserForm({
   // Campos escondidos no modo vincular não podem bloquear o submit.
   useEffect(() => {
     if (isLink) {
-      clearErrors(['name', 'password', 'phone', 'document', 'observation'])
+      clearErrors(['name', 'password', 'phone', 'document'])
     }
   }, [isLink, clearErrors])
 
@@ -185,21 +184,24 @@ export function UserForm({
           {/* Senha — escondida no modo vincular */}
           {!isLink && (
             <div className="space-y-2">
-              <Label htmlFor="user-password">
-                {t('form.password.label')}
-                {!isEdit ? <span className="text-destructive"> *</span> : null}
-              </Label>
+              <div className="flex items-center justify-between gap-2">
+                <Label htmlFor="user-password">
+                  {t('form.password.label')}
+                  {!isEdit ? <span className="text-destructive"> *</span> : null}
+                </Label>
+                {isEdit && !showResetPassword ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowResetPassword(true)}
+                    disabled={readOnly}
+                  >
+                    {t('form.reset-password.label')}
+                  </Button>
+                ) : null}
+              </div>
 
-              {isEdit && !showResetPassword ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setShowResetPassword(true)}
-                  disabled={readOnly}
-                >
-                  {t('form.reset-password.label')}
-                </Button>
-              ) : (
+              {!isEdit || showResetPassword ? (
                 <div className="relative">
                   <Input
                     id="user-password"
@@ -225,7 +227,7 @@ export function UserForm({
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
                 </div>
-              )}
+              ) : null}
 
               {errorText(errors.password?.message)}
               {!isEdit ? (
@@ -242,7 +244,7 @@ export function UserForm({
               <div className="space-y-2">
                 <Label>{t('form.type.label')}</Label>
                 <Select value={field.value} onValueChange={field.onChange} disabled={readOnly}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -263,6 +265,7 @@ export function UserForm({
                 <Input
                   id="user-phone"
                   {...register('phone')}
+                  aria-invalid={!!errors.phone}
                   disabled={readOnly}
                   placeholder={t('form.phone.placeholder')}
                 />
@@ -274,23 +277,11 @@ export function UserForm({
                 <Input
                   id="user-document"
                   {...register('document')}
+                  aria-invalid={!!errors.document}
                   disabled={readOnly}
                   placeholder={t('form.document.placeholder')}
                 />
                 {errorText(errors.document?.message)}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="user-observation">{t('form.observation.label')}</Label>
-                <Textarea
-                  id="user-observation"
-                  {...register('observation')}
-                  disabled={readOnly}
-                  rows={3}
-                  maxLength={2000}
-                  placeholder={t('form.observation.placeholder')}
-                />
-                {errorText(errors.observation?.message)}
               </div>
             </>
           )}
@@ -353,7 +344,7 @@ export function UserForm({
                     onValueChange={(next) => field.onChange(next === NO_ROLE ? '' : next)}
                     disabled={readOnly}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full" aria-invalid={!!errors.roleId}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>

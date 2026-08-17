@@ -104,17 +104,16 @@ describe('UsersService', () => {
     })
   })
 
-  describe('deactivate', () => {
+  describe('remove', () => {
     it('should call makeRequest with DELETE', async () => {
-      mockedMakeRequest.mockResolvedValue({ id: 'user-1', isActive: false })
+      mockedMakeRequest.mockResolvedValue('')
 
-      const result = await usersService.deactivate('user-1')
+      await usersService.remove('user-1')
 
       expect(mockedMakeRequest).toHaveBeenCalledWith({
         endpoint: '/users/user-1',
         method: 'DELETE',
       })
-      expect(result).toHaveProperty('isActive', false)
     })
   })
 

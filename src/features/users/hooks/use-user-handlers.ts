@@ -35,7 +35,7 @@ export type UseUserHandlersParams = {
   updateUser: {
     mutateAsync: (args: { userId: string; payload: UpdateUserPayload }) => Promise<unknown>
   }
-  deactivateUser: { mutateAsync: (userId: string) => Promise<unknown> }
+  deleteUser: { mutateAsync: (userId: string) => Promise<unknown> }
   changePassword: {
     mutateAsync: (args: { userId: string; newPassword: string }) => Promise<unknown>
   }
@@ -74,7 +74,7 @@ export function useUserHandlers({
   search,
   createUser,
   updateUser,
-  deactivateUser,
+  deleteUser,
   changePassword,
 }: UseUserHandlersParams): UseUserHandlersReturn {
   // --- Estados ---
@@ -172,18 +172,18 @@ export function useUserHandlers({
   }
 
   /**
-   * Confirma a desativação de um usuário.
+   * Confirma a exclusão da participação de um usuário.
    */
   const handleConfirmDelete = useCallback(async () => {
     if (!deleteTarget) return
 
     try {
-      await deactivateUser.mutateAsync(deleteTarget.id)
+      await deleteUser.mutateAsync(deleteTarget.id)
       setDeleteTarget(null)
     } catch {
       // O erro já foi tratado no onError da mutation (toast).
     }
-  }, [deleteTarget, deactivateUser])
+  }, [deleteTarget, deleteUser])
 
   return {
     formState,

@@ -18,13 +18,13 @@ import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de usuário: criar (já vinculado), editar
- * (parcial, com replace de cargo no payload), desativar (soft) e trocar
- * senha.
+ * (parcial, com replace de cargo no payload), excluir (físico — ADR 0005 §4)
+ * e trocar senha.
  *
  * Cada mutation invalida a query afetada após sucesso e exibe toast de erro
  * padrão em caso de falha (400/403/409 traduzidos).
  *
- * @returns Objeto com as mutations createUser, updateUser, deactivateUser e
+ * @returns Objeto com as mutations createUser, updateUser, deleteUser e
  * changePassword.
  */
 export function useUserMutations() {
@@ -57,12 +57,12 @@ export function useUserMutations() {
     },
   })
 
-  /** Mutation para desativar a participação do usuário (soft). */
-  const deactivateUser = useMutation({
-    mutationFn: (userId: string) => usersService.deactivate(userId),
+  /** Mutation para excluir a participação do usuário (físico — ADR 0005 §4). */
+  const deleteUser = useMutation({
+    mutationFn: (userId: string) => usersService.remove(userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
-      toast.success(t('notifications.deactivate-success'))
+      toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
       toast.error(tc(getAPIErrorTranslationKey(error)))
@@ -84,7 +84,7 @@ export function useUserMutations() {
   return {
     createUser,
     updateUser,
-    deactivateUser,
+    deleteUser,
     changePassword,
   }
 }

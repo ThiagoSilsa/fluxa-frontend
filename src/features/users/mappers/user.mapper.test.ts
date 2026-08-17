@@ -21,7 +21,6 @@ describe('normalizeUserFormDefaults', () => {
       password: '',
       phone: '',
       document: '',
-      observation: '',
       type: 'EMPLOYEE',
       isActive: true,
       roleId: '',
@@ -35,7 +34,6 @@ describe('normalizeUserFormDefaults', () => {
       email: 'maria@somar.local',
       phone: '11999999999',
       document: '12345678900',
-      observation: 'obs',
       photoUrl: null,
       type: 'VISITOR',
       isActive: false,
@@ -53,7 +51,6 @@ describe('normalizeUserFormDefaults', () => {
       password: '',
       phone: '11999999999',
       document: '12345678900',
-      observation: 'obs',
       type: 'VISITOR',
       isActive: false,
       roleId: 'role-1',
@@ -67,7 +64,6 @@ describe('normalizeUserFormDefaults', () => {
       email: 'joao@somar.local',
       phone: null,
       document: null,
-      observation: null,
       photoUrl: null,
       type: 'EMPLOYEE',
       isActive: true,
@@ -88,7 +84,6 @@ describe('toCreateUserPayload', () => {
     password: 'senha123',
     phone: ' 11999999999 ',
     document: ' 12345678900 ',
-    observation: '  obs  ',
     type: 'EMPLOYEE' as const,
     isActive: true,
     roleId: 'role-1',
@@ -104,7 +99,6 @@ describe('toCreateUserPayload', () => {
       password: 'senha123',
       phone: '11999999999',
       document: '12345678900',
-      observation: 'obs',
       roleId: 'role-1',
     })
   })
@@ -114,12 +108,10 @@ describe('toCreateUserPayload', () => {
       ...values,
       phone: '   ',
       document: '',
-      observation: '',
     })
 
     expect(result.phone).toBeUndefined()
     expect(result.document).toBeUndefined()
-    expect(result.observation).toBeUndefined()
   })
 })
 
@@ -134,7 +126,6 @@ describe('toLinkUserPayload', () => {
       password: 'senha123',
       phone: '11999999999',
       document: '12345678900',
-      observation: 'obs',
       type: 'EMPLOYEE',
       isActive: true,
       roleId: 'role-1',
@@ -158,7 +149,6 @@ describe('toUpdateUserPayload', () => {
     password: '',
     phone: '11999999999',
     document: '12345678900',
-    observation: '',
     type: 'EMPLOYEE' as const,
     isActive: true,
     roleId: 'role-1',

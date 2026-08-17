@@ -21,7 +21,6 @@ export type UserEntity = {
   email: string
   phone: string | null
   document: string | null
-  observation: string | null
   photoUrl: string | null
   type: UserTypeValue
   isActive: boolean
@@ -53,7 +52,6 @@ export type CreateUserPayload = {
   password?: string
   phone?: string
   document?: string
-  observation?: string
   roleId?: string
 }
 
@@ -63,7 +61,6 @@ export type UpdateUserPayload = {
   email?: string
   phone?: string | null
   document?: string | null
-  observation?: string | null
   type?: UserTypeValue
   isActive?: boolean
   /** UUID → troca o cargo; `null` → remove o cargo. */

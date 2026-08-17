@@ -102,13 +102,14 @@ class UsersService {
   }
 
   /**
-   * Desativa a participação do usuário na empresa (soft).
+   * Exclui a participação do usuário na empresa (DELETE = exclusão física no
+   * backend — remove user_role e user_company; se for a última empresa da
+   * pessoa sem histórico operacional, remove também a pessoa — ADR 0005 §4).
    *
    * @param userId Id da pessoa.
-   * @returns Usuário com o vínculo desativado.
    */
-  async deactivate(userId: string): Promise<UserEntity> {
-    return baseController.makeRequest({
+  async remove(userId: string): Promise<void> {
+    await baseController.makeRequest({
       endpoint: `/users/${userId}`,
       method: 'DELETE',
     })

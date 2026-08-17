@@ -39,8 +39,8 @@ export type UserCardProps = {
  *
  * Mostra avatar (foto ou iniciais), nome, e-mail, badges de tipo (colaborador/
  * visitante), status, cargo e de administração (âmbar). Cargo `is_admin` é
- * somente leitura para não-admin (olho em vez de lápis; sem desativar).
- * Também impede desativar a si mesmo.
+ * somente leitura para não-admin (olho em vez de lápis; sem excluir).
+ * Também impede excluir a si mesmo.
  */
 export function UserCard({
   user,
@@ -151,7 +151,7 @@ export function UserCard({
                   event.stopPropagation()
                   onDelete({ id: user.id, name: user.name })
                 }}
-                aria-label={t('toolbar.deactivate')}
+                aria-label={t('toolbar.delete')}
               >
                 <Trash2 className="size-4" />
               </Button>
