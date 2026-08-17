@@ -13,7 +13,7 @@ describe('normalizeRoleFormDefaults', () => {
   it('should return default values when role is undefined', () => {
     const result = normalizeRoleFormDefaults()
 
-    expect(result).toEqual({ name: '', description: '' })
+    expect(result).toEqual({ name: '', description: '', isActive: true })
   })
 
   it('should map role entity values to form values', () => {
@@ -28,6 +28,7 @@ describe('normalizeRoleFormDefaults', () => {
     expect(result).toEqual({
       name: 'Analista',
       description: 'Cargo para analistas',
+      isActive: true,
     })
   })
 
@@ -40,7 +41,7 @@ describe('normalizeRoleFormDefaults', () => {
       isActive: false,
     })
 
-    expect(result).toEqual({ name: 'Agente', description: '' })
+    expect(result).toEqual({ name: 'Agente', description: '', isActive: false })
   })
 })
 
@@ -52,6 +53,7 @@ describe('toCreateRolePayload', () => {
     const result = toCreateRolePayload({
       name: '  Analista  ',
       description: '  Cargo para analistas  ',
+      isActive: true,
     })
 
     expect(result).toEqual({
@@ -61,13 +63,13 @@ describe('toCreateRolePayload', () => {
   })
 
   it('should convert empty description to null', () => {
-    const result = toCreateRolePayload({ name: 'Analista', description: '' })
+    const result = toCreateRolePayload({ name: 'Analista', description: '', isActive: true })
 
     expect(result).toEqual({ name: 'Analista', description: null })
   })
 
   it('should convert whitespace-only description to null', () => {
-    const result = toCreateRolePayload({ name: 'Analista', description: '   ' })
+    const result = toCreateRolePayload({ name: 'Analista', description: '   ', isActive: true })
 
     expect(result).toEqual({ name: 'Analista', description: null })
   })
@@ -81,24 +83,26 @@ describe('toUpdateRolePayload', () => {
     const result = toUpdateRolePayload({
       name: '  Analista Sênior  ',
       description: '  Cargo atualizado  ',
+      isActive: true,
     })
 
     expect(result).toEqual({
       name: 'Analista Sênior',
       description: 'Cargo atualizado',
+      isActive: true,
     })
   })
 
   it('should convert empty description to null', () => {
-    const result = toUpdateRolePayload({ name: 'Analista', description: '' })
+    const result = toUpdateRolePayload({ name: 'Analista', description: '', isActive: false })
 
-    expect(result).toEqual({ name: 'Analista', description: null })
+    expect(result).toEqual({ name: 'Analista', description: null, isActive: false })
   })
 
   it('should convert empty name to undefined', () => {
-    const result = toUpdateRolePayload({ name: '', description: '' })
+    const result = toUpdateRolePayload({ name: '', description: '', isActive: true })
 
-    expect(result).toEqual({ name: undefined, description: null })
+    expect(result).toEqual({ name: undefined, description: null, isActive: true })
   })
 })
 

@@ -1,5 +1,5 @@
 // React Hook Form
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 // i18n
@@ -19,7 +19,7 @@ import type { RoleEntity } from '../types/roles.types'
 import type { RoleFormValues } from '../schemas/role-form.schema'
 
 // Components
-import { Button, FormDialog, Input, Label, Textarea } from '#/shared/components'
+import { Button, FormDialog, Input, Label, Switch, Textarea } from '#/shared/components'
 
 export type RoleFormDialogProps = {
   /** Controla a abertura do dialog. */
@@ -41,9 +41,10 @@ export type RoleFormDialogProps = {
 /**
  * Dialog de formulário de cargo (criação/edição).
  *
- * Campos: nome (obrigatório) e descrição (opcional, máx. 500). Sem toggle de
- * status: o backend não aceita reativação via PATCH e cargos novos já nascem
- * ativos. Cargo do sistema (`isAdmin`) abre em modo somente leitura.
+ * Campos: nome (obrigatório), descrição (opcional, máx. 500) e status
+ * (Switch ativo/inativo). Na criação o Switch aparece desabilitado com aviso de
+ * que o cargo já nasce ativo; na edição ativa/desativa via PATCH (`isActive`).
+ * Cargo do sistema (`isAdmin`) abre em modo somente leitura.
  */
 export function RoleFormDialog({
   open,
@@ -62,6 +63,7 @@ export function RoleFormDialog({
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors, isDirty },
   } = useForm<RoleFormValues>({
     resolver: zodResolver(roleFormSchema),
@@ -120,6 +122,33 @@ export function RoleFormDialog({
               {descriptionLength}/500
             </span>
           </div>
+        </div>
+
+        {/* Status — Switch (ativo/inativo) */}
+        <div className="space-y-2">
+          <Label>{t('form.status.label')}</Label>
+          <Controller
+            control={control}
+            name="isActive"
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={readOnly || mode === 'create'}
+                  aria-label={t('form.status.label')}
+                />
+                <div className="min-w-0">
+                  <div className="text-sm font-medium">
+                    {field.value ? t('status.active') : t('status.inactive')}
+                  </div>
+                  {mode === 'create' ? (
+                    <p className="text-muted-foreground text-xs">{t('form.status.create-hint')}</p>
+                  ) : null}
+                </div>
+              </div>
+            )}
+          />
         </div>
 
         {readOnly ? (

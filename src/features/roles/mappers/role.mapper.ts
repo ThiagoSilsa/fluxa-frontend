@@ -11,7 +11,8 @@ import type {
 
 /**
  * Normaliza os valores padrão do formulário de cargo.
- * Com entidade (edição) preenche com os dados existentes; sem ela, vazio.
+ * Com entidade (edição) preenche com os dados existentes; sem ela, vazio
+ * (criação nasce ativa).
  *
  * @param role - Entidade de cargo opcional (modo edição).
  * @returns Valores padrão para o formulário.
@@ -20,6 +21,7 @@ export function normalizeRoleFormDefaults(role?: RoleEntity): RoleFormValues {
   return {
     name: role?.name ?? '',
     description: role?.description ?? '',
+    isActive: role?.isActive ?? true,
   }
 }
 
@@ -39,6 +41,8 @@ export function toCreateRolePayload(values: RoleFormValues): CreateRolePayload {
 /**
  * Converte os valores do formulário no payload de atualização.
  *
+ * `isActive` acompanha o valor atual do Switch (edição).
+ *
  * @param values - Valores validados do formulário.
  * @returns Payload para atualizar cargo.
  */
@@ -46,6 +50,7 @@ export function toUpdateRolePayload(values: RoleFormValues): UpdateRolePayload {
   return {
     name: values.name.trim() || undefined,
     description: values.description?.trim() || null,
+    isActive: values.isActive,
   }
 }
 

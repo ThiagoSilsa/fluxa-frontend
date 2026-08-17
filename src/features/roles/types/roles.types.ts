@@ -36,6 +36,8 @@ export type CreateRolePayload = {
 export type UpdateRolePayload = {
   name?: string
   description?: string | null
+  /** Novo status ativo/inativo (opcional — desativa/reativa o cargo). */
+  isActive?: boolean
 }
 
 /** Entidade de permissão retornada pela API. */

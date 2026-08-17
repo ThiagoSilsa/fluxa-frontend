@@ -81,7 +81,11 @@ describe('useRoleHandlers', () => {
         result.current.handleOpenCreate()
       })
 
-      const values = { name: '  Novo Cargo  ', description: '  Descrição  ' }
+      const values = {
+        name: '  Novo Cargo  ',
+        description: '  Descrição  ',
+        isActive: true,
+      }
 
       await act(async () => {
         await result.current.handleSubmitForm(values)
@@ -116,7 +120,11 @@ describe('useRoleHandlers', () => {
         result.current.handleOpenEdit(role)
       })
 
-      const values = { name: '  Atualizado  ', description: '  Nova descrição  ' }
+      const values = {
+        name: '  Atualizado  ',
+        description: '  Nova descrição  ',
+        isActive: true,
+      }
 
       await act(async () => {
         await result.current.handleSubmitForm(values)
@@ -124,7 +132,7 @@ describe('useRoleHandlers', () => {
 
       expect(updateRole.mutateAsync).toHaveBeenCalledWith({
         roleId: 'role-1',
-        payload: { name: 'Atualizado', description: 'Nova descrição' },
+        payload: { name: 'Atualizado', description: 'Nova descrição', isActive: true },
       })
       expect(result.current.formState).toBeNull()
     })

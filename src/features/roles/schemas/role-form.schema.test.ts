@@ -8,6 +8,7 @@ import { roleFormSchema } from './role-form.schema'
 const MINIMAL_VALID = {
   name: 'Analista',
   description: 'Cargo para analistas',
+  isActive: true,
 }
 
 // ---------------------------------------------------------------------------
@@ -66,6 +67,29 @@ describe('roleFormSchema', () => {
       const result = roleFormSchema.safeParse({
         ...MINIMAL_VALID,
         description: 'A'.repeat(501),
+      })
+
+      expect(result.success).toBe(false)
+    })
+  })
+
+  describe('isActive', () => {
+    it('should accept true', () => {
+      const result = roleFormSchema.safeParse({ ...MINIMAL_VALID, isActive: true })
+
+      expect(result.success).toBe(true)
+    })
+
+    it('should accept false', () => {
+      const result = roleFormSchema.safeParse({ ...MINIMAL_VALID, isActive: false })
+
+      expect(result.success).toBe(true)
+    })
+
+    it('should reject missing isActive', () => {
+      const result = roleFormSchema.safeParse({
+        name: 'Analista',
+        description: 'Cargo para analistas',
       })
 
       expect(result.success).toBe(false)

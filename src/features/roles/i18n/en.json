@@ -38,6 +38,10 @@
   },
   "form": {
     "read-only-hint": "This role is controlled by the system and cannot be edited.",
+    "status": {
+      "label": "Status",
+      "create-hint": "New roles are created active."
+    },
     "name": {
       "label": "Name",
       "placeholder": "Enter the role name"

@@ -38,6 +38,10 @@
   },
   "form": {
     "read-only-hint": "Este cargo é controlado pelo sistema e não pode ser editado.",
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com o cargo ativo."
+    },
     "name": {
       "label": "Nome",
       "placeholder": "Informe o nome do cargo"
