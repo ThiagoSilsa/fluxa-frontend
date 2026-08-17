@@ -103,6 +103,7 @@
     },
     "status": {
       "label": "Status",
+      "create-hint": "A criação já começa com o usuário ativo.",
       "active": "Ativo",
       "inactive": "Inativo"
     },

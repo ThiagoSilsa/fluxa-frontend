@@ -103,6 +103,7 @@
     },
     "status": {
       "label": "Status",
+      "create-hint": "New users are created active.",
       "active": "Active",
       "inactive": "Inactive"
     },

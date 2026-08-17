@@ -36,6 +36,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
 } from '#/shared/components'
 
@@ -294,30 +295,35 @@ export function UserForm({
             </>
           )}
 
-          {/* Status — apenas edição */}
-          {isEdit && (
-            <Controller
-              control={control}
-              name="isActive"
-              render={({ field }) => (
-                <div className="space-y-2">
-                  <Label>{t('form.status.label')}</Label>
-                  <Select
-                    value={field.value ? 'active' : 'inactive'}
-                    onValueChange={(value) => field.onChange(value === 'active')}
-                    disabled={readOnly}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">{t('form.status.active')}</SelectItem>
-                      <SelectItem value="inactive">{t('form.status.inactive')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            />
+          {/* Status — Switch (ativo/inativo); oculto no modo vincular */}
+          {!isLink && (
+            <div className="space-y-2">
+              <Label>{t('form.status.label')}</Label>
+              <Controller
+                control={control}
+                name="isActive"
+                render={({ field }) => (
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={readOnly || !isEdit}
+                      aria-label={t('form.status.label')}
+                    />
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium">
+                        {field.value ? t('form.status.active') : t('form.status.inactive')}
+                      </div>
+                      {!isEdit ? (
+                        <p className="text-muted-foreground text-xs">
+                          {t('form.status.create-hint')}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                )}
+              />
+            </div>
           )}
         </div>
       </section>
