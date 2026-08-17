@@ -12,7 +12,10 @@ import { Checkbox, FormDialog, Skeleton } from '#/shared/components'
 
 // Libs
 import { cn } from '#/shared/lib/utils'
-import { translatePermissionLabel } from '#/shared/lib/translate-permission'
+import {
+  translatePermissionDescription,
+  translatePermissionLabel,
+} from '#/shared/lib/translate-permission'
 
 /**
  * Dialog de gerenciamento de permissões de um cargo.
@@ -70,7 +73,9 @@ export function RolePermissionsDialog({ role, onOpenChange }: RolePermissionsDia
                     {translatePermissionLabel(permission.code)}
                   </div>
                   {permission.description ? (
-                    <div className="text-muted-foreground text-xs">{permission.description}</div>
+                    <div className="text-muted-foreground text-xs">
+                      {translatePermissionDescription(permission.code) ?? permission.description}
+                    </div>
                   ) : null}
                 </div>
               </label>

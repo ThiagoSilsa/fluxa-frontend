@@ -74,28 +74,97 @@
     "permission-removed": "Permissão removida."
   },
   "permissions": {
-    "MANAGE_COMPANY": "Gerenciar empresa",
-    "MANAGE_USERS": "Gerenciar usuários",
-    "MANAGE_ROLES": "Gerenciar cargos e permissões",
-    "MANAGE_VEHICLES": "Gerenciar veículos",
-    "MANAGE_VEHICLE_TYPES": "Gerenciar tipos de veículos",
-    "MANAGE_DEPARTMENTS": "Gerenciar departamentos",
-    "MANAGE_ENTRANCES": "Gerenciar entradas",
-    "MANAGE_BLOCKS": "Gerenciar bloqueios",
-    "MANAGE_ACCESS_REQUESTS": "Gerenciar solicitações de acesso",
-    "MANAGE_BLOCK_REQUESTS": "Gerenciar solicitações de bloqueio",
-    "MANAGE_IMPORTS": "Gerenciar importações",
-    "MANAGE_DEVICES": "Gerenciar dispositivos",
-    "GRANT_FREE_PASS": "Conceder passe livre",
-    "PRINT_QRCODE": "Imprimir QR Code",
-    "VIEW_DASHBOARDS": "Ver painéis",
-    "REGISTER_ENTRY": "Registrar entrada",
-    "REGISTER_EXIT": "Registrar saída",
-    "REGISTER_DENIAL": "Registrar negativa",
-    "CREATE_ACCESS_REQUEST": "Criar solicitação de acesso",
-    "CANCEL_ACCESS_REQUEST": "Cancelar solicitação de acesso",
-    "CREATE_BLOCK_REQUEST": "Criar solicitação de bloqueio",
-    "MANUAL_CLOSE_ACCESS": "Encerrar acesso manualmente",
-    "INITIAL_ENTRY": "Entrada inicial"
+    "MANAGE_COMPANY": {
+      "title": "Gerenciar empresa",
+      "description": "Gerenciar dados da empresa"
+    },
+    "MANAGE_USERS": {
+      "title": "Gerenciar usuários",
+      "description": "Gerenciar usuários e seus cargos"
+    },
+    "MANAGE_ROLES": {
+      "title": "Gerenciar cargos e permissões",
+      "description": "Criar, editar e excluir cargos e gerenciar permissões"
+    },
+    "MANAGE_VEHICLES": {
+      "title": "Gerenciar veículos",
+      "description": "Gerenciar veículos cadastrados"
+    },
+    "MANAGE_VEHICLE_TYPES": {
+      "title": "Gerenciar tipos de veículos",
+      "description": "Gerenciar tipos de veículo"
+    },
+    "MANAGE_DEPARTMENTS": {
+      "title": "Gerenciar departamentos",
+      "description": "Gerenciar departamentos e vagas"
+    },
+    "MANAGE_ENTRANCES": {
+      "title": "Gerenciar entradas",
+      "description": "Gerenciar portarias"
+    },
+    "MANAGE_BLOCKS": {
+      "title": "Gerenciar bloqueios",
+      "description": "Bloquear e revogar bloqueio de veículos"
+    },
+    "MANAGE_ACCESS_REQUESTS": {
+      "title": "Gerenciar solicitações de acesso",
+      "description": "Aceitar e rejeitar solicitações de cadastro/vínculo"
+    },
+    "MANAGE_BLOCK_REQUESTS": {
+      "title": "Gerenciar solicitações de bloqueio",
+      "description": "Aprovar e rejeitar solicitações de bloqueio"
+    },
+    "MANAGE_IMPORTS": {
+      "title": "Gerenciar importações",
+      "description": "Gerenciar importações de planilhas"
+    },
+    "MANAGE_DEVICES": {
+      "title": "Gerenciar dispositivos",
+      "description": "Gerenciar dispositivos do app"
+    },
+    "GRANT_FREE_PASS": {
+      "title": "Conceder passe livre",
+      "description": "Conceder e revogar livre acesso (free_pass)"
+    },
+    "PRINT_QRCODE": {
+      "title": "Imprimir QR Code",
+      "description": "Gerar e imprimir QR codes"
+    },
+    "VIEW_DASHBOARDS": {
+      "title": "Ver painéis",
+      "description": "Visualizar painéis e relatórios"
+    },
+    "REGISTER_ENTRY": {
+      "title": "Registrar entrada",
+      "description": "Registrar entrada de veículo"
+    },
+    "REGISTER_EXIT": {
+      "title": "Registrar saída",
+      "description": "Registrar saída de veículo"
+    },
+    "REGISTER_DENIAL": {
+      "title": "Registrar negativa",
+      "description": "Registrar impedimento de entrada"
+    },
+    "CREATE_ACCESS_REQUEST": {
+      "title": "Criar solicitação de acesso",
+      "description": "Criar solicitação de cadastro/vínculo"
+    },
+    "CANCEL_ACCESS_REQUEST": {
+      "title": "Cancelar solicitação de acesso",
+      "description": "Cancelar solicitação própria"
+    },
+    "CREATE_BLOCK_REQUEST": {
+      "title": "Criar solicitação de bloqueio",
+      "description": "Solicitar bloqueio de veículo"
+    },
+    "MANUAL_CLOSE_ACCESS": {
+      "title": "Encerrar acesso manualmente",
+      "description": "Encerrar acesso manualmente"
+    },
+    "INITIAL_ENTRY": {
+      "title": "Entrada inicial",
+      "description": "Registrar entrada inicial (go-live)"
+    }
   }
 }

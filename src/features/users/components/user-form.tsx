@@ -1,5 +1,5 @@
 // React
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 // React Hook Form
 import { useForm, useWatch, Controller } from 'react-hook-form'
@@ -43,6 +43,15 @@ import {
 const NO_ROLE = '__none__'
 
 /**
+ * Resolvers pré-construídos por schema (modo). O submit seleciona o schema
+ * correto conforme o modo e o estado de vínculo (ref) — sem recriar o
+ * resolver a cada render.
+ */
+const createResolver = zodResolver(userCreateFormSchema) as unknown as Resolver<UserFormValues>
+const linkResolver = zodResolver(userLinkFormSchema) as unknown as Resolver<UserFormValues>
+const editResolver = zodResolver(userEditFormSchema) as unknown as Resolver<UserFormValues>
+
+/**
  * Formulário de usuário (criação/vínculo/edição).
  *
  * Seções empilhadas: **Geral** (nome, e-mail, senha, tipo, dados opcionais e
@@ -66,15 +75,17 @@ export function UserForm({
 
   const isEdit = mode === 'edit'
 
-  // --- Email-status → modo vincular (apenas criação) ---
-  const email = useWatch({ name: 'email' }) as string | undefined
-  const { exists, isChecking } = useEmailStatus(email ?? '', !isEdit && !readOnly)
-  const isLink = !isEdit && exists
+  // O modo vincular (email-status) é assíncrono; o resolver lê o ref no
+  // momento do submit.
+  const isLinkRef = useRef(false)
 
-  // O schema muda conforme o modo e o estado de vínculo (check assíncrono).
-  const schema = isEdit ? userEditFormSchema : isLink ? userLinkFormSchema : userCreateFormSchema
-
-  const resolver = useMemo(() => zodResolver(schema) as Resolver<UserFormValues>, [schema])
+  const userResolver: Resolver<UserFormValues> = useCallback(
+    (values, context, options) => {
+      const resolver = isEdit ? editResolver : isLinkRef.current ? linkResolver : createResolver
+      return resolver(values, context, options)
+    },
+    [isEdit],
+  )
 
   const {
     register,
@@ -84,9 +95,15 @@ export function UserForm({
     watch,
     formState: { errors, isDirty },
   } = useForm<UserFormValues>({
-    resolver,
+    resolver: userResolver,
     defaultValues,
   })
+
+  // --- Email-status → modo vincular (apenas criação) ---
+  const email = useWatch({ control, name: 'email' }) as string | undefined
+  const { exists, isChecking } = useEmailStatus(email ?? '', !isEdit && !readOnly)
+  const isLink = !isEdit && exists
+  isLinkRef.current = isLink
 
   // Campos escondidos no modo vincular não podem bloquear o submit.
   useEffect(() => {
@@ -110,7 +127,7 @@ export function UserForm({
   return (
     <form
       className="space-y-6"
-      onSubmit={handleSubmit((values) => onSubmit(values, isLink))}
+      onSubmit={handleSubmit((values) => onSubmit(values, isLinkRef.current))}
       noValidate
     >
       {/* ---------------- Seção Geral ---------------- */}

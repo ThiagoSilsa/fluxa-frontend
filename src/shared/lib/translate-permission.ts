@@ -25,11 +25,31 @@ export function translatePermission(code: string): string {
  * @returns Rótulo traduzido ou o código.
  */
 export function translatePermissionLabel(code: string): string {
-  const key = translatePermission(code)
+  const key = `${translatePermission(code)}.title`
 
   if (i18n.exists(key)) {
     return i18n.t(key)
   }
 
   return code
+}
+
+/**
+ * Resolve a descrição traduzida de uma permissão.
+ *
+ * Se não houver tradução cadastrada (permissão nova no backend, ainda sem
+ * chave no i18n), devolve `null` — quem exibe decide o fallback (ex.: a
+ * descrição crua vinda da API).
+ *
+ * @param code - Código da permissão.
+ * @returns Descrição traduzida ou `null`.
+ */
+export function translatePermissionDescription(code: string): string | null {
+  const key = `${translatePermission(code)}.description`
+
+  if (i18n.exists(key)) {
+    return i18n.t(key)
+  }
+
+  return null
 }

@@ -74,28 +74,97 @@
     "permission-removed": "Permission removed."
   },
   "permissions": {
-    "MANAGE_COMPANY": "Manage company",
-    "MANAGE_USERS": "Manage users",
-    "MANAGE_ROLES": "Manage roles and permissions",
-    "MANAGE_VEHICLES": "Manage vehicles",
-    "MANAGE_VEHICLE_TYPES": "Manage vehicle types",
-    "MANAGE_DEPARTMENTS": "Manage departments",
-    "MANAGE_ENTRANCES": "Manage entrances",
-    "MANAGE_BLOCKS": "Manage blocks",
-    "MANAGE_ACCESS_REQUESTS": "Manage access requests",
-    "MANAGE_BLOCK_REQUESTS": "Manage block requests",
-    "MANAGE_IMPORTS": "Manage imports",
-    "MANAGE_DEVICES": "Manage devices",
-    "GRANT_FREE_PASS": "Grant free pass",
-    "PRINT_QRCODE": "Print QR code",
-    "VIEW_DASHBOARDS": "View dashboards",
-    "REGISTER_ENTRY": "Register entry",
-    "REGISTER_EXIT": "Register exit",
-    "REGISTER_DENIAL": "Register denial",
-    "CREATE_ACCESS_REQUEST": "Create access request",
-    "CANCEL_ACCESS_REQUEST": "Cancel access request",
-    "CREATE_BLOCK_REQUEST": "Create block request",
-    "MANUAL_CLOSE_ACCESS": "Manually close access",
-    "INITIAL_ENTRY": "Initial entry"
+    "MANAGE_COMPANY": {
+      "title": "Manage company",
+      "description": "Manage company data"
+    },
+    "MANAGE_USERS": {
+      "title": "Manage users",
+      "description": "Manage users and their roles"
+    },
+    "MANAGE_ROLES": {
+      "title": "Manage roles and permissions",
+      "description": "Create, edit and delete roles and manage permissions"
+    },
+    "MANAGE_VEHICLES": {
+      "title": "Manage vehicles",
+      "description": "Manage registered vehicles"
+    },
+    "MANAGE_VEHICLE_TYPES": {
+      "title": "Manage vehicle types",
+      "description": "Manage vehicle types"
+    },
+    "MANAGE_DEPARTMENTS": {
+      "title": "Manage departments",
+      "description": "Manage departments and vacancies"
+    },
+    "MANAGE_ENTRANCES": {
+      "title": "Manage entrances",
+      "description": "Manage entrances"
+    },
+    "MANAGE_BLOCKS": {
+      "title": "Manage blocks",
+      "description": "Block and revoke vehicle blocks"
+    },
+    "MANAGE_ACCESS_REQUESTS": {
+      "title": "Manage access requests",
+      "description": "Accept and reject registration/link requests"
+    },
+    "MANAGE_BLOCK_REQUESTS": {
+      "title": "Manage block requests",
+      "description": "Approve and reject block requests"
+    },
+    "MANAGE_IMPORTS": {
+      "title": "Manage imports",
+      "description": "Manage spreadsheet imports"
+    },
+    "MANAGE_DEVICES": {
+      "title": "Manage devices",
+      "description": "Manage app devices"
+    },
+    "GRANT_FREE_PASS": {
+      "title": "Grant free pass",
+      "description": "Grant and revoke free pass"
+    },
+    "PRINT_QRCODE": {
+      "title": "Print QR code",
+      "description": "Generate and print QR codes"
+    },
+    "VIEW_DASHBOARDS": {
+      "title": "View dashboards",
+      "description": "View dashboards and reports"
+    },
+    "REGISTER_ENTRY": {
+      "title": "Register entry",
+      "description": "Register vehicle entry"
+    },
+    "REGISTER_EXIT": {
+      "title": "Register exit",
+      "description": "Register vehicle exit"
+    },
+    "REGISTER_DENIAL": {
+      "title": "Register denial",
+      "description": "Register entry denial"
+    },
+    "CREATE_ACCESS_REQUEST": {
+      "title": "Create access request",
+      "description": "Create registration/link request"
+    },
+    "CANCEL_ACCESS_REQUEST": {
+      "title": "Cancel access request",
+      "description": "Cancel own request"
+    },
+    "CREATE_BLOCK_REQUEST": {
+      "title": "Create block request",
+      "description": "Request vehicle block"
+    },
+    "MANUAL_CLOSE_ACCESS": {
+      "title": "Manually close access",
+      "description": "Manually close access"
+    },
+    "INITIAL_ENTRY": {
+      "title": "Initial entry",
+      "description": "Register initial entry (go-live)"
+    }
   }
 }
