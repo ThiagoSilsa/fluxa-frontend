@@ -21,13 +21,13 @@ import type {
 import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
 
 /**
- * Hook que expõe as mutations de cargo: criar, atualizar, desativar e o
+ * Hook que expõe as mutations de cargo: criar, atualizar, excluir e o
  * toggle individual de permissões (vincular/remover).
  *
  * Cada mutation invalida a query afetada após sucesso e exibe toast de erro
  * padrão em caso de falha.
  *
- * @returns Objeto com as mutations createRole, updateRole, deactivateRole,
+ * @returns Objeto com as mutations createRole, updateRole, deleteRole,
  * assignPermission e removePermission.
  */
 export function useRoleMutations() {
@@ -60,12 +60,12 @@ export function useRoleMutations() {
     },
   })
 
-  /** Mutation para desativar um cargo (DELETE = soft). */
-  const deactivateRole = useMutation({
-    mutationFn: (roleId: string) => rolesService.deactivate(roleId),
+  /** Mutation para excluir fisicamente um cargo (DELETE = cascata no backend). */
+  const deleteRole = useMutation({
+    mutationFn: (roleId: string) => rolesService.remove(roleId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] })
-      toast.success(t('notifications.deactivate-success'))
+      toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
       toast.error(tc(getAPIErrorTranslationKey(error)))
@@ -101,7 +101,7 @@ export function useRoleMutations() {
   return {
     createRole,
     updateRole,
-    deactivateRole,
+    deleteRole,
     assignPermission,
     removePermission,
   }

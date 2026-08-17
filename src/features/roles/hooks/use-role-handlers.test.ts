@@ -11,7 +11,7 @@ describe('useRoleHandlers', () => {
     search: { isActive: undefined },
     createRole: { mutateAsync: vi.fn() },
     updateRole: { mutateAsync: vi.fn() },
-    deactivateRole: { mutateAsync: vi.fn() },
+    deleteRole: { mutateAsync: vi.fn() },
   }
 
   beforeEach(() => {
@@ -213,10 +213,10 @@ describe('useRoleHandlers', () => {
   // handleConfirmDelete
   // -----------------------------------------------------------------------
   describe('handleConfirmDelete', () => {
-    it('should call deactivateRole.mutateAsync and clear deleteTarget on success', async () => {
-      const deactivateRole = { mutateAsync: vi.fn().mockResolvedValue({ id: 'role-1' }) }
+    it('should call deleteRole.mutateAsync and clear deleteTarget on success', async () => {
+      const deleteRole = { mutateAsync: vi.fn().mockResolvedValue(undefined) }
 
-      const { result } = renderHook(() => useRoleHandlers({ ...defaultParams, deactivateRole }))
+      const { result } = renderHook(() => useRoleHandlers({ ...defaultParams, deleteRole }))
 
       act(() => {
         result.current.setDeleteTarget({ id: 'role-1', name: 'Admin' })
@@ -227,20 +227,20 @@ describe('useRoleHandlers', () => {
         await result.current.handleConfirmDelete()
       })
 
-      expect(deactivateRole.mutateAsync).toHaveBeenCalledWith('role-1')
+      expect(deleteRole.mutateAsync).toHaveBeenCalledWith('role-1')
       expect(result.current.deleteTarget).toBeNull()
     })
 
-    it('should not call deactivateRole.mutateAsync when deleteTarget is null', async () => {
-      const deactivateRole = { mutateAsync: vi.fn() }
+    it('should not call deleteRole.mutateAsync when deleteTarget is null', async () => {
+      const deleteRole = { mutateAsync: vi.fn() }
 
-      const { result } = renderHook(() => useRoleHandlers({ ...defaultParams, deactivateRole }))
+      const { result } = renderHook(() => useRoleHandlers({ ...defaultParams, deleteRole }))
 
       await act(async () => {
         await result.current.handleConfirmDelete()
       })
 
-      expect(deactivateRole.mutateAsync).not.toHaveBeenCalled()
+      expect(deleteRole.mutateAsync).not.toHaveBeenCalled()
     })
   })
 })

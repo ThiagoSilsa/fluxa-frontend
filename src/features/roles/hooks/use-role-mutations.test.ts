@@ -13,7 +13,7 @@ const mockT = vi.fn((key: string) => {
   const translations: Record<string, string> = {
     'roles:notifications.create-success': 'Cargo criado com sucesso.',
     'roles:notifications.update-success': 'Cargo atualizado com sucesso.',
-    'roles:notifications.deactivate-success': 'Cargo desativado com sucesso.',
+    'roles:notifications.delete-success': 'Cargo excluído com sucesso.',
     'roles:notifications.permission-assigned': 'Permissão concedida.',
     'roles:notifications.permission-removed': 'Permissão removida.',
   }
@@ -43,14 +43,14 @@ vi.mock('sonner', () => ({
 // Mock do service
 const mockCreate = vi.fn()
 const mockUpdate = vi.fn()
-const mockDeactivate = vi.fn()
+const mockRemove = vi.fn()
 const mockAssignPermission = vi.fn()
 const mockRemovePermission = vi.fn()
 vi.mock('../services/role.service', () => ({
   rolesService: {
     create: (...args: unknown[]) => mockCreate(...args),
     update: (...args: unknown[]) => mockUpdate(...args),
-    deactivate: (...args: unknown[]) => mockDeactivate(...args),
+    remove: (...args: unknown[]) => mockRemove(...args),
     assignPermission: (...args: unknown[]) => mockAssignPermission(...args),
     removePermission: (...args: unknown[]) => mockRemovePermission(...args),
   },
@@ -116,20 +116,20 @@ describe('useRoleMutations', () => {
     })
   })
 
-  describe('deactivateRole', () => {
-    it('should call deactivate service and show success toast', async () => {
-      mockDeactivate.mockResolvedValue({ id: 'role-1', isActive: false })
+  describe('deleteRole', () => {
+    it('should call remove service and show success toast', async () => {
+      mockRemove.mockResolvedValue(undefined)
 
       const { result } = renderHook(() => useRoleMutations(), {
         wrapper: createQueryWrapper(),
       })
 
       await act(async () => {
-        await result.current.deactivateRole.mutateAsync('role-1')
+        await result.current.deleteRole.mutateAsync('role-1')
       })
 
-      expect(mockDeactivate).toHaveBeenCalledWith('role-1')
-      expect(mockToastSuccess).toHaveBeenCalledWith('Cargo desativado com sucesso.')
+      expect(mockRemove).toHaveBeenCalledWith('role-1')
+      expect(mockToastSuccess).toHaveBeenCalledWith('Cargo excluído com sucesso.')
     })
   })
 

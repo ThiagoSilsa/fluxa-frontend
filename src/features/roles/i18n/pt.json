@@ -15,7 +15,7 @@
     "create": "Novo cargo",
     "edit": "Editar",
     "view": "Ver",
-    "deactivate": "Desativar",
+    "delete": "Excluir",
     "managePermissions": "Gerenciar permissões"
   },
   "empty": {
@@ -70,17 +70,17 @@
     "empty": "Nenhuma permissão disponível."
   },
   "confirm": {
-    "deactivate": {
-      "title": "Desativar cargo",
-      "description": "Tem certeza que deseja desativar o cargo \"{{name}}\"? A desativação não pode ser desfeita pela tela.",
-      "confirm": "Sim, desativar",
+    "delete": {
+      "title": "Excluir cargo",
+      "description": "Tem certeza que deseja excluir o cargo \"{{name}}\"? Todos os usuários vinculados a ele ficarão sem cargo. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
       "cancel": "Cancelar"
     }
   },
   "notifications": {
     "create-success": "Cargo criado com sucesso.",
     "update-success": "Cargo atualizado com sucesso.",
-    "deactivate-success": "Cargo desativado com sucesso.",
+    "delete-success": "Cargo excluído com sucesso.",
     "permission-assigned": "Permissão concedida.",
     "permission-removed": "Permissão removida."
   },

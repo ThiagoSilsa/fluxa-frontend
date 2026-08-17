@@ -69,7 +69,7 @@ export type RoleDialogState = {
   role?: RoleEntity
 } | null
 
-/** Target de desativação de cargo. */
+/** Target de exclusão de cargo. */
 export type RoleDeleteTarget = {
   id: string
   name: string
@@ -111,7 +111,7 @@ export type UseRoleHandlersParams = {
   updateRole: {
     mutateAsync: (args: { roleId: string; payload: UpdateRolePayload }) => Promise<RoleEntity>
   }
-  deactivateRole: { mutateAsync: (roleId: string) => Promise<RoleEntity> }
+  deleteRole: { mutateAsync: (roleId: string) => Promise<void> }
 }
 
 /** Retorno do hook central de handlers da página. */

@@ -64,8 +64,9 @@ const routeApi = getRouteApi('/_private/management/roles')
  * Página de gestão de cargos e permissões.
  *
  * Lista paginada de cargos (EntityList) com busca (debounce), criação/edição
- * via dialog, desativação com confirmação e gerenciamento de permissões por
- * toggle individual. Cargo do sistema (`isAdmin`) é somente leitura.
+ * via dialog, exclusão com confirmação (com aviso de desvinculação) e
+ * gerenciamento de permissões por toggle individual. Cargo do sistema
+ * (`isAdmin`) é somente leitura.
  */
 export function RolesPage() {
   const { t } = useTranslation('roles')
@@ -103,7 +104,7 @@ export function RolesPage() {
   const { data, isPending, error } = useRolesQuery(listParams)
 
   // --- Mutations ---
-  const { createRole, updateRole, deactivateRole } = useRoleMutations()
+  const { createRole, updateRole, deleteRole } = useRoleMutations()
 
   // --- Handlers ---
   const {
@@ -123,7 +124,7 @@ export function RolesPage() {
   } = useRoleHandlers({
     createRole,
     updateRole,
-    deactivateRole,
+    deleteRole,
     search: { isActive: search.isActive },
     updateSearch,
   })
@@ -251,17 +252,17 @@ export function RolesPage() {
         onOpenChange={(open) => !open && handleClosePermissions()}
       />
 
-      {/* Confirmação de desativação */}
+      {/* Confirmação de exclusão (física, em cascata) */}
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title={t('confirm.deactivate.title')}
-        description={t('confirm.deactivate.description', { name: deleteTarget?.name ?? '' })}
-        confirmLabel={t('confirm.deactivate.confirm')}
-        cancelLabel={t('confirm.deactivate.cancel')}
+        title={t('confirm.delete.title')}
+        description={t('confirm.delete.description', { name: deleteTarget?.name ?? '' })}
+        confirmLabel={t('confirm.delete.confirm')}
+        cancelLabel={t('confirm.delete.cancel')}
         onConfirm={handleConfirmDelete}
         variant="destructive"
-        isPending={deactivateRole.isPending}
+        isPending={deleteRole.isPending}
       />
     </PageLayout>
   )

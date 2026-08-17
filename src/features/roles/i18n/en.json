@@ -15,7 +15,7 @@
     "create": "New role",
     "edit": "Edit",
     "view": "View",
-    "deactivate": "Deactivate",
+    "delete": "Delete",
     "managePermissions": "Manage permissions"
   },
   "empty": {
@@ -70,17 +70,17 @@
     "empty": "No permissions available."
   },
   "confirm": {
-    "deactivate": {
-      "title": "Deactivate role",
-      "description": "Are you sure you want to deactivate the \"{{name}}\" role? This cannot be undone from the screen.",
-      "confirm": "Yes, deactivate",
+    "delete": {
+      "title": "Delete role",
+      "description": "Are you sure you want to delete the \"{{name}}\" role? All users linked to it will lose their role. This action cannot be undone.",
+      "confirm": "Yes, delete",
       "cancel": "Cancel"
     }
   },
   "notifications": {
     "create-success": "Role created successfully.",
     "update-success": "Role updated successfully.",
-    "deactivate-success": "Role deactivated successfully.",
+    "delete-success": "Role deleted successfully.",
     "permission-assigned": "Permission granted.",
     "permission-removed": "Permission removed."
   },

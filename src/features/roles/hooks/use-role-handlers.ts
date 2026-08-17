@@ -21,7 +21,7 @@ import type { RoleFormValues } from '../schemas/role-form.schema'
  * Hook que centraliza a lógica de handlers da página de cargos.
  *
  * Gerencia o estado dos dialogs (formulário e permissões), o target de
- * desativação, o filtro de status (server-side, sincronizado na URL) e os
+ * exclusão, o filtro de status (server-side, sincronizado na URL) e os
  * submits.
  *
  * @param params - Dependências: updateSearch, search e mutations.
@@ -32,7 +32,7 @@ export function useRoleHandlers({
   search,
   createRole,
   updateRole,
-  deactivateRole,
+  deleteRole,
 }: UseRoleHandlersParams): UseRoleHandlersReturn {
   // --- Estados ---
   const [formState, setFormState] = useState<RoleDialogState>(null)
@@ -118,21 +118,21 @@ export function useRoleHandlers({
     setPermissionsRole(null)
   }
 
-  // --- Handler de desativação ---
+  // --- Handler de exclusão ---
 
   /**
-   * Confirma a desativação de um cargo.
+   * Confirma a exclusão física de um cargo.
    */
   const handleConfirmDelete = useCallback(async () => {
     if (!deleteTarget) return
 
     try {
-      await deactivateRole.mutateAsync(deleteTarget.id)
+      await deleteRole.mutateAsync(deleteTarget.id)
       setDeleteTarget(null)
     } catch {
       // O erro já foi tratado no onError da mutation (toast).
     }
-  }, [deleteTarget, deactivateRole])
+  }, [deleteTarget, deleteRole])
 
   return {
     formState,

@@ -20,9 +20,9 @@ import baseController from '#/shared/controller/base.controller'
  * Service de cargos.
  *
  * Responsável por toda comunicação com a API de cargos (`/roles`).
- * Contrato: listagem paginada (`search`, `limit`, `offset`), criação,
- * atualização (PATCH), desativação (DELETE = soft) e vínculo individual de
- * permissões (POST/DELETE — sem substituição em lote).
+ * Contrato: listagem paginada (`search`, `isActive`, `limit`, `offset`),
+ * criação, atualização (PATCH), exclusão (DELETE = cascata) e vínculo
+ * individual de permissões (POST/DELETE — sem substituição em lote).
  */
 class RolesService {
   /**
@@ -70,13 +70,13 @@ class RolesService {
   }
 
   /**
-   * Desativa um cargo (DELETE = soft delete no backend).
+   * Exclui fisicamente um cargo (DELETE = exclusão em cascata no backend —
+   * remove role_permission e desvincula user_role, ADR 0004 §5).
    *
    * @param roleId - ID do cargo.
-   * @returns O cargo desativado.
    */
-  async deactivate(roleId: string): Promise<RoleEntity> {
-    return baseController.makeRequest({
+  async remove(roleId: string): Promise<void> {
+    await baseController.makeRequest({
       endpoint: `/roles/${roleId}`,
       method: 'DELETE',
     })

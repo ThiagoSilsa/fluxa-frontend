@@ -18,8 +18,8 @@ import { cn } from '#/shared/lib/utils'
  *
  * Mostra ícone (coroa para cargo do sistema), nome, descrição, badges de
  * status e de cargo do sistema, e ações: editar/ver, gerenciar permissões e
- * desativar. Cargo do sistema (`isAdmin`) é somente leitura: sem editar nem
- * desativar. Sem contagem de permissões no card (evita N+1 — o vínculo vive
+ * excluir. Cargo do sistema (`isAdmin`) é somente leitura: sem editar nem
+ * excluir. Sem contagem de permissões no card (evita N+1 — o vínculo vive
  * no dialog de permissões).
  */
 export function RoleCard({
@@ -127,7 +127,7 @@ export function RoleCard({
                   event.stopPropagation()
                   onDelete({ id: role.id, name: role.name })
                 }}
-                aria-label={t('toolbar.deactivate')}
+                aria-label={t('toolbar.delete')}
               >
                 <Trash2 className="size-4" />
               </Button>
