@@ -14,9 +14,13 @@ export type RoleEntity = {
 /** Parâmetros de listagem de cargos (paginada no servidor). */
 export type RoleListParams = {
   search?: string
+  isActive?: boolean
   limit?: number
   offset?: number
 }
+
+/** Valor do filtro de status da listagem de cargos. */
+export type RoleStatusFilterValue = 'all' | 'active' | 'inactive'
 
 /** Resposta da listagem de cargos (envelope paginado). */
 export type RoleListResponse = {
@@ -101,6 +105,8 @@ export type RolePermissionsDialogProps = {
 
 /** Parâmetros do hook central de handlers da página. */
 export type UseRoleHandlersParams = {
+  updateSearch: (params: Record<string, unknown>) => void
+  search: { isActive?: boolean }
   createRole: { mutateAsync: (payload: CreateRolePayload) => Promise<RoleEntity> }
   updateRole: {
     mutateAsync: (args: { roleId: string; payload: UpdateRolePayload }) => Promise<RoleEntity>
@@ -115,6 +121,8 @@ export type UseRoleHandlersReturn = {
   deleteTarget: RoleDeleteTarget | null
   setDeleteTarget: React.Dispatch<React.SetStateAction<RoleDeleteTarget | null>>
   permissionsRole: RoleEntity | null
+  statusValue: RoleStatusFilterValue
+  handleStatusChange: (value: RoleStatusFilterValue) => void
   handleOpenCreate: () => void
   handleOpenEdit: (role: RoleEntity) => void
   handleCloseForm: () => void

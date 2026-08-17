@@ -7,6 +7,8 @@ import { useRoleHandlers } from './use-role-handlers'
 // ---------------------------------------------------------------------------
 describe('useRoleHandlers', () => {
   const defaultParams = {
+    updateSearch: vi.fn(),
+    search: { isActive: undefined },
     createRole: { mutateAsync: vi.fn() },
     updateRole: { mutateAsync: vi.fn() },
     deactivateRole: { mutateAsync: vi.fn() },
@@ -14,6 +16,48 @@ describe('useRoleHandlers', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  // -----------------------------------------------------------------------
+  // Filtro de status
+  // -----------------------------------------------------------------------
+  describe('status filter', () => {
+    it('should map search.isActive to statusValue', () => {
+      const { result: all } = renderHook(() =>
+        useRoleHandlers({ ...defaultParams, search: { isActive: undefined } }),
+      )
+      expect(all.current.statusValue).toBe('all')
+
+      const { result: active } = renderHook(() =>
+        useRoleHandlers({ ...defaultParams, search: { isActive: true } }),
+      )
+      expect(active.current.statusValue).toBe('active')
+
+      const { result: inactive } = renderHook(() =>
+        useRoleHandlers({ ...defaultParams, search: { isActive: false } }),
+      )
+      expect(inactive.current.statusValue).toBe('inactive')
+    })
+
+    it('should update search with isActive on change', () => {
+      const updateSearch = vi.fn()
+      const { result } = renderHook(() => useRoleHandlers({ ...defaultParams, updateSearch }))
+
+      act(() => {
+        result.current.handleStatusChange('active')
+      })
+      expect(updateSearch).toHaveBeenCalledWith({ isActive: true })
+
+      act(() => {
+        result.current.handleStatusChange('inactive')
+      })
+      expect(updateSearch).toHaveBeenCalledWith({ isActive: false })
+
+      act(() => {
+        result.current.handleStatusChange('all')
+      })
+      expect(updateSearch).toHaveBeenCalledWith({ isActive: undefined })
+    })
   })
 
   // -----------------------------------------------------------------------

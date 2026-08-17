@@ -67,6 +67,10 @@ export function buildRoleListQuery(params: RoleListParams) {
     searchParams.set('search', params.search)
   }
 
+  if (params.isActive !== undefined) {
+    searchParams.set('isActive', String(params.isActive))
+  }
+
   if (params.limit !== undefined) {
     searchParams.set('limit', String(params.limit))
   }

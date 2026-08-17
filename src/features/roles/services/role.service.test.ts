@@ -45,6 +45,15 @@ describe('RolesService', () => {
       expect(callArgs.endpoint).toContain('limit=20')
       expect(callArgs.endpoint).toContain('offset=40')
     })
+
+    it('should include isActive in the query when provided', async () => {
+      mockedMakeRequest.mockResolvedValue({ limit: 20, offset: 0, data: [], count: 0 })
+
+      await rolesService.list({ isActive: false })
+
+      const callArgs = mockedMakeRequest.mock.calls[0][0]
+      expect(callArgs.endpoint).toContain('isActive=false')
+    })
   })
 
   describe('create', () => {

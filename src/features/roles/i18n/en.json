@@ -4,6 +4,13 @@
   "search": {
     "placeholder": "Search role by name"
   },
+  "filters": {
+    "status": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "toolbar": {
     "create": "New role",
     "edit": "Edit",

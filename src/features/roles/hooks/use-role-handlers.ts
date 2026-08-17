@@ -9,6 +9,7 @@ import type {
   RoleDeleteTarget,
   RoleDialogState,
   RoleEntity,
+  RoleStatusFilterValue,
   UseRoleHandlersParams,
   UseRoleHandlersReturn,
 } from '../types/roles.types'
@@ -20,13 +21,15 @@ import type { RoleFormValues } from '../schemas/role-form.schema'
  * Hook que centraliza a lógica de handlers da página de cargos.
  *
  * Gerencia o estado dos dialogs (formulário e permissões), o target de
- * desativação e os submits. Sem filtro de status: o backend não filtra por
- * `isActive` na listagem (contrato: apenas `search`, `limit`, `offset`).
+ * desativação, o filtro de status (server-side, sincronizado na URL) e os
+ * submits.
  *
- * @param params - Mutations necessárias (create, update, deactivate).
+ * @param params - Dependências: updateSearch, search e mutations.
  * @returns Estados e handlers para a página.
  */
 export function useRoleHandlers({
+  updateSearch,
+  search,
   createRole,
   updateRole,
   deactivateRole,
@@ -35,6 +38,26 @@ export function useRoleHandlers({
   const [formState, setFormState] = useState<RoleDialogState>(null)
   const [deleteTarget, setDeleteTarget] = useState<RoleDeleteTarget | null>(null)
   const [permissionsRole, setPermissionsRole] = useState<RoleEntity | null>(null)
+
+  // --- Filtro de status (server-side, sincronizado na URL) ---
+
+  /** Valor atual do filtro de status. */
+  const statusValue: RoleStatusFilterValue =
+    search.isActive === undefined ? 'all' : search.isActive ? 'active' : 'inactive'
+
+  /**
+   * Atualiza o filtro de status na URL.
+   *
+   * @param value - 'all' | 'active' | 'inactive'.
+   */
+  const handleStatusChange = (value: RoleStatusFilterValue) => {
+    if (value === 'all') {
+      updateSearch({ isActive: undefined })
+      return
+    }
+
+    updateSearch({ isActive: value === 'active' })
+  }
 
   // --- Handlers de dialog de formulário ---
 
@@ -117,6 +140,8 @@ export function useRoleHandlers({
     deleteTarget,
     setDeleteTarget,
     permissionsRole,
+    statusValue,
+    handleStatusChange,
     handleOpenCreate,
     handleOpenEdit,
     handleCloseForm,

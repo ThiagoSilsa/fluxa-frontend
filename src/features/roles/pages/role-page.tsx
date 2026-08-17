@@ -25,13 +25,25 @@ import { useRoleMutations } from '../hooks/use-role-mutations'
 import { useRoleHandlers } from '../hooks/use-role-handlers'
 
 // Types
-import type { RoleListParams } from '../types/roles.types'
+import type { RoleListParams, RoleStatusFilterValue } from '../types/roles.types'
 
 // Routes
 import { rolesPath } from '../routes/roles.route'
 
 // Shared components
-import { Button, ConfirmDialog, EntityList, Header, Input, PageLayout } from '#/shared/components'
+import {
+  Button,
+  ConfirmDialog,
+  EntityList,
+  Header,
+  Input,
+  PageLayout,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '#/shared/components'
 
 // Shared hooks
 import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
@@ -68,7 +80,12 @@ export function RolesPage() {
   // --- Search params da rota ---
   const search = routeApi.useSearch()
   const listParams = useMemo<RoleListParams>(
-    () => ({ search: search.search, limit: search.limit, offset: search.offset }),
+    () => ({
+      search: search.search,
+      isActive: search.isActive,
+      limit: search.limit,
+      offset: search.offset,
+    }),
     [search],
   )
 
@@ -93,6 +110,8 @@ export function RolesPage() {
     formState,
     deleteTarget,
     permissionsRole,
+    statusValue,
+    handleStatusChange,
     handleOpenCreate,
     handleOpenEdit,
     handleCloseForm,
@@ -101,7 +120,13 @@ export function RolesPage() {
     setDeleteTarget,
     handleOpenPermissions,
     handleClosePermissions,
-  } = useRoleHandlers({ createRole, updateRole, deactivateRole })
+  } = useRoleHandlers({
+    createRole,
+    updateRole,
+    deactivateRole,
+    search: { isActive: search.isActive },
+    updateSearch,
+  })
 
   // --- Toast de erro da listagem ---
   useEffect(() => {
@@ -155,15 +180,31 @@ export function RolesPage() {
           />
         )}
         filters={
-          <div className="relative sm:max-w-sm">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              placeholder={t('search.placeholder')}
-              className="pl-9"
-            />
-          </div>
+          <>
+            <div className="relative sm:max-w-sm">
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+              <Input
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                placeholder={t('search.placeholder')}
+                className="pl-9"
+              />
+            </div>
+
+            <Select
+              value={statusValue}
+              onValueChange={(value) => handleStatusChange(value as RoleStatusFilterValue)}
+            >
+              <SelectTrigger className="w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="active">{t('filters.status.active')}</SelectItem>
+                <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </>
         }
         toolbar={
           canManage && (

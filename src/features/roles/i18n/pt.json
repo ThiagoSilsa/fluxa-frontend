@@ -4,6 +4,13 @@
   "search": {
     "placeholder": "Buscar cargo por nome"
   },
+  "filters": {
+    "status": {
+      "all": "Todos",
+      "active": "Ativos",
+      "inactive": "Inativos"
+    }
+  },
   "toolbar": {
     "create": "Novo cargo",
     "edit": "Editar",

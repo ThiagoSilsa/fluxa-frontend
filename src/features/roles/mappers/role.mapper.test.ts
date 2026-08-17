@@ -122,6 +122,18 @@ describe('buildRoleListQuery', () => {
     expect(result).toContain('search=Analista')
   })
 
+  it('should include isActive when provided', () => {
+    const result = buildRoleListQuery({ isActive: false })
+
+    expect(result).toContain('isActive=false')
+  })
+
+  it('should include isActive true when provided', () => {
+    const result = buildRoleListQuery({ isActive: true })
+
+    expect(result).toContain('isActive=true')
+  })
+
   it('should encode special characters in search', () => {
     const result = buildRoleListQuery({ search: 'João & Cia' })
 
