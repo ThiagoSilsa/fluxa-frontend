@@ -18,6 +18,7 @@ import { Route as PrivateManagementDevicesRouteImport } from './routes/_private/
 import { Route as PrivateManagementImportsRouteImport } from './routes/_private/management/imports'
 import { Route as PrivateManagementRolesRouteImport } from './routes/_private/management/roles'
 import { Route as PrivateManagementUsersRouteImport } from './routes/_private/management/users'
+import { Route as PrivateManagementVehicleTypesRouteImport } from './routes/_private/management/vehicle-types'
 import { Route as PrivateManagementVehiclesRouteImport } from './routes/_private/management/vehicles'
 
 const PrivateRoute = PrivateRouteImport.update({
@@ -67,6 +68,12 @@ const PrivateManagementUsersRoute = PrivateManagementUsersRouteImport.update({
   path: '/management/users',
   getParentRoute: () => PrivateRoute,
 } as any)
+const PrivateManagementVehicleTypesRoute =
+  PrivateManagementVehicleTypesRouteImport.update({
+    id: '/management/vehicle-types',
+    path: '/management/vehicle-types',
+    getParentRoute: () => PrivateRoute,
+  } as any)
 const PrivateManagementVehiclesRoute =
   PrivateManagementVehiclesRouteImport.update({
     id: '/management/vehicles',
@@ -83,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/management/imports': typeof PrivateManagementImportsRoute
   '/management/roles': typeof PrivateManagementRolesRoute
   '/management/users': typeof PrivateManagementUsersRoute
+  '/management/vehicle-types': typeof PrivateManagementVehicleTypesRoute
   '/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRoutesByTo {
@@ -94,6 +102,7 @@ export interface FileRoutesByTo {
   '/management/imports': typeof PrivateManagementImportsRoute
   '/management/roles': typeof PrivateManagementRolesRoute
   '/management/users': typeof PrivateManagementUsersRoute
+  '/management/vehicle-types': typeof PrivateManagementVehicleTypesRoute
   '/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRoutesById {
@@ -107,6 +116,7 @@ export interface FileRoutesById {
   '/_private/management/imports': typeof PrivateManagementImportsRoute
   '/_private/management/roles': typeof PrivateManagementRolesRoute
   '/_private/management/users': typeof PrivateManagementUsersRoute
+  '/_private/management/vehicle-types': typeof PrivateManagementVehicleTypesRoute
   '/_private/management/vehicles': typeof PrivateManagementVehiclesRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/management/imports'
     | '/management/roles'
     | '/management/users'
+    | '/management/vehicle-types'
     | '/management/vehicles'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/management/imports'
     | '/management/roles'
     | '/management/users'
+    | '/management/vehicle-types'
     | '/management/vehicles'
   id:
     | '__root__'
@@ -143,6 +155,7 @@ export interface FileRouteTypes {
     | '/_private/management/imports'
     | '/_private/management/roles'
     | '/_private/management/users'
+    | '/_private/management/vehicle-types'
     | '/_private/management/vehicles'
   fileRoutesById: FileRoutesById
 }
@@ -216,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateManagementUsersRouteImport
       parentRoute: typeof PrivateRoute
     }
+    '/_private/management/vehicle-types': {
+      id: '/_private/management/vehicle-types'
+      path: '/management/vehicle-types'
+      fullPath: '/management/vehicle-types'
+      preLoaderRoute: typeof PrivateManagementVehicleTypesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
     '/_private/management/vehicles': {
       id: '/_private/management/vehicles'
       path: '/management/vehicles'
@@ -234,6 +254,7 @@ interface PrivateRouteChildren {
   PrivateManagementImportsRoute: typeof PrivateManagementImportsRoute
   PrivateManagementRolesRoute: typeof PrivateManagementRolesRoute
   PrivateManagementUsersRoute: typeof PrivateManagementUsersRoute
+  PrivateManagementVehicleTypesRoute: typeof PrivateManagementVehicleTypesRoute
   PrivateManagementVehiclesRoute: typeof PrivateManagementVehiclesRoute
 }
 
@@ -245,6 +266,7 @@ const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateManagementImportsRoute: PrivateManagementImportsRoute,
   PrivateManagementRolesRoute: PrivateManagementRolesRoute,
   PrivateManagementUsersRoute: PrivateManagementUsersRoute,
+  PrivateManagementVehicleTypesRoute: PrivateManagementVehicleTypesRoute,
   PrivateManagementVehiclesRoute: PrivateManagementVehiclesRoute,
 }
 

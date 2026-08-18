@@ -16,6 +16,8 @@ import rolesEn from '#/features/roles/i18n/en.json'
 import rolesPt from '#/features/roles/i18n/pt.json'
 import usersEn from '#/features/users/i18n/en.json'
 import usersPt from '#/features/users/i18n/pt.json'
+import vehicleTypesEn from '#/features/vehicle-types/i18n/en.json'
+import vehicleTypesPt from '#/features/vehicle-types/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -29,6 +31,7 @@ i18n
         mainLayout: mainLayoutPt,
         roles: rolesPt,
         users: usersPt,
+        vehicleTypes: vehicleTypesPt,
       },
 
       en: {
@@ -38,6 +41,7 @@ i18n
         mainLayout: mainLayoutEn,
         roles: rolesEn,
         users: usersEn,
+        vehicleTypes: vehicleTypesEn,
       },
     },
 
@@ -45,7 +49,7 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common', 'login', 'languageSelector', 'mainLayout', 'roles', 'users'],
+    ns: ['common', 'login', 'languageSelector', 'mainLayout', 'roles', 'users', 'vehicleTypes'],
 
     defaultNS: 'common',
 

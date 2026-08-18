@@ -1,0 +1,98 @@
+{
+  "title": "Tipos de veículo",
+  "subtitle": "Gerencie os tipos de veículo da empresa.",
+  "search": {
+    "placeholder": "Buscar por código ou nome"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "Todos",
+      "active": "Ativos",
+      "inactive": "Inativos"
+    },
+    "isFleet": {
+      "label": "Frota",
+      "all": "Todos",
+      "fleet": "Frota",
+      "non-fleet": "Particular"
+    }
+  },
+  "toolbar": {
+    "create": "Novo tipo",
+    "edit": "Editar",
+    "view": "Visualizar",
+    "delete": "Excluir"
+  },
+  "empty": {
+    "title": "Nenhum tipo encontrado",
+    "description": "Tente ajustar a busca ou os filtros."
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  },
+  "fleet": {
+    "true": "Frota",
+    "false": "Particular"
+  },
+  "card": {
+    "code": "Código"
+  },
+  "dialog": {
+    "create": {
+      "title": "Criar tipo de veículo",
+      "description": "Preencha os dados para criar o tipo."
+    },
+    "edit": {
+      "title": "Editar tipo de veículo",
+      "description": "Atualize as informações do tipo."
+    }
+  },
+  "form": {
+    "code": {
+      "label": "Código",
+      "placeholder": "Ex.: UTILITARIO"
+    },
+    "name": {
+      "label": "Nome",
+      "placeholder": "Informe o nome do tipo"
+    },
+    "description": {
+      "label": "Descrição",
+      "placeholder": "Informe a descrição do tipo"
+    },
+    "isFleet": {
+      "label": "Classificação de frota",
+      "description": "Usada em relatórios — não altera a ocupação de vagas."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com o tipo ativo.",
+      "active": "Ativo",
+      "inactive": "Inativo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "code-required": "Informe o código.",
+      "code-max": "O código deve ter no máximo 50 caracteres.",
+      "name-required": "Informe o nome.",
+      "name-max": "O nome deve ter no máximo 100 caracteres.",
+      "description-max": "A descrição deve ter no máximo 2000 caracteres."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Excluir tipo de veículo",
+      "description": "Tem certeza que deseja excluir o tipo \"{{name}}\"? Se houver veículos usando este tipo, a exclusão será bloqueada. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Tipo de veículo criado com sucesso.",
+    "update-success": "Tipo de veículo atualizado com sucesso.",
+    "delete-success": "Tipo de veículo excluído com sucesso."
+  }
+}

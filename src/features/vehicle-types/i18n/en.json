@@ -1,0 +1,98 @@
+{
+  "title": "Vehicle types",
+  "subtitle": "Manage the company's vehicle types.",
+  "search": {
+    "placeholder": "Search by code or name"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "isFleet": {
+      "label": "Fleet",
+      "all": "All",
+      "fleet": "Fleet",
+      "non-fleet": "Private"
+    }
+  },
+  "toolbar": {
+    "create": "New type",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete"
+  },
+  "empty": {
+    "title": "No vehicle types found",
+    "description": "Try adjusting the search or filters."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "fleet": {
+    "true": "Fleet",
+    "false": "Private"
+  },
+  "card": {
+    "code": "Code"
+  },
+  "dialog": {
+    "create": {
+      "title": "Create vehicle type",
+      "description": "Fill in the details to create the type."
+    },
+    "edit": {
+      "title": "Edit vehicle type",
+      "description": "Update the type information."
+    }
+  },
+  "form": {
+    "code": {
+      "label": "Code",
+      "placeholder": "e.g. UTILITY"
+    },
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter the type name"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Enter the type description"
+    },
+    "isFleet": {
+      "label": "Fleet classification",
+      "description": "Used in reports — does not change parking occupancy."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "New types are created active.",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "code-required": "Enter the code.",
+      "code-max": "The code must be at most 50 characters.",
+      "name-required": "Enter the name.",
+      "name-max": "The name must be at most 100 characters.",
+      "description-max": "The description must be at most 2000 characters."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete vehicle type",
+      "description": "Are you sure you want to delete the type \"{{name}}\"? If there are vehicles using this type, the deletion will be blocked. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Vehicle type created successfully.",
+    "update-success": "Vehicle type updated successfully.",
+    "delete-success": "Vehicle type deleted successfully."
+  }
+}

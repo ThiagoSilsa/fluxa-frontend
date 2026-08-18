@@ -3,6 +3,7 @@ import {
   Briefcase,
   Building2,
   Car,
+  CarFront,
   ClipboardList,
   Cpu,
   FileUp,
@@ -59,6 +60,12 @@ export const sidebarItems: SidebarItem[] = [
         icon: Building2,
         path: '/management/departments',
         permissions: [PermissionCode.MANAGE_DEPARTMENTS],
+      },
+      {
+        label: 'sidebar.items.vehicleTypes',
+        icon: CarFront,
+        path: '/management/vehicle-types',
+        permissions: [PermissionCode.MANAGE_VEHICLE_TYPES],
       },
       {
         label: 'sidebar.items.vehicles',
