@@ -20,6 +20,8 @@ import vehicleTypesEn from '#/features/vehicle-types/i18n/en.json'
 import vehicleTypesPt from '#/features/vehicle-types/i18n/pt.json'
 import departmentsEn from '#/features/departments/i18n/en.json'
 import departmentsPt from '#/features/departments/i18n/pt.json'
+import entrancesEn from '#/features/entrances/i18n/en.json'
+import entrancesPt from '#/features/entrances/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -35,6 +37,7 @@ i18n
         users: usersPt,
         vehicleTypes: vehicleTypesPt,
         departments: departmentsPt,
+        entrances: entrancesPt,
       },
 
       en: {
@@ -46,6 +49,7 @@ i18n
         users: usersEn,
         vehicleTypes: vehicleTypesEn,
         departments: departmentsEn,
+        entrances: entrancesEn,
       },
     },
 
@@ -62,6 +66,7 @@ i18n
       'users',
       'vehicleTypes',
       'departments',
+      'entrances',
     ],
 
     defaultNS: 'common',

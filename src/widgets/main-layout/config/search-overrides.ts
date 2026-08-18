@@ -56,6 +56,10 @@ export const searchOverrides: Record<string, SearchOverride> = {
     description: 'sidebar.items.departments-desc',
     keywords: ['departamento', 'department', 'setor', 'sector', 'área', 'area'],
   },
+  'sidebar.items.entrances': {
+    description: 'sidebar.items.entrances-desc',
+    keywords: ['portaria', 'portarias', 'entrance', 'gate', 'guarita'],
+  },
   'sidebar.items.vehicles': {
     description: 'sidebar.items.vehicles-desc',
     keywords: ['veículo', 'veiculo', 'vehicle', 'frota', 'fleet', 'carro', 'car'],

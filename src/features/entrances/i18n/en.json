@@ -1,0 +1,46 @@
+{
+  "title": "Entrances",
+  "subtitle": "Manage the company's entrances.",
+  "search": { "placeholder": "Search by name" },
+  "filters": {
+    "status": { "label": "Status", "all": "All", "active": "Active", "inactive": "Inactive" }
+  },
+  "toolbar": { "create": "New entrance", "edit": "Edit", "view": "View", "delete": "Delete" },
+  "empty": { "title": "No entrances found", "description": "Try adjusting the search or filters." },
+  "status": { "active": "Active", "inactive": "Inactive" },
+  "dialog": {
+    "create": {
+      "title": "Create entrance",
+      "description": "Fill in the details to create the entrance."
+    },
+    "edit": { "title": "Edit entrance", "description": "Update the entrance information." }
+  },
+  "form": {
+    "name": { "label": "Name", "placeholder": "Enter the entrance name" },
+    "status": {
+      "label": "Status",
+      "create-hint": "New entrances are created active.",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Enter the name.",
+      "name-max": "The name must be at most 100 characters."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete entrance",
+      "description": "Are you sure you want to delete the entrance \"{{name}}\"? If there are devices linked to this entrance, the deletion will be blocked. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Entrance created successfully.",
+    "update-success": "Entrance updated successfully.",
+    "delete-success": "Entrance deleted successfully."
+  }
+}

@@ -15,6 +15,7 @@ import { Route as PrivateRequestsRouteImport } from './routes/_private/requests'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PrivateManagementDepartmentsRouteImport } from './routes/_private/management/departments'
 import { Route as PrivateManagementDevicesRouteImport } from './routes/_private/management/devices'
+import { Route as PrivateManagementEntrancesRouteImport } from './routes/_private/management/entrances'
 import { Route as PrivateManagementImportsRouteImport } from './routes/_private/management/imports'
 import { Route as PrivateManagementRolesRouteImport } from './routes/_private/management/roles'
 import { Route as PrivateManagementUsersRouteImport } from './routes/_private/management/users'
@@ -52,6 +53,12 @@ const PrivateManagementDevicesRoute =
     path: '/management/devices',
     getParentRoute: () => PrivateRoute,
   } as any)
+const PrivateManagementEntrancesRoute =
+  PrivateManagementEntrancesRouteImport.update({
+    id: '/management/entrances',
+    path: '/management/entrances',
+    getParentRoute: () => PrivateRoute,
+  } as any)
 const PrivateManagementImportsRoute =
   PrivateManagementImportsRouteImport.update({
     id: '/management/imports',
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/requests': typeof PrivateRequestsRoute
   '/management/departments': typeof PrivateManagementDepartmentsRoute
   '/management/devices': typeof PrivateManagementDevicesRoute
+  '/management/entrances': typeof PrivateManagementEntrancesRoute
   '/management/imports': typeof PrivateManagementImportsRoute
   '/management/roles': typeof PrivateManagementRolesRoute
   '/management/users': typeof PrivateManagementUsersRoute
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/requests': typeof PrivateRequestsRoute
   '/management/departments': typeof PrivateManagementDepartmentsRoute
   '/management/devices': typeof PrivateManagementDevicesRoute
+  '/management/entrances': typeof PrivateManagementEntrancesRoute
   '/management/imports': typeof PrivateManagementImportsRoute
   '/management/roles': typeof PrivateManagementRolesRoute
   '/management/users': typeof PrivateManagementUsersRoute
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/_public/': typeof PublicIndexRoute
   '/_private/management/departments': typeof PrivateManagementDepartmentsRoute
   '/_private/management/devices': typeof PrivateManagementDevicesRoute
+  '/_private/management/entrances': typeof PrivateManagementEntrancesRoute
   '/_private/management/imports': typeof PrivateManagementImportsRoute
   '/_private/management/roles': typeof PrivateManagementRolesRoute
   '/_private/management/users': typeof PrivateManagementUsersRoute
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/requests'
     | '/management/departments'
     | '/management/devices'
+    | '/management/entrances'
     | '/management/imports'
     | '/management/roles'
     | '/management/users'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/requests'
     | '/management/departments'
     | '/management/devices'
+    | '/management/entrances'
     | '/management/imports'
     | '/management/roles'
     | '/management/users'
@@ -152,6 +164,7 @@ export interface FileRouteTypes {
     | '/_public/'
     | '/_private/management/departments'
     | '/_private/management/devices'
+    | '/_private/management/entrances'
     | '/_private/management/imports'
     | '/_private/management/roles'
     | '/_private/management/users'
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateManagementDevicesRouteImport
       parentRoute: typeof PrivateRoute
     }
+    '/_private/management/entrances': {
+      id: '/_private/management/entrances'
+      path: '/management/entrances'
+      fullPath: '/management/entrances'
+      preLoaderRoute: typeof PrivateManagementEntrancesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
     '/_private/management/imports': {
       id: '/_private/management/imports'
       path: '/management/imports'
@@ -251,6 +271,7 @@ interface PrivateRouteChildren {
   PrivateRequestsRoute: typeof PrivateRequestsRoute
   PrivateManagementDepartmentsRoute: typeof PrivateManagementDepartmentsRoute
   PrivateManagementDevicesRoute: typeof PrivateManagementDevicesRoute
+  PrivateManagementEntrancesRoute: typeof PrivateManagementEntrancesRoute
   PrivateManagementImportsRoute: typeof PrivateManagementImportsRoute
   PrivateManagementRolesRoute: typeof PrivateManagementRolesRoute
   PrivateManagementUsersRoute: typeof PrivateManagementUsersRoute
@@ -263,6 +284,7 @@ const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateRequestsRoute: PrivateRequestsRoute,
   PrivateManagementDepartmentsRoute: PrivateManagementDepartmentsRoute,
   PrivateManagementDevicesRoute: PrivateManagementDevicesRoute,
+  PrivateManagementEntrancesRoute: PrivateManagementEntrancesRoute,
   PrivateManagementImportsRoute: PrivateManagementImportsRoute,
   PrivateManagementRolesRoute: PrivateManagementRolesRoute,
   PrivateManagementUsersRoute: PrivateManagementUsersRoute,

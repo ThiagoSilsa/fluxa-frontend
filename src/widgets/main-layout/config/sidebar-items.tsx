@@ -6,6 +6,7 @@ import {
   CarFront,
   ClipboardList,
   Cpu,
+  DoorOpen,
   FileUp,
   Home,
   Settings2,
@@ -60,6 +61,12 @@ export const sidebarItems: SidebarItem[] = [
         icon: Building2,
         path: '/management/departments',
         permissions: [PermissionCode.MANAGE_DEPARTMENTS],
+      },
+      {
+        label: 'sidebar.items.entrances',
+        icon: DoorOpen,
+        path: '/management/entrances',
+        permissions: [PermissionCode.MANAGE_ENTRANCES],
       },
       {
         label: 'sidebar.items.vehicleTypes',

@@ -24,6 +24,8 @@
       "roles-desc": "Gerencie cargos e permissões",
       "departments": "Departamentos",
       "departments-desc": "Gerencie departamentos",
+      "entrances": "Portarias",
+      "entrances-desc": "Gerencie portarias",
       "vehicleTypes": "Tipos de veículo",
       "vehicleTypes-desc": "Gerencie tipos de veículo",
       "vehicles": "Veículos",
