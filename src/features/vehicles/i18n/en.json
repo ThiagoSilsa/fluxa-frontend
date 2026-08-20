@@ -1,0 +1,117 @@
+{
+  "title": "Vehicles",
+  "subtitle": "Manage the company's vehicles.",
+  "search": { "placeholder": "Search by plate or model" },
+  "filters": {
+    "status": { "label": "Status", "all": "All", "active": "Active", "inactive": "Inactive" },
+    "freePass": {
+      "label": "Free pass",
+      "all": "All",
+      "free": "With free pass",
+      "no-free": "Without free pass"
+    },
+    "type": { "label": "Type", "all": "All types" },
+    "department": { "label": "Department", "all": "All departments" }
+  },
+  "toolbar": { "create": "New vehicle", "edit": "Edit", "delete": "Delete" },
+  "empty": { "title": "No vehicles found", "description": "Try adjusting the search or filters." },
+  "status": { "active": "Active", "inactive": "Inactive" },
+  "freePass": { "yes": "Free pass", "no": "Regular" },
+  "columns": {
+    "plate": "Plate",
+    "model": "Model",
+    "color": "Color",
+    "type": "Type",
+    "status": "Status",
+    "createdAt": "Created",
+    "freePass": "Access"
+  },
+  "dialog": {
+    "create": {
+      "title": "Register vehicle",
+      "description": "Fill in the details to register the vehicle."
+    },
+    "edit": { "title": "Edit vehicle", "description": "Update the vehicle information." }
+  },
+  "form": {
+    "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+    "model": { "label": "Model", "placeholder": "Enter the model" },
+    "color": { "label": "Color", "placeholder": "Enter the color" },
+    "type": { "label": "Vehicle type", "placeholder": "Select the type" },
+    "department": {
+      "label": "Default department",
+      "placeholder": "No department",
+      "hint": "Set as the vehicle's default department."
+    },
+    "observation": { "label": "Observation", "placeholder": "Enter an observation (optional)" },
+    "freePass": {
+      "label": "Free pass",
+      "no-permission": "Granting free pass requires a specific permission."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "New vehicles are created active.",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "plate-required": "Enter the plate.",
+      "plate-max": "The plate must be at most 10 characters.",
+      "plate-invalid": "Invalid plate format (use ABC1234 or ABC1D23).",
+      "type-required": "Select the vehicle type.",
+      "model-max": "The model must be at most 100 characters.",
+      "color-max": "The color must be at most 50 characters.",
+      "observation-max": "The observation must be at most 2000 characters."
+    }
+  },
+  "detail": {
+    "title": "Vehicle {{plate}}",
+    "description": "Vehicle details, default department and drivers.",
+    "loading": "Loading details...",
+    "blocked": "Blocked",
+    "model": "Model",
+    "color": "Color",
+    "createdAt": "Created",
+    "ariaLabel": "View vehicle {{plate}} details",
+    "department": {
+      "title": "Default department",
+      "placeholder": "Select the department",
+      "save": "Link",
+      "remove": "Remove"
+    },
+    "drivers": {
+      "title": "Drivers",
+      "add": "Add",
+      "search": "Search person",
+      "search-placeholder": "Search by name",
+      "candidate-placeholder": "Select the person",
+      "no-candidates": "No people available",
+      "confirm-add": "Link",
+      "empty": "No drivers linked.",
+      "primary": "Primary",
+      "canDrive": "Can drive",
+      "make-primary": "Set as primary",
+      "remove": "Remove driver"
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete vehicle",
+      "description": "Are you sure you want to delete the vehicle \"{{plate}}\"? If there are links (default department or drivers), the deletion will be blocked. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Vehicle registered successfully.",
+    "update-success": "Vehicle updated successfully.",
+    "delete-success": "Vehicle deleted successfully.",
+    "department-success": "Default department linked successfully.",
+    "department-remove-success": "Default department removed successfully.",
+    "driver-add-success": "Driver linked successfully.",
+    "driver-update-success": "Driver updated successfully.",
+    "driver-remove-success": "Driver removed successfully."
+  }
+}

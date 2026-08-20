@@ -1,23 +1,16 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
-// i18n
-import { useTranslation } from 'react-i18next'
+// Routes
+import { vehiclesSearchSchema } from '#/features/vehicles/routes/vehicles.route'
 
-// Shared
-import { PagePlaceholder } from '#/shared/components/page-placeholder'
+// Pages
+import { VehiclesPage } from '#/features/vehicles/pages/vehicle-page'
+
+// Hoc
+import { withRouteAccess } from '#/shared/hoc/route-access'
 
 export const Route = createFileRoute('/_private/management/vehicles')({
-  component: VehiclesPage,
+  validateSearch: vehiclesSearchSchema,
+  component: withRouteAccess({ permissions: ['MANAGE_VEHICLES'] }, VehiclesPage),
 })
-
-/**
- * Página de gestão de veículos.
- *
- * TODO: Implementar a tela real de veículos.
- */
-function VehiclesPage() {
-  const { t } = useTranslation('mainLayout')
-
-  return <PagePlaceholder title={t('sidebar.items.vehicles')} />
-}
