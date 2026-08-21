@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivateRouteImport } from './routes/_private'
+import { Route as PrivateBlocksRouteImport } from './routes/_private/blocks'
 import { Route as PrivateHomeRouteImport } from './routes/_private/home'
 import { Route as PrivateOcupacaoRouteImport } from './routes/_private/ocupacao'
 import { Route as PrivatePortariaRouteImport } from './routes/_private/portaria'
@@ -27,6 +28,11 @@ import { Route as PrivateManagementVehiclesRouteImport } from './routes/_private
 const PrivateRoute = PrivateRouteImport.update({
   id: '/_private',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PrivateBlocksRoute = PrivateBlocksRouteImport.update({
+  id: '/blocks',
+  path: '/blocks',
+  getParentRoute: () => PrivateRoute,
 } as any)
 const PrivateHomeRoute = PrivateHomeRouteImport.update({
   id: '/home',
@@ -102,6 +108,7 @@ const PrivateManagementVehiclesRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/blocks': typeof PrivateBlocksRoute
   '/home': typeof PrivateHomeRoute
   '/ocupacao': typeof PrivateOcupacaoRoute
   '/portaria': typeof PrivatePortariaRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
+  '/blocks': typeof PrivateBlocksRoute
   '/home': typeof PrivateHomeRoute
   '/ocupacao': typeof PrivateOcupacaoRoute
   '/portaria': typeof PrivatePortariaRoute
@@ -133,6 +141,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_private': typeof PrivateRouteWithChildren
+  '/_private/blocks': typeof PrivateBlocksRoute
   '/_private/home': typeof PrivateHomeRoute
   '/_private/ocupacao': typeof PrivateOcupacaoRoute
   '/_private/portaria': typeof PrivatePortariaRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/blocks'
     | '/home'
     | '/ocupacao'
     | '/portaria'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blocks'
     | '/home'
     | '/ocupacao'
     | '/portaria'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_private'
+    | '/_private/blocks'
     | '/_private/home'
     | '/_private/ocupacao'
     | '/_private/portaria'
@@ -209,6 +221,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PrivateRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_private/blocks': {
+      id: '/_private/blocks'
+      path: '/blocks'
+      fullPath: '/blocks'
+      preLoaderRoute: typeof PrivateBlocksRouteImport
+      parentRoute: typeof PrivateRoute
     }
     '/_private/home': {
       id: '/_private/home'
@@ -305,6 +324,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface PrivateRouteChildren {
+  PrivateBlocksRoute: typeof PrivateBlocksRoute
   PrivateHomeRoute: typeof PrivateHomeRoute
   PrivateOcupacaoRoute: typeof PrivateOcupacaoRoute
   PrivatePortariaRoute: typeof PrivatePortariaRoute
@@ -320,6 +340,7 @@ interface PrivateRouteChildren {
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateBlocksRoute: PrivateBlocksRoute,
   PrivateHomeRoute: PrivateHomeRoute,
   PrivateOcupacaoRoute: PrivateOcupacaoRoute,
   PrivatePortariaRoute: PrivatePortariaRoute,

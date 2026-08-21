@@ -19,6 +19,8 @@
       "portaria-desc": "Registre entrada e saída de veículos",
       "ocupacao": "Ocupação",
       "ocupacao-desc": "Veículos dentro em tempo real",
+      "blocks": "Bloqueios",
+      "blocks-desc": "Gerencie bloqueios e solicitações de bloqueio",
       "requests": "Solicitações",
       "requests-desc": "Solicitações de acesso e bloqueio",
       "management": "Gerenciamento",

@@ -19,6 +19,8 @@
       "portaria-desc": "Register vehicle entry and exit",
       "ocupacao": "Occupancy",
       "ocupacao-desc": "Vehicles inside in real time",
+      "blocks": "Blocks",
+      "blocks-desc": "Manage blocks and block requests",
       "requests": "Requests",
       "requests-desc": "Access and block requests",
       "management": "Management",

@@ -1,5 +1,6 @@
 // Icons
 import {
+  Ban,
   Briefcase,
   Building2,
   Car,
@@ -47,6 +48,12 @@ export const sidebarItems: SidebarItem[] = [
     icon: Gauge,
     path: '/ocupacao',
     permissions: [PermissionCode.VIEW_DASHBOARDS],
+  },
+  {
+    label: 'sidebar.items.blocks',
+    icon: Ban,
+    path: '/blocks',
+    permissions: [PermissionCode.MANAGE_BLOCKS, PermissionCode.CREATE_BLOCK_REQUEST],
   },
   {
     label: 'sidebar.items.requests',
