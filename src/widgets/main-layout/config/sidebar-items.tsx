@@ -28,8 +28,8 @@ import type { SidebarItem } from '../types/sidebar.type'
  * Permissões seguem o `PermissionCode` (espelho do backend). Itens sem
  * `permissions`/`roles` aparecem para todos os autenticados.
  *
- * As páginas reais ainda não existem: cada caminho leva a uma página
- * placeholder "em construção".
+ * Fluxo de acesso (M5): Portaria (entrada/saída), Ocupação, Solicitações de
+ * acesso e Bloqueios — cada item com as permissões do backend.
  */
 export const sidebarItems: SidebarItem[] = [
   {
@@ -59,7 +59,7 @@ export const sidebarItems: SidebarItem[] = [
     label: 'sidebar.items.requests',
     icon: ClipboardList,
     path: '/requests',
-    permissions: [PermissionCode.MANAGE_ACCESS_REQUESTS, PermissionCode.MANAGE_BLOCK_REQUESTS],
+    permissions: [PermissionCode.MANAGE_ACCESS_REQUESTS, PermissionCode.CREATE_ACCESS_REQUEST],
   },
   {
     label: 'sidebar.items.management',

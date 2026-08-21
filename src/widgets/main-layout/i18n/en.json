@@ -22,7 +22,7 @@
       "blocks": "Blocks",
       "blocks-desc": "Manage blocks and block requests",
       "requests": "Requests",
-      "requests-desc": "Access and block requests",
+      "requests-desc": "Access requests",
       "management": "Management",
       "users": "Users",
       "users-desc": "Manage system users",

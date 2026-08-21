@@ -22,7 +22,7 @@
       "blocks": "Bloqueios",
       "blocks-desc": "Gerencie bloqueios e solicitações de bloqueio",
       "requests": "Solicitações",
-      "requests-desc": "Solicitações de acesso e bloqueio",
+      "requests-desc": "Solicitações de acesso",
       "management": "Gerenciamento",
       "users": "Usuários",
       "users-desc": "Gerencie usuários do sistema",
