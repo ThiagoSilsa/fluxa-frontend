@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivateRouteImport } from './routes/_private'
 import { Route as PrivateHomeRouteImport } from './routes/_private/home'
+import { Route as PrivateOcupacaoRouteImport } from './routes/_private/ocupacao'
 import { Route as PrivatePortariaRouteImport } from './routes/_private/portaria'
 import { Route as PrivateRequestsRouteImport } from './routes/_private/requests'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
@@ -30,6 +31,11 @@ const PrivateRoute = PrivateRouteImport.update({
 const PrivateHomeRoute = PrivateHomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateOcupacaoRoute = PrivateOcupacaoRouteImport.update({
+  id: '/ocupacao',
+  path: '/ocupacao',
   getParentRoute: () => PrivateRoute,
 } as any)
 const PrivatePortariaRoute = PrivatePortariaRouteImport.update({
@@ -97,6 +103,7 @@ const PrivateManagementVehiclesRoute =
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/home': typeof PrivateHomeRoute
+  '/ocupacao': typeof PrivateOcupacaoRoute
   '/portaria': typeof PrivatePortariaRoute
   '/requests': typeof PrivateRequestsRoute
   '/management/departments': typeof PrivateManagementDepartmentsRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/home': typeof PrivateHomeRoute
+  '/ocupacao': typeof PrivateOcupacaoRoute
   '/portaria': typeof PrivatePortariaRoute
   '/requests': typeof PrivateRequestsRoute
   '/management/departments': typeof PrivateManagementDepartmentsRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_private': typeof PrivateRouteWithChildren
   '/_private/home': typeof PrivateHomeRoute
+  '/_private/ocupacao': typeof PrivateOcupacaoRoute
   '/_private/portaria': typeof PrivatePortariaRoute
   '/_private/requests': typeof PrivateRequestsRoute
   '/_public/': typeof PublicIndexRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/home'
+    | '/ocupacao'
     | '/portaria'
     | '/requests'
     | '/management/departments'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/home'
+    | '/ocupacao'
     | '/portaria'
     | '/requests'
     | '/management/departments'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_private'
     | '/_private/home'
+    | '/_private/ocupacao'
     | '/_private/portaria'
     | '/_private/requests'
     | '/_public/'
@@ -203,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof PrivateHomeRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/ocupacao': {
+      id: '/_private/ocupacao'
+      path: '/ocupacao'
+      fullPath: '/ocupacao'
+      preLoaderRoute: typeof PrivateOcupacaoRouteImport
       parentRoute: typeof PrivateRoute
     }
     '/_private/portaria': {
@@ -287,6 +306,7 @@ declare module '@tanstack/react-router' {
 
 interface PrivateRouteChildren {
   PrivateHomeRoute: typeof PrivateHomeRoute
+  PrivateOcupacaoRoute: typeof PrivateOcupacaoRoute
   PrivatePortariaRoute: typeof PrivatePortariaRoute
   PrivateRequestsRoute: typeof PrivateRequestsRoute
   PrivateManagementDepartmentsRoute: typeof PrivateManagementDepartmentsRoute
@@ -301,6 +321,7 @@ interface PrivateRouteChildren {
 
 const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateHomeRoute: PrivateHomeRoute,
+  PrivateOcupacaoRoute: PrivateOcupacaoRoute,
   PrivatePortariaRoute: PrivatePortariaRoute,
   PrivateRequestsRoute: PrivateRequestsRoute,
   PrivateManagementDepartmentsRoute: PrivateManagementDepartmentsRoute,

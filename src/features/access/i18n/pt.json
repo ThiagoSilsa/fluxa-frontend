@@ -112,5 +112,29 @@
     "over-capacity-description": "A capacidade está esgotada. Confirma a liberação excedendo a capacidade?",
     "over-capacity-confirm": "Liberar mesmo assim",
     "over-capacity-cancel": "Cancelar"
+  },
+  "occupancy": {
+    "title": "Ocupação",
+    "subtitle": "Veículos dentro da empresa em tempo real.",
+    "refresh": "Atualiza automaticamente a cada 3 segundos.",
+    "cards": {
+      "total": { "label": "Veículos dentro", "value": "{{count}}" },
+      "free": { "label": "Vagas livres", "value": "{{count}}" },
+      "capacity": { "label": "Capacidade", "value": "{{count}}" }
+    },
+    "totalRate": "Ocupação global",
+    "byDepartment": {
+      "title": "Ocupação por departamento",
+      "empty": "Nenhum departamento ativo com capacidade.",
+      "columns": {
+        "department": "Departamento",
+        "occupied": "Dentro",
+        "capacity": "Vagas",
+        "rate": "Ocupação"
+      }
+    },
+    "noCapacity": "Sem capacidade",
+    "loading": "Carregando ocupação...",
+    "error": "Não foi possível carregar a ocupação."
   }
 }

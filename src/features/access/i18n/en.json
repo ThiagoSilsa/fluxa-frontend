@@ -112,5 +112,29 @@
     "over-capacity-description": "Capacity is exhausted. Confirm releasing beyond capacity?",
     "over-capacity-confirm": "Release anyway",
     "over-capacity-cancel": "Cancel"
+  },
+  "occupancy": {
+    "title": "Occupancy",
+    "subtitle": "Vehicles inside the company in real time.",
+    "refresh": "Updates automatically every 3 seconds.",
+    "cards": {
+      "total": { "label": "Vehicles inside", "value": "{{count}}" },
+      "free": { "label": "Free slots", "value": "{{count}}" },
+      "capacity": { "label": "Capacity", "value": "{{count}}" }
+    },
+    "totalRate": "Overall occupancy",
+    "byDepartment": {
+      "title": "Occupancy by department",
+      "empty": "No active department with capacity.",
+      "columns": {
+        "department": "Department",
+        "occupied": "Inside",
+        "capacity": "Slots",
+        "rate": "Occupancy"
+      }
+    },
+    "noCapacity": "No capacity",
+    "loading": "Loading occupancy...",
+    "error": "Could not load occupancy."
   }
 }

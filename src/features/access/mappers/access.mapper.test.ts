@@ -1,5 +1,54 @@
 import { describe, expect, it } from 'vitest'
-import { toRegisterEntryPayload, toRegisterExitPayload } from './access.mapper'
+import {
+  getOccupancyRate,
+  toOccupancyViewModel,
+  toRegisterEntryPayload,
+  toRegisterExitPayload,
+} from './access.mapper'
+
+describe('getOccupancyRate', () => {
+  it('calcula o percentual arredondado', () => {
+    expect(getOccupancyRate(3, 10)).toBe(30)
+    expect(getOccupancyRate(1, 3)).toBe(33)
+  })
+
+  it('devolve null quando não há capacidade', () => {
+    expect(getOccupancyRate(2, 0)).toBeNull()
+  })
+})
+
+describe('toOccupancyViewModel', () => {
+  it('adiciona o percentual por departamento e o global', () => {
+    const view = toOccupancyViewModel({
+      totalOccupied: 5,
+      totalCapacity: 10,
+      freeSlots: 5,
+      byDepartment: [
+        { departmentId: 'd1', name: 'Recepção', occupied: 2, capacity: 4 },
+        { departmentId: 'd2', name: 'Operação', occupied: 3, capacity: 0 },
+      ],
+    })
+
+    expect(view.totalRate).toBe(50)
+    expect(view.byDepartment).toEqual([
+      { departmentId: 'd1', name: 'Recepção', occupied: 2, capacity: 4, rate: 50 },
+      { departmentId: 'd2', name: 'Operação', occupied: 3, capacity: 0, rate: null },
+    ])
+  })
+
+  it('propaga freeSlots e totalRate null sem capacidade', () => {
+    const view = toOccupancyViewModel({
+      totalOccupied: 2,
+      totalCapacity: 0,
+      freeSlots: 0,
+      byDepartment: [],
+    })
+
+    expect(view.totalRate).toBeNull()
+    expect(view.freeSlots).toBe(0)
+    expect(view.byDepartment).toEqual([])
+  })
+})
 
 describe('toRegisterEntryPayload', () => {
   it('normaliza a placa e omite campos vazios', () => {

@@ -5,6 +5,7 @@ import baseController from '#/shared/controller/base.controller'
 import type {
   AccessEntryResponse,
   AccessExitResponse,
+  OccupancyResponse,
   OpenAccessResponse,
   RegisterEntryPayload,
   RegisterExitPayload,
@@ -55,6 +56,18 @@ class AccessService {
   async getOpenAccess(plate: string): Promise<{ data: OpenAccessResponse[] }> {
     return baseController.makeRequest({
       endpoint: `/access/open?plate=${encodeURIComponent(plate)}`,
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Ocupação em tempo real da empresa (VIEW_DASHBOARDS).
+   *
+   * @returns Ocupação total e por departamento ativo.
+   */
+  async getOccupancy(): Promise<OccupancyResponse> {
+    return baseController.makeRequest({
+      endpoint: '/access/occupancy',
       method: 'GET',
     })
   }

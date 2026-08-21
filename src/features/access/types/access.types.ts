@@ -100,6 +100,47 @@ export interface OpenAccessResponse {
   overCapacity: boolean
 }
 
+/** Ocupação por departamento (GET /access/occupancy). */
+export interface OccupancyDepartmentResponse {
+  departmentId: string
+  name: string
+  /** Veículos dentro (INSIDE). */
+  occupied: number
+  /** Vagas cadastradas. */
+  capacity: number
+}
+
+/** Ocupação em tempo real (regra 21 — todos os veículos ocupam espaço). */
+export interface OccupancyResponse {
+  /** Veículos dentro no momento. */
+  totalOccupied: number
+  /** Capacidade total (soma das vagas dos departamentos ativos). */
+  totalCapacity: number
+  /** Vagas livres (capacidade − ocupação; mínimo 0). */
+  freeSlots: number
+  /** Ocupação por departamento ativo. */
+  byDepartment: OccupancyDepartmentResponse[]
+}
+
+/** ViewModel de ocupação (porcentagens calculadas no client). */
+export interface OccupancyDepartmentView {
+  departmentId: string
+  name: string
+  occupied: number
+  capacity: number
+  /** Percentual de ocupação (0–100; `null` quando sem capacidade). */
+  rate: number | null
+}
+
+export interface OccupancyViewModel {
+  totalOccupied: number
+  totalCapacity: number
+  freeSlots: number
+  /** Ocupação global (0–100; `null` quando sem capacidade). */
+  totalRate: number | null
+  byDepartment: OccupancyDepartmentView[]
+}
+
 /** Veículo resolvido pelo QR (GET /qr-codes/:code). */
 export interface ResolvedVehicleQr {
   id: string

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDateTime, getEntryDenialReasonKey } from './access.lib'
+import { formatDateTime, getEntryDenialReasonKey, getOccupancyTone } from './access.lib'
 
 describe('getEntryDenialReasonKey', () => {
   it('mapeia cada motivo para a chave do namespace access', () => {
@@ -9,6 +9,20 @@ describe('getEntryDenialReasonKey', () => {
       'denial.reasons.UNAUTHORIZED_DRIVER',
     )
     expect(getEntryDenialReasonKey('OTHER')).toBe('denial.reasons.OTHER')
+  })
+})
+
+describe('getOccupancyTone', () => {
+  it('devolve null sem capacidade', () => {
+    expect(getOccupancyTone(null)).toBeNull()
+  })
+
+  it('classifica safe/warning/danger pelos limites', () => {
+    expect(getOccupancyTone(0)).toBe('safe')
+    expect(getOccupancyTone(79)).toBe('safe')
+    expect(getOccupancyTone(80)).toBe('warning')
+    expect(getOccupancyTone(100)).toBe('warning')
+    expect(getOccupancyTone(101)).toBe('danger')
   })
 })
 

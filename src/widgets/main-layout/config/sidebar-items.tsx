@@ -8,6 +8,7 @@ import {
   Cpu,
   DoorOpen,
   FileUp,
+  Gauge,
   Home,
   Settings2,
   Users,
@@ -40,6 +41,12 @@ export const sidebarItems: SidebarItem[] = [
     icon: Warehouse,
     path: '/portaria',
     permissions: [PermissionCode.REGISTER_ENTRY, PermissionCode.REGISTER_EXIT],
+  },
+  {
+    label: 'sidebar.items.ocupacao',
+    icon: Gauge,
+    path: '/ocupacao',
+    permissions: [PermissionCode.VIEW_DASHBOARDS],
   },
   {
     label: 'sidebar.items.requests',

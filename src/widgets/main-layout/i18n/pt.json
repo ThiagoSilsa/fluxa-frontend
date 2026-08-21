@@ -17,6 +17,8 @@
       "home-desc": "Visão geral do dashboard",
       "portaria": "Portaria",
       "portaria-desc": "Registre entrada e saída de veículos",
+      "ocupacao": "Ocupação",
+      "ocupacao-desc": "Veículos dentro em tempo real",
       "requests": "Solicitações",
       "requests-desc": "Solicitações de acesso e bloqueio",
       "management": "Gerenciamento",
