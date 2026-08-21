@@ -11,6 +11,7 @@ import {
   Home,
   Settings2,
   Users,
+  Warehouse,
 } from 'lucide-react'
 
 // Enum
@@ -33,6 +34,12 @@ export const sidebarItems: SidebarItem[] = [
     label: 'sidebar.items.home',
     icon: Home,
     path: '/home',
+  },
+  {
+    label: 'sidebar.items.portaria',
+    icon: Warehouse,
+    path: '/portaria',
+    permissions: [PermissionCode.REGISTER_ENTRY, PermissionCode.REGISTER_EXIT],
   },
   {
     label: 'sidebar.items.requests',

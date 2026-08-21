@@ -15,6 +15,8 @@
     "items": {
       "home": "Home",
       "home-desc": "Visão geral do dashboard",
+      "portaria": "Portaria",
+      "portaria-desc": "Registre entrada e saída de veículos",
       "requests": "Solicitações",
       "requests-desc": "Solicitações de acesso e bloqueio",
       "management": "Gerenciamento",

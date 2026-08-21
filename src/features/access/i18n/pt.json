@@ -1,0 +1,116 @@
+{
+  "title": "Portaria",
+  "subtitle": "Registre a entrada e a saída de veículos.",
+  "tabs": {
+    "entry": "Entrada",
+    "exit": "Saída"
+  },
+  "status": {
+    "INSIDE": "Dentro",
+    "OUT": "Fora",
+    "NO_EXIT": "Sem entrada",
+    "MANUAL_CLOSED": "Fechado manualmente"
+  },
+  "form": {
+    "entry": {
+      "title": "Registrar entrada",
+      "description": "Informe a placa do veículo (ou leia o QR) e confirme a entrada.",
+      "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+      "accessRequestId": {
+        "label": "Solicitação autorizada (ID)",
+        "placeholder": "UUID da solicitação (opcional)"
+      },
+      "temporaryDriverName": {
+        "label": "Condutor temporário",
+        "placeholder": "Nome do condutor (opcional)"
+      },
+      "qr": {
+        "label": "Ler QR",
+        "hint": "Resolve o código do veículo e preenche a placa."
+      },
+      "submit": "Registrar entrada",
+      "submitting": "Registrando...",
+      "errors": {
+        "plate-required": "Informe a placa.",
+        "plate-max": "A placa deve ter no máximo 10 caracteres.",
+        "plate-invalid": "Placa em formato inválido (use ABC1234 ou ABC1D23).",
+        "access-request-invalid": "O ID da solicitação deve ser um UUID válido."
+      }
+    },
+    "exit": {
+      "title": "Registrar saída",
+      "description": "Informe a placa, confira quem está dentro e registre a saída.",
+      "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+      "temporaryDriverName": {
+        "label": "Passageiro",
+        "placeholder": "Nome do passageiro (obrigatório se não houver entrada)"
+      },
+      "consult": "Consultar quem está dentro",
+      "consulting": "Consultando...",
+      "submit": "Registrar saída",
+      "submitting": "Registrando...",
+      "errors": {
+        "plate-required": "Informe a placa.",
+        "plate-max": "A placa deve ter no máximo 10 caracteres.",
+        "plate-invalid": "Placa em formato inválido (use ABC1234 ou ABC1D23)."
+      }
+    }
+  },
+  "qr": {
+    "title": "Ler QR code",
+    "description": "Cole o código do veículo (token do QR) para preencher a placa automaticamente.",
+    "code": { "label": "Código do QR", "placeholder": "Token permanente do veículo" },
+    "resolve": "Resolver",
+    "resolving": "Resolvendo...",
+    "cancel": "Cancelar",
+    "not-found": "QR não encontrado ou sem permissão.",
+    "resolved": "Veículo resolvido: {{plate}}"
+  },
+  "open": {
+    "title": "Quem está dentro",
+    "empty": "Nenhum acesso aberto para esta placa.",
+    "driver": "Condutor",
+    "entryAt": "Entrada",
+    "department": "Setor",
+    "plate": "Placa"
+  },
+  "result": {
+    "entry": {
+      "granted": { "title": "Entrada liberada", "message": "Acesso registrado com sucesso." },
+      "denied": { "title": "Entrada impedida", "message": "O acesso foi negado." },
+      "plate": "Placa",
+      "driver": "Condutor",
+      "entryAt": "Entrada",
+      "previousClosed": "Acesso anterior encerrado",
+      "status": "Status"
+    },
+    "exit": {
+      "title": "Saída registrada",
+      "closed": "Acessos encerrados",
+      "noExit": "Saída sem entrada registrada (NO_EXIT)",
+      "driver": "Condutor",
+      "entryAt": "Entrada",
+      "exitAt": "Saída",
+      "plate": "Placa"
+    }
+  },
+  "denial": {
+    "title": "Motivo",
+    "observation": "Observação",
+    "plate": "Placa",
+    "reasons": {
+      "BLOCKED": "Veículo bloqueado",
+      "UNREGISTERED": "Veículo não cadastrado",
+      "UNAUTHORIZED_DRIVER": "Condutor não autorizado",
+      "OTHER": "Outro motivo"
+    }
+  },
+  "notifications": {
+    "entry-success": "Entrada registrada.",
+    "exit-success": "Saída registrada.",
+    "over-capacity-title": "Vaga cheia",
+    "over-capacity-description": "A capacidade está esgotada. Confirma a liberação excedendo a capacidade?",
+    "over-capacity-confirm": "Liberar mesmo assim",
+    "over-capacity-cancel": "Cancelar"
+  }
+}

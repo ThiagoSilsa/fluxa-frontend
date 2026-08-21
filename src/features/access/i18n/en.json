@@ -1,0 +1,116 @@
+{
+  "title": "Portaria",
+  "subtitle": "Register vehicle entry and exit.",
+  "tabs": {
+    "entry": "Entry",
+    "exit": "Exit"
+  },
+  "status": {
+    "INSIDE": "Inside",
+    "OUT": "Out",
+    "NO_EXIT": "No entry",
+    "MANUAL_CLOSED": "Closed manually"
+  },
+  "form": {
+    "entry": {
+      "title": "Register entry",
+      "description": "Enter the vehicle plate (or read the QR) and confirm the entry.",
+      "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+      "accessRequestId": {
+        "label": "Authorized request (ID)",
+        "placeholder": "Request UUID (optional)"
+      },
+      "temporaryDriverName": {
+        "label": "Temporary driver",
+        "placeholder": "Driver name (optional)"
+      },
+      "qr": {
+        "label": "Read QR",
+        "hint": "Resolves the vehicle code and fills the plate."
+      },
+      "submit": "Register entry",
+      "submitting": "Registering...",
+      "errors": {
+        "plate-required": "Enter the plate.",
+        "plate-max": "Plate must have at most 10 characters.",
+        "plate-invalid": "Invalid plate format (use ABC1234 or ABC1D23).",
+        "access-request-invalid": "The request ID must be a valid UUID."
+      }
+    },
+    "exit": {
+      "title": "Register exit",
+      "description": "Enter the plate, check who is inside and register the exit.",
+      "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+      "temporaryDriverName": {
+        "label": "Passenger",
+        "placeholder": "Passenger name (required if there is no entry)"
+      },
+      "consult": "Check who is inside",
+      "consulting": "Checking...",
+      "submit": "Register exit",
+      "submitting": "Registering...",
+      "errors": {
+        "plate-required": "Enter the plate.",
+        "plate-max": "Plate must have at most 10 characters.",
+        "plate-invalid": "Invalid plate format (use ABC1234 or ABC1D23)."
+      }
+    }
+  },
+  "qr": {
+    "title": "Read QR code",
+    "description": "Paste the vehicle code (QR token) to fill the plate automatically.",
+    "code": { "label": "QR code", "placeholder": "Vehicle permanent token" },
+    "resolve": "Resolve",
+    "resolving": "Resolving...",
+    "cancel": "Cancel",
+    "not-found": "QR not found or no permission.",
+    "resolved": "Resolved vehicle: {{plate}}"
+  },
+  "open": {
+    "title": "Who is inside",
+    "empty": "No open access for this plate.",
+    "driver": "Driver",
+    "entryAt": "Entry",
+    "department": "Department",
+    "plate": "Plate"
+  },
+  "result": {
+    "entry": {
+      "granted": { "title": "Entry released", "message": "Access registered successfully." },
+      "denied": { "title": "Entry blocked", "message": "Access was denied." },
+      "plate": "Plate",
+      "driver": "Driver",
+      "entryAt": "Entry",
+      "previousClosed": "Previous access closed",
+      "status": "Status"
+    },
+    "exit": {
+      "title": "Exit registered",
+      "closed": "Closed accesses",
+      "noExit": "Exit without registered entry (NO_EXIT)",
+      "driver": "Driver",
+      "entryAt": "Entry",
+      "exitAt": "Exit",
+      "plate": "Plate"
+    }
+  },
+  "denial": {
+    "title": "Reason",
+    "observation": "Observation",
+    "plate": "Plate",
+    "reasons": {
+      "BLOCKED": "Blocked vehicle",
+      "UNREGISTERED": "Unregistered vehicle",
+      "UNAUTHORIZED_DRIVER": "Unauthorized driver",
+      "OTHER": "Other reason"
+    }
+  },
+  "notifications": {
+    "entry-success": "Entry registered.",
+    "exit-success": "Exit registered.",
+    "over-capacity-title": "Full capacity",
+    "over-capacity-description": "Capacity is exhausted. Confirm releasing beyond capacity?",
+    "over-capacity-confirm": "Release anyway",
+    "over-capacity-cancel": "Cancel"
+  }
+}
