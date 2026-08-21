@@ -1,0 +1,65 @@
+{
+  "upload": {
+    "download-template": "Download XLSX template",
+    "select-file": "Select file",
+    "submit": "Import",
+    "line": "Line"
+  },
+  "active-job": {
+    "title": "Import in progress",
+    "description": "Processing {{fileName}}",
+    "status": "Status",
+    "pending": "Waiting to be processed...",
+    "progress": "{{processed}} of {{total}} rows"
+  },
+  "job-status": {
+    "PENDING": "Pending",
+    "PROCESSING": "Processing",
+    "DONE": "Completed",
+    "FAILED": "Failed"
+  },
+  "history": {
+    "empty": "No imports yet"
+  },
+  "detail": {
+    "description": "{{type}} import",
+    "status": "Status",
+    "rows": "Rows",
+    "success": "Successes",
+    "errors": "Errors",
+    "duration": "Duration",
+    "error": "Error"
+  },
+  "validation": {
+    "file-extension": "Invalid format. Only .xlsx is accepted.",
+    "file-too-large": "File too large. Limit is 50MB."
+  },
+  "notifications": {
+    "upload-success": "File sent! Track the progress below."
+  },
+  "columns": {
+    "fileName": "File",
+    "status": "Status",
+    "rows": "Rows",
+    "success": "Successes",
+    "errors": "Errors",
+    "createdAt": "Created at",
+    "duration": "Duration"
+  },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First",
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last"
+  },
+  "rules": {
+    "headers": {
+      "column": "Column",
+      "required": "Required",
+      "rules": "Rules"
+    },
+    "yes": "Yes",
+    "no": "No"
+  }
+}

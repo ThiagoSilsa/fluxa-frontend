@@ -1,0 +1,182 @@
+{
+  "title": "Cargos e permissões",
+  "subtitle": "Gerencie os cargos e as permissões de cada um.",
+  "search": {
+    "placeholder": "Buscar cargo por nome"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "Todos",
+      "active": "Ativos",
+      "inactive": "Inativos"
+    }
+  },
+  "toolbar": {
+    "create": "Novo cargo",
+    "edit": "Editar",
+    "view": "Ver",
+    "delete": "Excluir",
+    "managePermissions": "Gerenciar permissões"
+  },
+  "empty": {
+    "title": "Nenhum cargo encontrado",
+    "description": "Tente ajustar a busca."
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  },
+  "card": {
+    "system_role": "Cargo do sistema"
+  },
+  "dialog": {
+    "create": {
+      "title": "Criar cargo",
+      "description": "Preencha os dados para criar o cargo."
+    },
+    "edit": {
+      "title": "Editar cargo",
+      "description": "Atualize as informações do cargo."
+    },
+    "permissions": {
+      "title": "Permissões do cargo",
+      "description": "Marque as permissões que o cargo \"{{role}}\" terá."
+    }
+  },
+  "form": {
+    "read-only-hint": "Este cargo é controlado pelo sistema e não pode ser editado.",
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com o cargo ativo."
+    },
+    "name": {
+      "label": "Nome",
+      "placeholder": "Informe o nome do cargo"
+    },
+    "description": {
+      "label": "Descrição",
+      "placeholder": "Informe a descrição do cargo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "name-required": "Informe o nome do cargo.",
+      "name-min": "O nome deve ter pelo menos 2 caracteres.",
+      "name-max": "O nome deve ter no máximo 255 caracteres.",
+      "description-max": "A descrição deve ter no máximo 500 caracteres."
+    }
+  },
+  "permissionsDialog": {
+    "empty": "Nenhuma permissão disponível."
+  },
+  "confirm": {
+    "delete": {
+      "title": "Excluir cargo",
+      "description": "Tem certeza que deseja excluir o cargo \"{{name}}\"? Todos os usuários vinculados a ele ficarão sem cargo. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Cargo criado com sucesso.",
+    "update-success": "Cargo atualizado com sucesso.",
+    "delete-success": "Cargo excluído com sucesso.",
+    "permission-assigned": "Permissão concedida.",
+    "permission-removed": "Permissão removida."
+  },
+  "permissions": {
+    "MANAGE_COMPANY": {
+      "title": "Gerenciar empresa",
+      "description": "Gerenciar dados da empresa"
+    },
+    "MANAGE_USERS": {
+      "title": "Gerenciar usuários",
+      "description": "Gerenciar usuários e seus cargos"
+    },
+    "MANAGE_ROLES": {
+      "title": "Gerenciar cargos e permissões",
+      "description": "Criar, editar e excluir cargos e gerenciar permissões"
+    },
+    "MANAGE_VEHICLES": {
+      "title": "Gerenciar veículos",
+      "description": "Gerenciar veículos cadastrados"
+    },
+    "MANAGE_VEHICLE_TYPES": {
+      "title": "Gerenciar tipos de veículos",
+      "description": "Gerenciar tipos de veículo"
+    },
+    "MANAGE_DEPARTMENTS": {
+      "title": "Gerenciar departamentos",
+      "description": "Gerenciar departamentos e vagas"
+    },
+    "MANAGE_ENTRANCES": {
+      "title": "Gerenciar entradas",
+      "description": "Gerenciar portarias"
+    },
+    "MANAGE_BLOCKS": {
+      "title": "Gerenciar bloqueios",
+      "description": "Bloquear e revogar bloqueio de veículos"
+    },
+    "MANAGE_ACCESS_REQUESTS": {
+      "title": "Gerenciar solicitações de acesso",
+      "description": "Aceitar e rejeitar solicitações de cadastro/vínculo"
+    },
+    "MANAGE_BLOCK_REQUESTS": {
+      "title": "Gerenciar solicitações de bloqueio",
+      "description": "Aprovar e rejeitar solicitações de bloqueio"
+    },
+    "MANAGE_IMPORTS": {
+      "title": "Gerenciar importações",
+      "description": "Gerenciar importações de planilhas"
+    },
+    "MANAGE_DEVICES": {
+      "title": "Gerenciar dispositivos",
+      "description": "Gerenciar dispositivos do app"
+    },
+    "GRANT_FREE_PASS": {
+      "title": "Conceder passe livre",
+      "description": "Conceder e revogar livre acesso (free_pass)"
+    },
+    "PRINT_QRCODE": {
+      "title": "Imprimir QR Code",
+      "description": "Gerar e imprimir QR codes"
+    },
+    "VIEW_DASHBOARDS": {
+      "title": "Ver painéis",
+      "description": "Visualizar painéis e relatórios"
+    },
+    "REGISTER_ENTRY": {
+      "title": "Registrar entrada",
+      "description": "Registrar entrada de veículo"
+    },
+    "REGISTER_EXIT": {
+      "title": "Registrar saída",
+      "description": "Registrar saída de veículo"
+    },
+    "REGISTER_DENIAL": {
+      "title": "Registrar negativa",
+      "description": "Registrar impedimento de entrada"
+    },
+    "CREATE_ACCESS_REQUEST": {
+      "title": "Criar solicitação de acesso",
+      "description": "Criar solicitação de cadastro/vínculo"
+    },
+    "CANCEL_ACCESS_REQUEST": {
+      "title": "Cancelar solicitação de acesso",
+      "description": "Cancelar solicitação própria"
+    },
+    "CREATE_BLOCK_REQUEST": {
+      "title": "Criar solicitação de bloqueio",
+      "description": "Solicitar bloqueio de veículo"
+    },
+    "MANUAL_CLOSE_ACCESS": {
+      "title": "Encerrar acesso manualmente",
+      "description": "Encerrar acesso manualmente"
+    },
+    "INITIAL_ENTRY": {
+      "title": "Entrada inicial",
+      "description": "Registrar entrada inicial (go-live)"
+    }
+  }
+}

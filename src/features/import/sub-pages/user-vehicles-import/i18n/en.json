@@ -1,0 +1,52 @@
+{
+  "tab": {
+    "label": "User-Vehicle Links"
+  },
+  "upload": {
+    "title": "Import user-vehicle links",
+    "description": "Upload an XLSX file following the template to link drivers to vehicles in bulk (by plate and email)."
+  },
+  "history": {
+    "empty": "No link imports yet"
+  },
+  "notifications": {
+    "upload-success": "File sent! Track the progress below."
+  },
+  "template": {
+    "filename": "user-vehicle-link-import-template.xlsx",
+    "sheets": {
+      "rules": "Rules"
+    }
+  },
+  "example": {
+    "vehiclePlate": "ABC1234",
+    "userEmail": "driver@company.local",
+    "isPrimary": "true",
+    "canDrive": "true"
+  },
+  "columns": {
+    "fileName": "File",
+    "status": "Status",
+    "rows": "Rows",
+    "success": "Successes",
+    "errors": "Errors",
+    "createdAt": "Created at",
+    "duration": "Duration"
+  },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First",
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last"
+  },
+  "rules": {
+    "headers": {
+      "column": "Column",
+      "required": "Required",
+      "rules": "Rules"
+    },
+    "yes": "Yes",
+    "no": "No"
+  }
+}

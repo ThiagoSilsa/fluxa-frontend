@@ -1,0 +1,55 @@
+{
+  "tab": {
+    "label": "Users"
+  },
+  "upload": {
+    "title": "Import users",
+    "description": "Upload an XLSX file following the template to bulk-create users. Blank password uses the default onboarding password."
+  },
+  "history": {
+    "empty": "No user imports yet"
+  },
+  "notifications": {
+    "upload-success": "File sent! Track the progress below."
+  },
+  "template": {
+    "filename": "user-import-template.xlsx",
+    "sheets": {
+      "rules": "Rules"
+    }
+  },
+  "example": {
+    "email": "john@company.local",
+    "name": "John Doe",
+    "type": "EMPLOYEE",
+    "password": "",
+    "phone": "+55 11 99999-9999",
+    "document": "",
+    "role": "Gatekeeper"
+  },
+  "columns": {
+    "fileName": "File",
+    "status": "Status",
+    "rows": "Rows",
+    "success": "Successes",
+    "errors": "Errors",
+    "createdAt": "Created at",
+    "duration": "Duration"
+  },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First",
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last"
+  },
+  "rules": {
+    "headers": {
+      "column": "Column",
+      "required": "Required",
+      "rules": "Rules"
+    },
+    "yes": "Yes",
+    "no": "No"
+  }
+}

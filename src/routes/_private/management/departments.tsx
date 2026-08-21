@@ -1,23 +1,16 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
-// i18n
-import { useTranslation } from 'react-i18next'
+// Routes
+import { departmentsSearchSchema } from '#/features/departments/routes/departments.route'
 
-// Shared
-import { PagePlaceholder } from '#/shared/components/page-placeholder'
+// Pages
+import { DepartmentPage } from '#/features/departments/pages/department-page'
+
+// Hoc
+import { withRouteAccess } from '#/shared/hoc/route-access'
 
 export const Route = createFileRoute('/_private/management/departments')({
-  component: DepartmentsPage,
+  validateSearch: departmentsSearchSchema,
+  component: withRouteAccess({ permissions: ['MANAGE_DEPARTMENTS'] }, DepartmentPage),
 })
-
-/**
- * Página de gestão de departamentos.
- *
- * TODO: Implementar a tela real de departamentos.
- */
-function DepartmentsPage() {
-  const { t } = useTranslation('mainLayout')
-
-  return <PagePlaceholder title={t('sidebar.items.departments')} />
-}

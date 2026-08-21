@@ -2,12 +2,26 @@
   "actions": {
     "logout": "Sair"
   },
+  "detail": {
+    "back": "Voltar"
+  },
   "home": {
     "title": "Início",
     "description": "Esta página está em construção."
   },
   "placeholder": {
     "description": "Esta página está em construção."
+  },
+  "no-access": {
+    "title": "Sem acesso",
+    "description": "Você não tem permissão para acessar esta página."
+  },
+  "pagination": {
+    "limit": "Itens por página",
+    "first": "Primeira página",
+    "previous": "Página anterior",
+    "next": "Próxima página",
+    "last": "Última página"
   },
   "errors": {
     "invalidCredentials": "Credenciais inválidas",

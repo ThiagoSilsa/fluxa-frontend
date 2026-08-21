@@ -12,6 +12,30 @@ import loginEn from '#/features/login/i18n/en.json'
 import loginPt from '#/features/login/i18n/pt.json'
 import mainLayoutEn from '#/widgets/main-layout/i18n/en.json'
 import mainLayoutPt from '#/widgets/main-layout/i18n/pt.json'
+import rolesEn from '#/features/roles/i18n/en.json'
+import rolesPt from '#/features/roles/i18n/pt.json'
+import usersEn from '#/features/users/i18n/en.json'
+import usersPt from '#/features/users/i18n/pt.json'
+import vehicleTypesEn from '#/features/vehicle-types/i18n/en.json'
+import vehicleTypesPt from '#/features/vehicle-types/i18n/pt.json'
+import departmentsEn from '#/features/departments/i18n/en.json'
+import departmentsPt from '#/features/departments/i18n/pt.json'
+import entrancesEn from '#/features/entrances/i18n/en.json'
+import entrancesPt from '#/features/entrances/i18n/pt.json'
+import importEn from '#/features/import/i18n/en.json'
+import importPt from '#/features/import/i18n/pt.json'
+import departmentsImportEn from '#/features/import/sub-pages/departments-import/i18n/en.json'
+import departmentsImportPt from '#/features/import/sub-pages/departments-import/i18n/pt.json'
+import vehiclesImportEn from '#/features/import/sub-pages/vehicles-import/i18n/en.json'
+import vehiclesImportPt from '#/features/import/sub-pages/vehicles-import/i18n/pt.json'
+import usersImportEn from '#/features/import/sub-pages/users-import/i18n/en.json'
+import usersImportPt from '#/features/import/sub-pages/users-import/i18n/pt.json'
+import userVehiclesImportEn from '#/features/import/sub-pages/user-vehicles-import/i18n/en.json'
+import userVehiclesImportPt from '#/features/import/sub-pages/user-vehicles-import/i18n/pt.json'
+import vehiclesEn from '#/features/vehicles/i18n/en.json'
+import vehiclesPt from '#/features/vehicles/i18n/pt.json'
+import devicesEn from '#/features/devices/i18n/en.json'
+import devicesPt from '#/features/devices/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -23,6 +47,18 @@ i18n
         login: loginPt,
         languageSelector: languageSelectorPt,
         mainLayout: mainLayoutPt,
+        roles: rolesPt,
+        users: usersPt,
+        vehicleTypes: vehicleTypesPt,
+        departments: departmentsPt,
+        entrances: entrancesPt,
+        vehicles: vehiclesPt,
+        devices: devicesPt,
+        import: importPt,
+        departmentsImport: departmentsImportPt,
+        vehiclesImport: vehiclesImportPt,
+        usersImport: usersImportPt,
+        userVehiclesImport: userVehiclesImportPt,
       },
 
       en: {
@@ -30,6 +66,18 @@ i18n
         login: loginEn,
         languageSelector: languageSelectorEn,
         mainLayout: mainLayoutEn,
+        roles: rolesEn,
+        users: usersEn,
+        vehicleTypes: vehicleTypesEn,
+        departments: departmentsEn,
+        entrances: entrancesEn,
+        vehicles: vehiclesEn,
+        devices: devicesEn,
+        import: importEn,
+        departmentsImport: departmentsImportEn,
+        vehiclesImport: vehiclesImportEn,
+        usersImport: usersImportEn,
+        userVehiclesImport: userVehiclesImportEn,
       },
     },
 
@@ -37,7 +85,24 @@ i18n
 
     supportedLngs: ['pt', 'en'],
 
-    ns: ['common', 'login', 'languageSelector', 'mainLayout'],
+    ns: [
+      'common',
+      'login',
+      'languageSelector',
+      'mainLayout',
+      'roles',
+      'users',
+      'vehicleTypes',
+      'departments',
+      'entrances',
+      'vehicles',
+      'devices',
+      'import',
+      'departmentsImport',
+      'vehiclesImport',
+      'usersImport',
+      'userVehiclesImport',
+    ],
 
     defaultNS: 'common',
 

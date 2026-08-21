@@ -1,19 +1,18 @@
-/**
- * Iniciais de um nome, para avatares.
- *
- * Até duas iniciais: a primeira palavra e a última. Nomes com uma palavra só
- * devolvem a inicial dela. Nomes vazios (ou só espaços) devolvem string vazia.
- *
- * @param name Nome completo.
- * @returns Iniciais em maiúsculas.
- */
-export function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean)
+export function getInitials(name?: string): string {
+  if (!name?.trim()) {
+    return ''
+  }
 
-  if (parts.length === 0) return ''
+  const ignored = new Set(['da', 'de', 'do', 'dos', 'das'])
 
-  const first = parts[0]?.charAt(0) ?? ''
-  const last = parts.length > 1 ? (parts[parts.length - 1]?.charAt(0) ?? '') : ''
+  const parts = name
+    .trim()
+    .split(/\s+/)
+    .filter((part) => !ignored.has(part.toLowerCase()))
 
-  return `${first}${last}`.toUpperCase()
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase()
+  }
+
+  return `${parts[0][0]}${parts.at(-1)?.[0] ?? ''}`.toUpperCase()
 }

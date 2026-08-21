@@ -1,0 +1,51 @@
+{
+  "tab": {
+    "label": "Departamentos"
+  },
+  "upload": {
+    "title": "Importar departamentos",
+    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar departamentos em lote."
+  },
+  "history": {
+    "empty": "Nenhuma importação de departamentos realizada ainda"
+  },
+  "notifications": {
+    "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
+  },
+  "template": {
+    "filename": "modelo-importacao-departamentos.xlsx",
+    "sheets": {
+      "rules": "Regras"
+    }
+  },
+  "example": {
+    "name": "Recepção",
+    "parkingSpace": "10",
+    "description": "Portaria principal"
+  },
+  "columns": {
+    "fileName": "Arquivo",
+    "status": "Status",
+    "rows": "Linhas",
+    "success": "Sucessos",
+    "errors": "Erros",
+    "createdAt": "Criado em",
+    "duration": "Duração"
+  },
+  "pagination": {
+    "limit": "Itens por página",
+    "first": "Primeira",
+    "previous": "Anterior",
+    "next": "Próxima",
+    "last": "Última"
+  },
+  "rules": {
+    "headers": {
+      "column": "Coluna",
+      "required": "Obrigatória",
+      "rules": "Regras"
+    },
+    "yes": "Sim",
+    "no": "Não"
+  }
+}

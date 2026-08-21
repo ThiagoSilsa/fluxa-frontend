@@ -1,0 +1,158 @@
+{
+  "title": "Veículos",
+  "subtitle": "Gerencie os veículos da empresa.",
+  "search": { "placeholder": "Buscar por placa ou modelo" },
+  "filters": {
+    "status": { "label": "Status", "all": "Todos", "active": "Ativos", "inactive": "Inativos" },
+    "freePass": {
+      "label": "Livre acesso",
+      "all": "Todos",
+      "free": "Com livre acesso",
+      "no-free": "Sem livre acesso"
+    },
+    "type": { "label": "Tipo", "all": "Todos os tipos" },
+    "department": { "label": "Departamento", "all": "Todos os departamentos" }
+  },
+  "toolbar": { "create": "Novo veículo", "edit": "Editar", "delete": "Excluir" },
+  "empty": {
+    "title": "Nenhum veículo encontrado",
+    "description": "Tente ajustar a busca ou os filtros."
+  },
+  "status": { "active": "Ativo", "inactive": "Inativo" },
+  "freePass": { "yes": "Livre acesso", "no": "Comum" },
+  "columns": {
+    "plate": "Placa",
+    "model": "Modelo",
+    "color": "Cor",
+    "type": "Tipo",
+    "status": "Status",
+    "createdAt": "Criado em",
+    "freePass": "Acesso"
+  },
+  "dialog": {
+    "create": {
+      "title": "Cadastrar veículo",
+      "description": "Preencha os dados para cadastrar o veículo."
+    },
+    "edit": { "title": "Editar veículo", "description": "Atualize as informações do veículo." }
+  },
+  "form": {
+    "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+    "model": { "label": "Modelo", "placeholder": "Informe o modelo" },
+    "color": { "label": "Cor", "placeholder": "Informe a cor" },
+    "type": { "label": "Tipo de veículo", "placeholder": "Selecione o tipo" },
+    "department": {
+      "label": "Departamento padrão",
+      "placeholder": "Sem departamento",
+      "hint": "Definido como departamento padrão do veículo."
+    },
+    "observation": { "label": "Observação", "placeholder": "Informe uma observação (opcional)" },
+    "freePass": {
+      "label": "Livre acesso",
+      "no-permission": "Conceder livre acesso exige permissão específica."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com o veículo ativo.",
+      "active": "Ativo",
+      "inactive": "Inativo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "plate-required": "Informe a placa.",
+      "plate-max": "A placa deve ter no máximo 10 caracteres.",
+      "plate-invalid": "Placa em formato inválido (use ABC1234 ou ABC1D23).",
+      "type-required": "Selecione o tipo de veículo.",
+      "model-max": "O modelo deve ter no máximo 100 caracteres.",
+      "color-max": "A cor deve ter no máximo 50 caracteres.",
+      "observation-max": "A observação deve ter no máximo 2000 caracteres."
+    }
+  },
+  "detail": {
+    "title": "Veículo {{plate}}",
+    "description": "Detalhes do veículo, departamento padrão e motoristas.",
+    "loading": "Carregando detalhes...",
+    "blocked": "Bloqueado",
+    "model": "Modelo",
+    "color": "Cor",
+    "createdAt": "Criado em",
+    "ariaLabel": "Ver detalhes do veículo {{plate}}",
+    "department": {
+      "title": "Departamento padrão",
+      "placeholder": "Selecione o departamento",
+      "save": "Vincular",
+      "remove": "Remover"
+    },
+    "drivers": {
+      "title": "Motoristas",
+      "add": "Adicionar",
+      "search": "Buscar pessoa",
+      "search-placeholder": "Buscar por nome",
+      "candidate-placeholder": "Selecione a pessoa",
+      "no-candidates": "Nenhuma pessoa disponível",
+      "confirm-add": "Vincular",
+      "empty": "Nenhum motorista vinculado.",
+      "primary": "Principal",
+      "canDrive": "Pode dirigir",
+      "make-primary": "Definir como principal",
+      "remove": "Remover motorista"
+    }
+  },
+  "qr": {
+    "section": {
+      "title": "QR code",
+      "hint": "QR permanente impresso/colado no veículo — continua válido mesmo se os dados mudarem.",
+      "open": "Ver QR code"
+    },
+    "title": "QR code do veículo {{plate}}",
+    "description": "QR permanente — identifica o veículo, não os seus dados cadastrais.",
+    "loading": "Carregando QR...",
+    "generating": "Gerando imagem...",
+    "aria-qr": "QR code do veículo",
+    "no-qr": {
+      "title": "Nenhum QR emitido",
+      "description": "Emita o QR para imprimir e colar no veículo. A imagem é gerada a partir de um token permanente.",
+      "emit": "Emitir QR"
+    },
+    "status": { "active": "QR ativo", "inactive": "QR expirado" },
+    "print": "Imprimir",
+    "reissue": "Reemitir",
+    "revoke": "Revogar",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "reissue-confirm": {
+      "title": "Reemitir QR code",
+      "description": "O QR atual do veículo \"{{plate}}\" deixará de valer e um novo será gerado (adesivo novo). Continuar?",
+      "confirm": "Sim, reemitir"
+    },
+    "revoke-confirm": {
+      "title": "Revogar QR code",
+      "description": "O QR do veículo \"{{plate}}\" será desativado (não resolve mais — expirado) sem gerar outro. Continuar?",
+      "confirm": "Sim, revogar"
+    },
+    "notifications": {
+      "emit-success": "QR code emitido com sucesso.",
+      "reissue-success": "QR code reemitido com sucesso.",
+      "revoke-success": "QR code revogado com sucesso."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Excluir veículo",
+      "description": "Tem certeza que deseja excluir o veículo \"{{plate}}\"? Se houver vínculos (departamento padrão ou motoristas), a exclusão será bloqueada. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Veículo cadastrado com sucesso.",
+    "update-success": "Veículo atualizado com sucesso.",
+    "delete-success": "Veículo excluído com sucesso.",
+    "department-success": "Departamento padrão vinculado com sucesso.",
+    "department-remove-success": "Departamento padrão removido com sucesso.",
+    "driver-add-success": "Motorista vinculado com sucesso.",
+    "driver-update-success": "Motorista atualizado com sucesso.",
+    "driver-remove-success": "Motorista removido com sucesso."
+  }
+}

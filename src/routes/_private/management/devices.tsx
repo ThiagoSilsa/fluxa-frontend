@@ -1,23 +1,16 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
-// i18n
-import { useTranslation } from 'react-i18next'
+// Routes
+import { devicesSearchSchema } from '#/features/devices/routes/devices.route'
 
-// Shared
-import { PagePlaceholder } from '#/shared/components/page-placeholder'
+// Pages
+import { DevicesPage } from '#/features/devices/pages/device-page'
+
+// Hoc
+import { withRouteAccess } from '#/shared/hoc/route-access'
 
 export const Route = createFileRoute('/_private/management/devices')({
-  component: DevicesPage,
+  validateSearch: devicesSearchSchema,
+  component: withRouteAccess({ permissions: ['MANAGE_DEVICES'] }, DevicesPage),
 })
-
-/**
- * Página de gestão de dispositivos.
- *
- * TODO: Implementar a tela real de dispositivos.
- */
-function DevicesPage() {
-  const { t } = useTranslation('mainLayout')
-
-  return <PagePlaceholder title={t('sidebar.items.devices')} />
-}

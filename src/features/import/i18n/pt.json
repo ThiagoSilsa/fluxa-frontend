@@ -1,0 +1,65 @@
+{
+  "upload": {
+    "download-template": "Baixar modelo XLSX",
+    "select-file": "Selecionar arquivo",
+    "submit": "Importar",
+    "line": "Linha"
+  },
+  "active-job": {
+    "title": "Importação em andamento",
+    "description": "Processando {{fileName}}",
+    "status": "Status",
+    "pending": "Aguardando processamento...",
+    "progress": "{{processed}} de {{total}} linhas"
+  },
+  "job-status": {
+    "PENDING": "Pendente",
+    "PROCESSING": "Processando",
+    "DONE": "Concluído",
+    "FAILED": "Falhou"
+  },
+  "history": {
+    "empty": "Nenhuma importação realizada ainda"
+  },
+  "detail": {
+    "description": "Importação de {{type}}",
+    "status": "Status",
+    "rows": "Linhas",
+    "success": "Sucessos",
+    "errors": "Erros",
+    "duration": "Duração",
+    "error": "Erro"
+  },
+  "validation": {
+    "file-extension": "Formato inválido. Apenas .xlsx é aceito.",
+    "file-too-large": "Arquivo muito grande. Limite de 50MB."
+  },
+  "notifications": {
+    "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
+  },
+  "columns": {
+    "fileName": "Arquivo",
+    "status": "Status",
+    "rows": "Linhas",
+    "success": "Sucessos",
+    "errors": "Erros",
+    "createdAt": "Criado em",
+    "duration": "Duração"
+  },
+  "pagination": {
+    "limit": "Itens por página",
+    "first": "Primeira",
+    "previous": "Anterior",
+    "next": "Próxima",
+    "last": "Última"
+  },
+  "rules": {
+    "headers": {
+      "column": "Coluna",
+      "required": "Obrigatória",
+      "rules": "Regras"
+    },
+    "yes": "Sim",
+    "no": "Não"
+  }
+}

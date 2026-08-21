@@ -13,6 +13,8 @@ interface ValidateSessionResponse {
   type?: string
   roleCodes: string[]
   permissions: string[]
+  /** Se a pessoa tem cargo `is_admin` ativo na empresa da sessão. */
+  isAdmin: boolean
 }
 
 /**
@@ -37,6 +39,7 @@ export async function buildUserSession(session: AuthSession): Promise<AuthSessio
     roleCodes: details.roleCodes,
     permissionCodes: details.permissions,
     type: details.type,
+    isAdmin: details.isAdmin,
   }
 
   return {

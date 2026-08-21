@@ -2,12 +2,26 @@
   "actions": {
     "logout": "Sign out"
   },
+  "detail": {
+    "back": "Back"
+  },
   "home": {
     "title": "Home",
     "description": "This page is under construction."
   },
   "placeholder": {
     "description": "This page is under construction."
+  },
+  "no-access": {
+    "title": "No access",
+    "description": "You don't have permission to access this page."
+  },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "last": "Last page"
   },
   "errors": {
     "invalidCredentials": "Invalid credentials",

@@ -1,0 +1,101 @@
+{
+  "title": "Devices",
+  "subtitle": "Manage the doorman app devices.",
+  "search": { "placeholder": "Search by name" },
+  "filters": {
+    "status": { "label": "Status", "all": "All", "active": "Active", "inactive": "Inactive" }
+  },
+  "toolbar": { "create": "New device", "edit": "Edit", "delete": "Delete" },
+  "empty": {
+    "title": "No devices found",
+    "description": "Try adjusting the search or filters."
+  },
+  "status": { "active": "Active", "inactive": "Inactive" },
+  "columns": {
+    "name": "Name",
+    "platform": "Platform",
+    "entrance": "Entrance",
+    "appVersion": "App version",
+    "lastSyncAt": "Last sync",
+    "status": "Status",
+    "createdAt": "Created at"
+  },
+  "dialog": {
+    "create": {
+      "title": "Register device",
+      "description": "Fill in the device data. The token will be shown only once."
+    },
+    "edit": {
+      "title": "Edit device",
+      "description": "Update the device information."
+    }
+  },
+  "form": {
+    "name": { "label": "Name", "placeholder": "e.g. Gatehouse Tablet 1" },
+    "platform": {
+      "label": "Platform",
+      "placeholder": "Select the platform",
+      "immutable-hint": "The platform is immutable after creation."
+    },
+    "entrance": {
+      "label": "Linked entrance",
+      "placeholder": "Select the entrance",
+      "none": "No entrance",
+      "hint": "The link pre-fills the entrance on events recorded by the device."
+    },
+    "status": {
+      "label": "Status",
+      "active-hint": "Active — the device token is valid for sync.",
+      "inactive-hint": "Inactive — the token stops working and the app clears the local cache."
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Enter the device name.",
+      "name-max": "The name must be at most 100 characters.",
+      "platform-required": "Select the platform."
+    }
+  },
+  "detail": {
+    "title": "Device {{name}}",
+    "description": "Device details, linked entrance and sync.",
+    "ariaLabel": "View device {{name}} details",
+    "platform": "Platform",
+    "entrance": "Entrance",
+    "appVersion": "App version",
+    "lastSyncAt": "Last sync",
+    "status": "Status",
+    "createdAt": "Created at",
+    "close": "Close",
+    "rotate-token": "Rotate token"
+  },
+  "token": {
+    "title": "Device token",
+    "description": "Token for device \"{{name}}\" — save it now, it won't be shown again.",
+    "label": "Sync token",
+    "warning": "This token identifies the device when syncing. If lost, rotate it to generate a new one.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "close": "Close"
+  },
+  "confirm": {
+    "rotate": {
+      "title": "Rotate token",
+      "description": "Are you sure you want to rotate the token for device \"{{name}}\"? The current token will stop working and the new one will be shown only once.",
+      "confirm": "Yes, rotate",
+      "cancel": "Cancel"
+    },
+    "delete": {
+      "title": "Delete device",
+      "description": "Are you sure you want to delete device \"{{name}}\"? This action cannot be undone and the device will no longer be recognized.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Device registered successfully.",
+    "update-success": "Device updated successfully.",
+    "delete-success": "Device deleted successfully.",
+    "rotate-success": "Token rotated successfully."
+  }
+}

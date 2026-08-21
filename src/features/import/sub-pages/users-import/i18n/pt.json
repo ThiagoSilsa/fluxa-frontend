@@ -1,0 +1,55 @@
+{
+  "tab": {
+    "label": "Usuários"
+  },
+  "upload": {
+    "title": "Importar usuários",
+    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar usuários em lote. Senha em branco usa a senha padrão de onboarding."
+  },
+  "history": {
+    "empty": "Nenhuma importação de usuários realizada ainda"
+  },
+  "notifications": {
+    "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
+  },
+  "template": {
+    "filename": "modelo-importacao-usuarios.xlsx",
+    "sheets": {
+      "rules": "Regras"
+    }
+  },
+  "example": {
+    "email": "joao@empresa.local",
+    "name": "João Silva",
+    "type": "EMPLOYEE",
+    "password": "",
+    "phone": "(11) 99999-9999",
+    "document": "",
+    "role": "Porteiro"
+  },
+  "columns": {
+    "fileName": "Arquivo",
+    "status": "Status",
+    "rows": "Linhas",
+    "success": "Sucessos",
+    "errors": "Erros",
+    "createdAt": "Criado em",
+    "duration": "Duração"
+  },
+  "pagination": {
+    "limit": "Itens por página",
+    "first": "Primeira",
+    "previous": "Anterior",
+    "next": "Próxima",
+    "last": "Última"
+  },
+  "rules": {
+    "headers": {
+      "column": "Coluna",
+      "required": "Obrigatória",
+      "rules": "Regras"
+    },
+    "yes": "Sim",
+    "no": "Não"
+  }
+}

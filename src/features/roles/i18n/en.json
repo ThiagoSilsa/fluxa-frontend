@@ -1,0 +1,182 @@
+{
+  "title": "Roles and permissions",
+  "subtitle": "Manage roles and their permissions.",
+  "search": {
+    "placeholder": "Search role by name"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "toolbar": {
+    "create": "New role",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete",
+    "managePermissions": "Manage permissions"
+  },
+  "empty": {
+    "title": "No roles found",
+    "description": "Try adjusting your search."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "card": {
+    "system_role": "System role"
+  },
+  "dialog": {
+    "create": {
+      "title": "Create role",
+      "description": "Fill in the details to create the role."
+    },
+    "edit": {
+      "title": "Edit role",
+      "description": "Update the role information."
+    },
+    "permissions": {
+      "title": "Role permissions",
+      "description": "Select the permissions that the \"{{role}}\" role will have."
+    }
+  },
+  "form": {
+    "read-only-hint": "This role is controlled by the system and cannot be edited.",
+    "status": {
+      "label": "Status",
+      "create-hint": "New roles are created active."
+    },
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter the role name"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Enter the role description"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Please enter a role name.",
+      "name-min": "Name must have at least 2 characters.",
+      "name-max": "Name must be at most 255 characters.",
+      "description-max": "Description must be at most 500 characters."
+    }
+  },
+  "permissionsDialog": {
+    "empty": "No permissions available."
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete role",
+      "description": "Are you sure you want to delete the \"{{name}}\" role? All users linked to it will lose their role. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Role created successfully.",
+    "update-success": "Role updated successfully.",
+    "delete-success": "Role deleted successfully.",
+    "permission-assigned": "Permission granted.",
+    "permission-removed": "Permission removed."
+  },
+  "permissions": {
+    "MANAGE_COMPANY": {
+      "title": "Manage company",
+      "description": "Manage company data"
+    },
+    "MANAGE_USERS": {
+      "title": "Manage users",
+      "description": "Manage users and their roles"
+    },
+    "MANAGE_ROLES": {
+      "title": "Manage roles and permissions",
+      "description": "Create, edit and delete roles and manage permissions"
+    },
+    "MANAGE_VEHICLES": {
+      "title": "Manage vehicles",
+      "description": "Manage registered vehicles"
+    },
+    "MANAGE_VEHICLE_TYPES": {
+      "title": "Manage vehicle types",
+      "description": "Manage vehicle types"
+    },
+    "MANAGE_DEPARTMENTS": {
+      "title": "Manage departments",
+      "description": "Manage departments and vacancies"
+    },
+    "MANAGE_ENTRANCES": {
+      "title": "Manage entrances",
+      "description": "Manage entrances"
+    },
+    "MANAGE_BLOCKS": {
+      "title": "Manage blocks",
+      "description": "Block and revoke vehicle blocks"
+    },
+    "MANAGE_ACCESS_REQUESTS": {
+      "title": "Manage access requests",
+      "description": "Accept and reject registration/link requests"
+    },
+    "MANAGE_BLOCK_REQUESTS": {
+      "title": "Manage block requests",
+      "description": "Approve and reject block requests"
+    },
+    "MANAGE_IMPORTS": {
+      "title": "Manage imports",
+      "description": "Manage spreadsheet imports"
+    },
+    "MANAGE_DEVICES": {
+      "title": "Manage devices",
+      "description": "Manage app devices"
+    },
+    "GRANT_FREE_PASS": {
+      "title": "Grant free pass",
+      "description": "Grant and revoke free pass"
+    },
+    "PRINT_QRCODE": {
+      "title": "Print QR code",
+      "description": "Generate and print QR codes"
+    },
+    "VIEW_DASHBOARDS": {
+      "title": "View dashboards",
+      "description": "View dashboards and reports"
+    },
+    "REGISTER_ENTRY": {
+      "title": "Register entry",
+      "description": "Register vehicle entry"
+    },
+    "REGISTER_EXIT": {
+      "title": "Register exit",
+      "description": "Register vehicle exit"
+    },
+    "REGISTER_DENIAL": {
+      "title": "Register denial",
+      "description": "Register entry denial"
+    },
+    "CREATE_ACCESS_REQUEST": {
+      "title": "Create access request",
+      "description": "Create registration/link request"
+    },
+    "CANCEL_ACCESS_REQUEST": {
+      "title": "Cancel access request",
+      "description": "Cancel own request"
+    },
+    "CREATE_BLOCK_REQUEST": {
+      "title": "Create block request",
+      "description": "Request vehicle block"
+    },
+    "MANUAL_CLOSE_ACCESS": {
+      "title": "Manually close access",
+      "description": "Manually close access"
+    },
+    "INITIAL_ENTRY": {
+      "title": "Initial entry",
+      "description": "Register initial entry (go-live)"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Portarias",
+  "subtitle": "Gerencie as portarias da empresa.",
+  "search": { "placeholder": "Buscar por nome" },
+  "filters": {
+    "status": { "label": "Status", "all": "Todas", "active": "Ativas", "inactive": "Inativas" }
+  },
+  "toolbar": {
+    "create": "Nova portaria",
+    "edit": "Editar",
+    "view": "Visualizar",
+    "delete": "Excluir"
+  },
+  "empty": {
+    "title": "Nenhuma portaria encontrada",
+    "description": "Tente ajustar a busca ou os filtros."
+  },
+  "status": { "active": "Ativa", "inactive": "Inativa" },
+  "dialog": {
+    "create": {
+      "title": "Criar portaria",
+      "description": "Preencha os dados para criar a portaria."
+    },
+    "edit": { "title": "Editar portaria", "description": "Atualize as informações da portaria." }
+  },
+  "form": {
+    "name": { "label": "Nome", "placeholder": "Informe o nome da portaria" },
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com a portaria ativa.",
+      "active": "Ativa",
+      "inactive": "Inativa"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "name-required": "Informe o nome.",
+      "name-max": "O nome deve ter no máximo 100 caracteres."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Excluir portaria",
+      "description": "Tem certeza que deseja excluir a portaria \"{{name}}\"? Se houver dispositivos vinculados a esta portaria, a exclusão será bloqueada. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Portaria criada com sucesso.",
+    "update-success": "Portaria atualizada com sucesso.",
+    "delete-success": "Portaria excluída com sucesso."
+  }
+}

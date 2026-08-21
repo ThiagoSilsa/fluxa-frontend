@@ -35,7 +35,7 @@ import {
 import { getInitials } from '#/shared/utils/get-initials'
 
 // Lib
-import { cn } from '#/lib/utils'
+import { cn } from '#/shared/lib/utils'
 
 /**
  * Footer com menu de usuário, ações e toggle de sidebar.

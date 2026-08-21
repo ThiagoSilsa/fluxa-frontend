@@ -1,23 +1,16 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
-// i18n
-import { useTranslation } from 'react-i18next'
+// Routes
+import { rolesSearchSchema } from '#/features/roles/routes/roles.route'
 
-// Shared
-import { PagePlaceholder } from '#/shared/components/page-placeholder'
+// Pages
+import { RolesPage } from '#/features/roles/pages/role-page'
+
+// Hoc
+import { withRouteAccess } from '#/shared/hoc/route-access'
 
 export const Route = createFileRoute('/_private/management/roles')({
-  component: RolesPage,
+  validateSearch: rolesSearchSchema,
+  component: withRouteAccess({ permissions: ['MANAGE_ROLES'] }, RolesPage),
 })
-
-/**
- * Página de gestão de cargos e permissões.
- *
- * TODO: Implementar a tela real de cargos.
- */
-function RolesPage() {
-  const { t } = useTranslation('mainLayout')
-
-  return <PagePlaceholder title={t('sidebar.items.roles')} />
-}

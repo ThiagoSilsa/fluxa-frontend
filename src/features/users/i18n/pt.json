@@ -1,0 +1,141 @@
+{
+  "title": "Usuários",
+  "subtitle": "Gerencie os usuários e os acessos da empresa.",
+  "search": {
+    "placeholder": "Buscar por nome ou e-mail"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "Todos",
+      "active": "Ativos",
+      "inactive": "Inativos"
+    },
+    "type": {
+      "label": "Tipo",
+      "all": "Todos os tipos"
+    }
+  },
+  "toolbar": {
+    "create": "Novo usuário",
+    "edit": "Editar",
+    "view": "Visualizar",
+    "delete": "Excluir"
+  },
+  "empty": {
+    "title": "Nenhum usuário encontrado",
+    "description": "Tente ajustar a busca ou os filtros."
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  },
+  "types": {
+    "EMPLOYEE": "Colaborador",
+    "VISITOR": "Visitante"
+  },
+  "card": {
+    "no-role": "Sem cargo"
+  },
+  "dialog": {
+    "create": {
+      "title": "Criar usuário",
+      "description": "Preencha os dados para criar o usuário já vinculado à empresa."
+    },
+    "edit": {
+      "title": "Editar usuário",
+      "description": "Atualize as informações do usuário."
+    }
+  },
+  "form": {
+    "read-only-hint": "Este usuário é administrador e só pode ser gerenciado por outro administrador.",
+    "sections": {
+      "general": {
+        "title": "Geral",
+        "description": "Nome, e-mail, senha e dados do vínculo"
+      },
+      "role": {
+        "title": "Cargo",
+        "description": "O cargo define as permissões do usuário"
+      }
+    },
+    "name": {
+      "label": "Nome",
+      "placeholder": "Informe o nome"
+    },
+    "email": {
+      "label": "E-mail",
+      "placeholder": "Informe o e-mail",
+      "checking": "Verificando o endereço...",
+      "already-registered": "Este e-mail já tem conta no sistema. O cadastro vira vínculo: o nome e a senha continuam sendo da pessoa."
+    },
+    "password": {
+      "label": "Senha",
+      "placeholder": "Informe a senha",
+      "create-hint": "Mínimo de 6 caracteres.",
+      "editPlaceholder": "Deixe em branco para manter a senha atual",
+      "resetPlaceholder": "Informe a nova senha",
+      "showPassword": "Mostrar senha",
+      "hidePassword": "Ocultar senha"
+    },
+    "reset-password": {
+      "label": "Redefinir senha"
+    },
+    "phone": {
+      "label": "Telefone",
+      "placeholder": "Informe o telefone"
+    },
+    "document": {
+      "label": "Documento",
+      "placeholder": "Informe o documento"
+    },
+    "type": {
+      "label": "Tipo"
+    },
+    "role": {
+      "label": "Cargo",
+      "placeholder": "Selecione um cargo",
+      "no-role": "Sem cargo",
+      "admin-hint": "Este cargo dá acesso total de administração.",
+      "select-hint": "O usuário terá um único cargo nesta empresa."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "A criação já começa com o usuário ativo.",
+      "active": "Ativo",
+      "inactive": "Inativo"
+    },
+    "link-action": "Vincular",
+    "cancel": "Cancelar",
+    "submitting": "Salvando...",
+    "errors": {
+      "name-required": "Informe o nome.",
+      "name-min": "O nome deve ter pelo menos 2 caracteres.",
+      "name-max": "O nome deve ter no máximo 255 caracteres.",
+      "email-required": "Informe o e-mail.",
+      "email-invalid": "Informe um e-mail válido.",
+      "email-max": "O e-mail deve ter no máximo 255 caracteres.",
+      "password-required": "Informe a senha.",
+      "password-min": "A senha deve ter ao menos 6 caracteres.",
+      "password-max": "A senha deve ter no máximo 128 caracteres.",
+      "phone-max": "O telefone deve ter no máximo 32 caracteres.",
+      "document-max": "O documento deve ter no máximo 32 caracteres.",
+      "type-invalid": "Tipo inválido.",
+      "roleId-required": "Selecione um cargo."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Excluir usuário",
+      "description": "Tem certeza que deseja excluir \"{{name}}\"? O vínculo com esta empresa será removido definitivamente; se esta for a única empresa da pessoa, ela será removida do sistema. Esta ação não pode ser desfeita.",
+      "confirm": "Sim, excluir",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Usuário criado com sucesso.",
+    "update-success": "Usuário atualizado com sucesso.",
+    "delete-success": "Usuário excluído com sucesso.",
+    "password-reset-success": "Senha redefinida com sucesso."
+  }
+}

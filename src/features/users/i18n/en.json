@@ -1,0 +1,141 @@
+{
+  "title": "Users",
+  "subtitle": "Manage users and company access.",
+  "search": {
+    "placeholder": "Search by name or e-mail"
+  },
+  "filters": {
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "type": {
+      "label": "Type",
+      "all": "All types"
+    }
+  },
+  "toolbar": {
+    "create": "New user",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete"
+  },
+  "empty": {
+    "title": "No users found",
+    "description": "Try adjusting your search or filters."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "types": {
+    "EMPLOYEE": "Employee",
+    "VISITOR": "Visitor"
+  },
+  "card": {
+    "no-role": "No role"
+  },
+  "dialog": {
+    "create": {
+      "title": "Create user",
+      "description": "Fill in the details to create the user already linked to the company."
+    },
+    "edit": {
+      "title": "Edit user",
+      "description": "Update the user information."
+    }
+  },
+  "form": {
+    "read-only-hint": "This user is an administrator and can only be managed by another administrator.",
+    "sections": {
+      "general": {
+        "title": "General",
+        "description": "Name, e-mail, password and link data"
+      },
+      "role": {
+        "title": "Role",
+        "description": "The role defines the user permissions"
+      }
+    },
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter the name"
+    },
+    "email": {
+      "label": "E-mail",
+      "placeholder": "Enter the e-mail",
+      "checking": "Checking the address...",
+      "already-registered": "This e-mail already has an account in the system. The registration becomes a link: the name and password remain the person's own."
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter the password",
+      "create-hint": "Minimum of 6 characters.",
+      "editPlaceholder": "Leave blank to keep the current password",
+      "resetPlaceholder": "Enter the new password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "reset-password": {
+      "label": "Reset password"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter the phone"
+    },
+    "document": {
+      "label": "Document",
+      "placeholder": "Enter the document"
+    },
+    "type": {
+      "label": "Type"
+    },
+    "role": {
+      "label": "Role",
+      "placeholder": "Select a role",
+      "no-role": "No role",
+      "admin-hint": "This role grants full administration access.",
+      "select-hint": "The user will have a single role in this company."
+    },
+    "status": {
+      "label": "Status",
+      "create-hint": "New users are created active.",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "link-action": "Link",
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Please enter the name.",
+      "name-min": "Name must have at least 2 characters.",
+      "name-max": "Name must be at most 255 characters.",
+      "email-required": "Please enter the e-mail.",
+      "email-invalid": "Please enter a valid e-mail.",
+      "email-max": "E-mail must be at most 255 characters.",
+      "password-required": "Please enter the password.",
+      "password-min": "Password must have at least 6 characters.",
+      "password-max": "Password must be at most 128 characters.",
+      "phone-max": "Phone must be at most 32 characters.",
+      "document-max": "Document must be at most 32 characters.",
+      "type-invalid": "Invalid type.",
+      "roleId-required": "Please select a role."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete user",
+      "description": "Are you sure you want to delete \"{{name}}\"? The link with this company will be permanently removed; if this is the person's only company, the person will be removed from the system. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "User created successfully.",
+    "update-success": "User updated successfully.",
+    "delete-success": "User deleted successfully.",
+    "password-reset-success": "Password reset successfully."
+  }
+}

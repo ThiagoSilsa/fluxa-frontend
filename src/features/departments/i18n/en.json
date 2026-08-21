@@ -1,0 +1,60 @@
+{
+  "title": "Departments",
+  "subtitle": "Manage the company's departments.",
+  "search": { "placeholder": "Search by name" },
+  "filters": {
+    "status": { "label": "Status", "all": "All", "active": "Active", "inactive": "Inactive" }
+  },
+  "toolbar": { "create": "New department", "edit": "Edit", "view": "View", "delete": "Delete" },
+  "empty": {
+    "title": "No departments found",
+    "description": "Try adjusting the search or filters."
+  },
+  "status": { "active": "Active", "inactive": "Inactive" },
+  "card": {
+    "vagas": "Parking spaces",
+    "vagas-count": "{{count}} space",
+    "vagas-count_plural": "{{count}} spaces"
+  },
+  "dialog": {
+    "create": {
+      "title": "Create department",
+      "description": "Fill in the details to create the department."
+    },
+    "edit": { "title": "Edit department", "description": "Update the department information." }
+  },
+  "form": {
+    "name": { "label": "Name", "placeholder": "Enter the department name" },
+    "parkingSpace": { "label": "Parking spaces", "placeholder": "e.g. 30" },
+    "description": { "label": "Description", "placeholder": "Enter the department description" },
+    "status": {
+      "label": "Status",
+      "create-hint": "New departments are created active.",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "cancel": "Cancel",
+    "submitting": "Saving...",
+    "errors": {
+      "name-required": "Enter the name.",
+      "name-max": "The name must be at most 100 characters.",
+      "parking-space-required": "Enter the number of parking spaces.",
+      "parking-space-integer": "The number of parking spaces must be an integer.",
+      "parking-space-min": "The number of parking spaces must be 0 or greater.",
+      "description-max": "The description must be at most 2000 characters."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete department",
+      "description": "Are you sure you want to delete the department \"{{name}}\"? If there are vehicles linked to this department, the deletion will be blocked. This action cannot be undone.",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel"
+    }
+  },
+  "notifications": {
+    "create-success": "Department created successfully.",
+    "update-success": "Department updated successfully.",
+    "delete-success": "Department deleted successfully."
+  }
+}
