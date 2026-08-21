@@ -1,23 +1,26 @@
 // Router
 import { createFileRoute } from '@tanstack/react-router'
 
-// i18n
-import { useTranslation } from 'react-i18next'
+// Routes
+import { importSearchSchema } from '#/features/import/routes/import.route'
 
-// Shared
-import { PagePlaceholder } from '#/shared/components/page-placeholder'
+// Pages
+import { ImportPage } from '#/features/import/pages/import-page'
+
+// Hoc
+import { withRouteAccess } from '#/shared/hoc/route-access'
 
 export const Route = createFileRoute('/_private/management/imports')({
-  component: ImportsPage,
+  validateSearch: importSearchSchema,
+  component: withRouteAccess({ permissions: ['MANAGE_IMPORTS'] }, ImportRoute),
 })
 
 /**
- * Página de importações em lote.
- *
- * TODO: Implementar a tela real de importações.
+ * Página de importações — repassa os search params para a página (ler a URL é
+ * papel da rota, não da página).
  */
-function ImportsPage() {
-  const { t } = useTranslation('mainLayout')
+function ImportRoute() {
+  const search = Route.useSearch()
 
-  return <PagePlaceholder title={t('sidebar.items.imports')} />
+  return <ImportPage search={search} />
 }

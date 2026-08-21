@@ -1,0 +1,48 @@
+{
+  "upload": {
+    "title": "Import departments",
+    "description": "Upload an XLSX file following the template to bulk-create departments."
+  },
+  "history": {
+    "empty": "No department imports yet"
+  },
+  "notifications": {
+    "upload-success": "File sent! Track the progress below."
+  },
+  "template": {
+    "filename": "department-import-template.xlsx",
+    "sheets": {
+      "rules": "Rules"
+    }
+  },
+  "example": {
+    "name": "Reception",
+    "parkingSpace": "10",
+    "description": "Main gate"
+  },
+  "columns": {
+    "fileName": "File",
+    "status": "Status",
+    "rows": "Rows",
+    "success": "Successes",
+    "errors": "Errors",
+    "createdAt": "Created at",
+    "duration": "Duration"
+  },
+  "pagination": {
+    "limit": "Items per page",
+    "first": "First",
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last"
+  },
+  "rules": {
+    "headers": {
+      "column": "Column",
+      "required": "Required",
+      "rules": "Rules"
+    },
+    "yes": "Yes",
+    "no": "No"
+  }
+}

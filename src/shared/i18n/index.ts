@@ -22,6 +22,10 @@ import departmentsEn from '#/features/departments/i18n/en.json'
 import departmentsPt from '#/features/departments/i18n/pt.json'
 import entrancesEn from '#/features/entrances/i18n/en.json'
 import entrancesPt from '#/features/entrances/i18n/pt.json'
+import importEn from '#/features/import/i18n/en.json'
+import importPt from '#/features/import/i18n/pt.json'
+import departmentsImportEn from '#/features/import/sub-pages/departments-import/i18n/en.json'
+import departmentsImportPt from '#/features/import/sub-pages/departments-import/i18n/pt.json'
 import vehiclesEn from '#/features/vehicles/i18n/en.json'
 import vehiclesPt from '#/features/vehicles/i18n/pt.json'
 
@@ -41,6 +45,8 @@ i18n
         departments: departmentsPt,
         entrances: entrancesPt,
         vehicles: vehiclesPt,
+        import: importPt,
+        departmentsImport: departmentsImportPt,
       },
 
       en: {
@@ -54,6 +60,8 @@ i18n
         departments: departmentsEn,
         entrances: entrancesEn,
         vehicles: vehiclesEn,
+        import: importEn,
+        departmentsImport: departmentsImportEn,
       },
     },
 
@@ -72,6 +80,8 @@ i18n
       'departments',
       'entrances',
       'vehicles',
+      'import',
+      'departmentsImport',
     ],
 
     defaultNS: 'common',
