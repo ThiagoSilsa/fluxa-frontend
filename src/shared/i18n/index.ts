@@ -38,6 +38,8 @@ import devicesEn from '#/features/devices/i18n/en.json'
 import devicesPt from '#/features/devices/i18n/pt.json'
 import accessEn from '#/features/access/i18n/en.json'
 import accessPt from '#/features/access/i18n/pt.json'
+import accessRequestsEn from '#/features/access-requests/i18n/en.json'
+import accessRequestsPt from '#/features/access-requests/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -57,6 +59,7 @@ i18n
         vehicles: vehiclesPt,
         devices: devicesPt,
         access: accessPt,
+        accessRequests: accessRequestsPt,
         import: importPt,
         departmentsImport: departmentsImportPt,
         vehiclesImport: vehiclesImportPt,
@@ -77,6 +80,7 @@ i18n
         vehicles: vehiclesEn,
         devices: devicesEn,
         access: accessEn,
+        accessRequests: accessRequestsEn,
         import: importEn,
         departmentsImport: departmentsImportEn,
         vehiclesImport: vehiclesImportEn,
@@ -102,6 +106,7 @@ i18n
       'vehicles',
       'devices',
       'access',
+      'accessRequests',
       'import',
       'departmentsImport',
       'vehiclesImport',
