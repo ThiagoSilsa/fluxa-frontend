@@ -34,6 +34,8 @@ import userVehiclesImportEn from '#/features/import/sub-pages/user-vehicles-impo
 import userVehiclesImportPt from '#/features/import/sub-pages/user-vehicles-import/i18n/pt.json'
 import vehiclesEn from '#/features/vehicles/i18n/en.json'
 import vehiclesPt from '#/features/vehicles/i18n/pt.json'
+import devicesEn from '#/features/devices/i18n/en.json'
+import devicesPt from '#/features/devices/i18n/pt.json'
 
 i18n
   .use(LanguageDetector)
@@ -51,6 +53,7 @@ i18n
         departments: departmentsPt,
         entrances: entrancesPt,
         vehicles: vehiclesPt,
+        devices: devicesPt,
         import: importPt,
         departmentsImport: departmentsImportPt,
         vehiclesImport: vehiclesImportPt,
@@ -69,6 +72,7 @@ i18n
         departments: departmentsEn,
         entrances: entrancesEn,
         vehicles: vehiclesEn,
+        devices: devicesEn,
         import: importEn,
         departmentsImport: departmentsImportEn,
         vehiclesImport: vehiclesImportEn,
@@ -92,6 +96,7 @@ i18n
       'departments',
       'entrances',
       'vehicles',
+      'devices',
       'import',
       'departmentsImport',
       'vehiclesImport',
