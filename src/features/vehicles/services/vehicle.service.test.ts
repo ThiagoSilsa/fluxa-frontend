@@ -219,4 +219,61 @@ describe('VehiclesService', () => {
       })
     })
   })
+
+  describe('qr (ADR 0009)', () => {
+    const qr = {
+      id: 'qr-1',
+      vehicleId: 'v-1',
+      code: '550e8400-e29b-41d4-a716-446655440000',
+      isActive: true,
+      issuedBy: null,
+      createdAt: '2026-08-21T00:00:00.000Z',
+    }
+
+    it('getVehicleQr chama GET em /vehicles/:id/qr', async () => {
+      mockedMakeRequest.mockResolvedValue(qr)
+
+      const result = await vehiclesService.getVehicleQr('v-1')
+
+      expect(mockedMakeRequest).toHaveBeenCalledWith({
+        endpoint: '/vehicles/v-1/qr',
+        method: 'GET',
+      })
+      expect(result).toEqual(qr)
+    })
+
+    it('emitVehicleQr chama POST em /vehicles/:id/qr', async () => {
+      mockedMakeRequest.mockResolvedValue(qr)
+
+      const result = await vehiclesService.emitVehicleQr('v-1')
+
+      expect(mockedMakeRequest).toHaveBeenCalledWith({
+        endpoint: '/vehicles/v-1/qr',
+        method: 'POST',
+      })
+      expect(result).toEqual(qr)
+    })
+
+    it('reissueVehicleQr chama POST em /vehicles/:id/qr/reissue', async () => {
+      mockedMakeRequest.mockResolvedValue(qr)
+
+      await vehiclesService.reissueVehicleQr('v-1')
+
+      expect(mockedMakeRequest).toHaveBeenCalledWith({
+        endpoint: '/vehicles/v-1/qr/reissue',
+        method: 'POST',
+      })
+    })
+
+    it('revokeVehicleQr chama POST em /vehicles/:id/qr/revoke', async () => {
+      mockedMakeRequest.mockResolvedValue(undefined)
+
+      await vehiclesService.revokeVehicleQr('v-1')
+
+      expect(mockedMakeRequest).toHaveBeenCalledWith({
+        endpoint: '/vehicles/v-1/qr/revoke',
+        method: 'POST',
+      })
+    })
+  })
 })

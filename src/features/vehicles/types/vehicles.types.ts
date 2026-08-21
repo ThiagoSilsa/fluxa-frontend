@@ -50,6 +50,20 @@ export type VehicleDepartmentLink = {
   isActive: boolean
 }
 
+/** QR code de veículo (tabela `vehicle_qr_code` — ADR 0009). */
+export type VehicleQrEntity = {
+  id: string
+  vehicleId: string
+  /** Token permanente (uuid) — o que o QR code representa. */
+  code: string
+  /** Ativo (revogado/reemitido = "expirado" — não resolve). */
+  isActive: boolean
+  /** Quem emitiu (auditoria) ou null. */
+  issuedBy: string | null
+  /** Data de emissão (ISO). */
+  createdAt: string
+}
+
 /** Detalhe agregado do veículo (`GET /vehicles/:id`). */
 export type VehicleDetail = VehicleEntity & {
   department: { id: string; name: string } | null

@@ -15,6 +15,7 @@ import type {
   VehicleEntity,
   VehicleListParams,
   VehicleListResponse,
+  VehicleQrEntity,
 } from '../types/vehicles.types'
 
 // Controller
@@ -207,6 +208,59 @@ class VehiclesService {
     return baseController.makeRequest({
       endpoint: `/vehicles/driver-candidates${query ? `?${query}` : ''}`,
       method: 'GET',
+    })
+  }
+
+  /**
+   * Devolve o QR **ativo** de um veículo (reimpressão — mesmo `code`).
+   *
+   * 404 quando não há QR ativo (nunca emitido/revogado/reemitido).
+   *
+   * @param vehicleId Id do veículo.
+   * @returns QR ativo do veículo.
+   */
+  async getVehicleQr(vehicleId: string): Promise<VehicleQrEntity> {
+    return baseController.makeRequest({
+      endpoint: `/vehicles/${vehicleId}/qr`,
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Emite o QR permanente de um veículo (gera o `code` no backend).
+   *
+   * @param vehicleId Id do veículo.
+   * @returns QR emitido (token permanente).
+   */
+  async emitVehicleQr(vehicleId: string): Promise<VehicleQrEntity> {
+    return baseController.makeRequest({
+      endpoint: `/vehicles/${vehicleId}/qr`,
+      method: 'POST',
+    })
+  }
+
+  /**
+   * Reemite o QR de um veículo (revoga o atual + novo `code`).
+   *
+   * @param vehicleId Id do veículo.
+   * @returns Novo QR (novo `code`).
+   */
+  async reissueVehicleQr(vehicleId: string): Promise<VehicleQrEntity> {
+    return baseController.makeRequest({
+      endpoint: `/vehicles/${vehicleId}/qr/reissue`,
+      method: 'POST',
+    })
+  }
+
+  /**
+   * Revoga o QR ativo de um veículo (sem emitir outro — "expirado").
+   *
+   * @param vehicleId Id do veículo.
+   */
+  async revokeVehicleQr(vehicleId: string): Promise<void> {
+    await baseController.makeRequest({
+      endpoint: `/vehicles/${vehicleId}/qr/revoke`,
+      method: 'POST',
     })
   }
 }

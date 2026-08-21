@@ -80,6 +80,10 @@ export function VehiclesPage() {
     () => canAccess(user, { permissions: [PermissionCode.GRANT_FREE_PASS] }),
     [user],
   )
+  const canPrintQr = useMemo(
+    () => canAccess(user, { permissions: [PermissionCode.PRINT_QRCODE] }),
+    [user],
+  )
 
   // --- Search params da rota ---
   const search = routeApi.useSearch()
@@ -379,6 +383,7 @@ export function VehiclesPage() {
           onOpenChange={(open) => !open && handleCloseDetail()}
           vehicle={detailTarget}
           departmentOptions={departmentOptions}
+          canPrintQr={canPrintQr}
         />
       ) : null}
 

@@ -96,6 +96,44 @@
       "remove": "Remove driver"
     }
   },
+  "qr": {
+    "section": {
+      "title": "QR code",
+      "hint": "Permanent QR printed/stuck on the vehicle — stays valid even if data changes.",
+      "open": "View QR code"
+    },
+    "title": "Vehicle {{plate}} QR code",
+    "description": "Permanent QR — identifies the vehicle, not its registry data.",
+    "loading": "Loading QR...",
+    "generating": "Generating image...",
+    "aria-qr": "Vehicle QR code",
+    "no-qr": {
+      "title": "No QR issued",
+      "description": "Issue the QR to print and stick on the vehicle. The image is generated from a permanent token.",
+      "emit": "Issue QR"
+    },
+    "status": { "active": "QR active", "inactive": "QR expired" },
+    "print": "Print",
+    "reissue": "Reissue",
+    "revoke": "Revoke",
+    "close": "Close",
+    "cancel": "Cancel",
+    "reissue-confirm": {
+      "title": "Reissue QR code",
+      "description": "The current QR of vehicle \"{{plate}}\" will stop working and a new one will be generated (new sticker). Continue?",
+      "confirm": "Yes, reissue"
+    },
+    "revoke-confirm": {
+      "title": "Revoke QR code",
+      "description": "The QR of vehicle \"{{plate}}\" will be deactivated (no longer resolves — expired) without generating a new one. Continue?",
+      "confirm": "Yes, revoke"
+    },
+    "notifications": {
+      "emit-success": "QR code issued successfully.",
+      "reissue-success": "QR code reissued successfully.",
+      "revoke-success": "QR code revoked successfully."
+    }
+  },
   "confirm": {
     "delete": {
       "title": "Delete vehicle",

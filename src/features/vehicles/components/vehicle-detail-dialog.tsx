@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 // Icons
-import { Building2, Search, Trash2, UserPlus, Users } from 'lucide-react'
+import { Building2, QrCode, Search, Trash2, UserPlus, Users } from 'lucide-react'
 
 // i18n
 import { useTranslation } from 'react-i18next'
@@ -11,6 +11,9 @@ import { useTranslation } from 'react-i18next'
 import { useVehicleDetailQuery } from '../hooks/use-vehicle-detail-query'
 import { useVehicleMutations } from '../hooks/use-vehicle-mutations'
 import { useDriverCandidatesQuery } from '../hooks/use-driver-candidates-query'
+
+// Components
+import { VehicleQrDialog } from './vehicle-qr-dialog'
 
 // Types
 import type { VehicleEntity, VehicleParameterOption } from '../types/vehicles.types'
@@ -49,6 +52,8 @@ export type VehicleDetailDialogProps = {
   vehicle: VehicleEntity
   /** Departamentos ativos (do `parameters` da listagem). */
   departmentOptions: VehicleParameterOption[]
+  /** Se o ator pode emitir/imprimir QR (PRINT_QRCODE ou admin). */
+  canPrintQr: boolean
 }
 
 /**
@@ -64,8 +69,12 @@ export function VehicleDetailDialog({
   onOpenChange,
   vehicle,
   departmentOptions,
+  canPrintQr,
 }: VehicleDetailDialogProps) {
   const { t } = useTranslation('vehicles')
+
+  // --- QR code (ADR 0009) ---
+  const [qrOpen, setQrOpen] = useState(false)
 
   // --- Detalhe agregado ---
   const { data: detail, isPending } = useVehicleDetailQuery(open ? vehicle.id : null)
@@ -372,9 +381,30 @@ export function VehicleDetailDialog({
                 </ul>
               )}
             </div>
+
+            {/* QR code (ADR 0009) — restrito a PRINT_QRCODE */}
+            {canPrintQr ? (
+              <div className="border-border space-y-3 border-t pt-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <QrCode className="text-muted-foreground size-4" />
+                    <h3 className="text-foreground text-sm font-semibold">
+                      {t('qr.section.title')}
+                    </h3>
+                  </div>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setQrOpen(true)}>
+                    {t('qr.section.open')}
+                  </Button>
+                </div>
+                <p className="text-muted-foreground text-xs">{t('qr.section.hint')}</p>
+              </div>
+            ) : null}
           </div>
         )}
       </DialogContent>
+
+      {/* Dialog de QR code do veículo */}
+      <VehicleQrDialog open={qrOpen} onOpenChange={setQrOpen} vehicle={vehicle} />
     </Dialog>
   )
 }

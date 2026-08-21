@@ -99,6 +99,44 @@
       "remove": "Remover motorista"
     }
   },
+  "qr": {
+    "section": {
+      "title": "QR code",
+      "hint": "QR permanente impresso/colado no veículo — continua válido mesmo se os dados mudarem.",
+      "open": "Ver QR code"
+    },
+    "title": "QR code do veículo {{plate}}",
+    "description": "QR permanente — identifica o veículo, não os seus dados cadastrais.",
+    "loading": "Carregando QR...",
+    "generating": "Gerando imagem...",
+    "aria-qr": "QR code do veículo",
+    "no-qr": {
+      "title": "Nenhum QR emitido",
+      "description": "Emita o QR para imprimir e colar no veículo. A imagem é gerada a partir de um token permanente.",
+      "emit": "Emitir QR"
+    },
+    "status": { "active": "QR ativo", "inactive": "QR expirado" },
+    "print": "Imprimir",
+    "reissue": "Reemitir",
+    "revoke": "Revogar",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "reissue-confirm": {
+      "title": "Reemitir QR code",
+      "description": "O QR atual do veículo \"{{plate}}\" deixará de valer e um novo será gerado (adesivo novo). Continuar?",
+      "confirm": "Sim, reemitir"
+    },
+    "revoke-confirm": {
+      "title": "Revogar QR code",
+      "description": "O QR do veículo \"{{plate}}\" será desativado (não resolve mais — expirado) sem gerar outro. Continuar?",
+      "confirm": "Sim, revogar"
+    },
+    "notifications": {
+      "emit-success": "QR code emitido com sucesso.",
+      "reissue-success": "QR code reemitido com sucesso.",
+      "revoke-success": "QR code revogado com sucesso."
+    }
+  },
   "confirm": {
     "delete": {
       "title": "Excluir veículo",
