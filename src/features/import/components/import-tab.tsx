@@ -8,52 +8,69 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 
 // Columns
-import { createJobsColumns } from '../config/jobs-columns'
+import { useJobsColumns } from '../config/jobs-columns'
 
 // Components
-import { FileUploadCard, JobDetailDialog, JobTrackingCard } from '../../../components'
+import { FileUploadCard, JobDetailDialog, JobTrackingCard } from './index'
+import type { useGenericTableSearch } from '#/shared/components'
 import { GenericTable } from '#/shared/components'
 
 // Hooks
 import { useImportJobPolling } from '../hooks/use-import-job-polling'
 import { useImportMutations } from '../hooks/use-import-mutations'
 import { useImportsQuery } from '../hooks/use-imports-query'
-import { useDownloadTemplate } from '../hooks/use-download-template'
 
 // Mappers
-import { normalizeImportJob } from '../../../mappers/import.mapper'
+import { normalizeImportJob } from '../mappers/import.mapper'
 
 // Types
-import type { ImportJobViewModel, ImportUploadResponse } from '../../../types/import.types'
-import type { useGenericTableSearch } from '#/shared/components/generic-table'
+import type { ImportJobViewModel, ImportUploadResponse } from '../types/import.types'
+import type { ImportJobServiceLike } from '../hooks/use-import-job-polling'
+import type { ImportListServiceLike } from '../hooks/use-imports-query'
+import type { ImportUploadServiceLike } from '../hooks/use-import-mutations'
+
+/** Contrato de um service de importação (upload + listagem + status). */
+export type ImportServiceLike = ImportUploadServiceLike &
+  ImportListServiceLike &
+  ImportJobServiceLike
 
 /** Tipo do estado de paginação/ordenação da URL (retorno do hook). */
 type ImportTable = ReturnType<typeof useGenericTableSearch>
 
 /**
- * Aba de importação de departamentos: upload + acompanhamento + histórico.
+ * Aba genérica de importação (compartilhada por todas as sub-páginas):
+ * upload + acompanhamento do job ativo + histórico paginado.
  *
- * Orquestra o download do template, o upload (mutation), o polling do job
- * ativo e o histórico paginado (`GenericTable`), com detalhes do job ao clicar
- * na linha.
+ * Orquestra o download do template, o upload (mutation), o polling do job e o
+ * histórico (`GenericTable`), com detalhes do job ao clicar na linha. Labels
+ * específicos vêm do `namespace` da sub-página.
  *
  * @param props Propriedades da aba.
  */
-export function DepartmentsImportTab({
+export function ImportTab({
   table,
+  service,
+  namespace,
+  onDownloadTemplate,
 }: {
   /** Estado de paginação/ordenação via URL (useGenericTableSearch). */
   table: ImportTable
+  /** Service de importação da sub-página. */
+  service: ImportServiceLike
+  /** Namespace de tradução da sub-página. */
+  namespace: string
+  /** Função que baixa o template da sub-página. */
+  onDownloadTemplate: () => Promise<void>
 }) {
-  const { t } = useTranslation('departmentsImport')
+  const { t } = useTranslation(namespace)
   const queryClient = useQueryClient()
 
   // Job ativo (após upload)
   const [activeJobId, setActiveJobId] = useState<string | null>(null)
-  const { job: activeJob } = useImportJobPolling(activeJobId)
+  const { job: activeJob } = useImportJobPolling(service, activeJobId)
 
   // Histórico paginado
-  const { data, isLoading } = useImportsQuery({
+  const { data, isLoading } = useImportsQuery(service, {
     limit: table.limit ?? 20,
     offset: table.offset ?? 0,
   })
@@ -67,7 +84,7 @@ export function DepartmentsImportTab({
   }, [activeJob, queryClient])
 
   // Upload
-  const { uploadCsv } = useImportMutations()
+  const { uploadCsv } = useImportMutations({ service, namespace })
 
   const handleUpload = (file: File) => {
     uploadCsv.mutate(file, {
@@ -76,9 +93,6 @@ export function DepartmentsImportTab({
       },
     })
   }
-
-  // Download do template (client — ExcelJS)
-  const handleDownloadTemplate = useDownloadTemplate(t)
 
   // Detalhes
   const [selectedJob, setSelectedJob] = useState<ImportJobViewModel | null>(null)
@@ -96,12 +110,12 @@ export function DepartmentsImportTab({
         description={t('upload.description')}
         onUpload={handleUpload}
         isPending={uploadCsv.isPending}
-        onDownloadTemplate={handleDownloadTemplate}
+        onDownloadTemplate={onDownloadTemplate}
       />
 
       <GenericTable
         data={jobs}
-        columns={createJobsColumns(t)}
+        columns={useJobsColumns()}
         loading={isLoading}
         total={total}
         pageIndex={table.pageIndex}

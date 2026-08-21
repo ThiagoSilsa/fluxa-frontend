@@ -1,27 +1,28 @@
 {
   "tab": {
-    "label": "Departments"
+    "label": "User-Vehicle Links"
   },
   "upload": {
-    "title": "Import departments",
-    "description": "Upload an XLSX file following the template to bulk-create departments."
+    "title": "Import user-vehicle links",
+    "description": "Upload an XLSX file following the template to link drivers to vehicles in bulk (by plate and email)."
   },
   "history": {
-    "empty": "No department imports yet"
+    "empty": "No link imports yet"
   },
   "notifications": {
     "upload-success": "File sent! Track the progress below."
   },
   "template": {
-    "filename": "department-import-template.xlsx",
+    "filename": "user-vehicle-link-import-template.xlsx",
     "sheets": {
       "rules": "Rules"
     }
   },
   "example": {
-    "name": "Reception",
-    "parkingSpace": "10",
-    "description": "Main gate"
+    "vehiclePlate": "ABC1234",
+    "userEmail": "driver@company.local",
+    "isPrimary": "true",
+    "canDrive": "true"
   },
   "columns": {
     "fileName": "File",

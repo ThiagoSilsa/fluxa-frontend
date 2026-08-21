@@ -4,16 +4,17 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useImportMutations } from './use-import-mutations'
 
+import type { ReactNode } from 'react'
+
 // Shared libs
 import { ApiError } from '#/shared/lib/api-error'
 
-import type { ReactNode } from 'react'
-
-// Mocks de i18n, toast e service
+// Mocks de i18n e toast
 const mockToastSuccess = vi.fn()
 const mockToastError = vi.fn()
 const mockT = vi.fn((key: string) => key)
 const mockTc = vi.fn((key: string) => key)
+const mockTi = vi.fn((key: string) => key)
 
 vi.mock('react-i18next', () => ({
   useTranslation: (ns: string | string[]) => {
@@ -21,6 +22,7 @@ vi.mock('react-i18next', () => ({
     return {
       t: (key: string) => {
         if (namespace === 'common') return mockTc(key)
+        if (namespace === 'import') return mockTi(key)
         return mockT(`${namespace}:${key}`)
       },
     }
@@ -34,10 +36,11 @@ vi.mock('sonner', () => ({
   },
 }))
 
+// Mock do service
 const mockUpload = vi.fn()
-vi.mock('../services/departments-import.service', () => ({
-  departmentsImportService: { upload: (...args: unknown[]) => mockUpload(...args) },
-}))
+const service = {
+  upload: (...args: unknown[]) => mockUpload(...args),
+}
 
 function createQueryWrapper() {
   const queryClient = new QueryClient({
@@ -56,9 +59,10 @@ describe('useImportMutations', () => {
   it('upload com sucesso: toast de sucesso', async () => {
     mockUpload.mockResolvedValue({ jobId: 'job-1', status: 'PENDING' })
 
-    const { result } = renderHook(() => useImportMutations(), {
-      wrapper: createQueryWrapper(),
-    })
+    const { result } = renderHook(
+      () => useImportMutations({ service, namespace: 'departmentsImport' }),
+      { wrapper: createQueryWrapper() },
+    )
 
     const file = new File(['x'], 'dados.xlsx')
     await act(async () => {
@@ -77,9 +81,10 @@ describe('useImportMutations', () => {
       }),
     )
 
-    const { result } = renderHook(() => useImportMutations(), {
-      wrapper: createQueryWrapper(),
-    })
+    const { result } = renderHook(
+      () => useImportMutations({ service, namespace: 'departmentsImport' }),
+      { wrapper: createQueryWrapper() },
+    )
 
     await act(async () => {
       try {
@@ -96,9 +101,10 @@ describe('useImportMutations', () => {
   it('upload com erro genérico: toast via mapa de códigos', async () => {
     mockUpload.mockRejectedValue(new ApiError({ code: 'CREDENCIAIS_INVALIDAS' }))
 
-    const { result } = renderHook(() => useImportMutations(), {
-      wrapper: createQueryWrapper(),
-    })
+    const { result } = renderHook(
+      () => useImportMutations({ service, namespace: 'departmentsImport' }),
+      { wrapper: createQueryWrapper() },
+    )
 
     await act(async () => {
       try {

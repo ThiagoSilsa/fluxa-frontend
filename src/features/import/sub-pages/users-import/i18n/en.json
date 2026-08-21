@@ -1,27 +1,31 @@
 {
   "tab": {
-    "label": "Departments"
+    "label": "Users"
   },
   "upload": {
-    "title": "Import departments",
-    "description": "Upload an XLSX file following the template to bulk-create departments."
+    "title": "Import users",
+    "description": "Upload an XLSX file following the template to bulk-create users. Blank password uses the default onboarding password."
   },
   "history": {
-    "empty": "No department imports yet"
+    "empty": "No user imports yet"
   },
   "notifications": {
     "upload-success": "File sent! Track the progress below."
   },
   "template": {
-    "filename": "department-import-template.xlsx",
+    "filename": "user-import-template.xlsx",
     "sheets": {
       "rules": "Rules"
     }
   },
   "example": {
-    "name": "Reception",
-    "parkingSpace": "10",
-    "description": "Main gate"
+    "email": "john@company.local",
+    "name": "John Doe",
+    "type": "EMPLOYEE",
+    "password": "",
+    "phone": "+55 11 99999-9999",
+    "document": "",
+    "role": "Gatekeeper"
   },
   "columns": {
     "fileName": "File",

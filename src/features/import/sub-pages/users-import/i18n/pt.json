@@ -1,27 +1,31 @@
 {
   "tab": {
-    "label": "Departamentos"
+    "label": "Usuários"
   },
   "upload": {
-    "title": "Importar departamentos",
-    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar departamentos em lote."
+    "title": "Importar usuários",
+    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar usuários em lote. Senha em branco usa a senha padrão de onboarding."
   },
   "history": {
-    "empty": "Nenhuma importação de departamentos realizada ainda"
+    "empty": "Nenhuma importação de usuários realizada ainda"
   },
   "notifications": {
     "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
   },
   "template": {
-    "filename": "modelo-importacao-departamentos.xlsx",
+    "filename": "modelo-importacao-usuarios.xlsx",
     "sheets": {
       "rules": "Regras"
     }
   },
   "example": {
-    "name": "Recepção",
-    "parkingSpace": "10",
-    "description": "Portaria principal"
+    "email": "joao@empresa.local",
+    "name": "João Silva",
+    "type": "EMPLOYEE",
+    "password": "",
+    "phone": "(11) 99999-9999",
+    "document": "",
+    "role": "Porteiro"
   },
   "columns": {
     "fileName": "Arquivo",

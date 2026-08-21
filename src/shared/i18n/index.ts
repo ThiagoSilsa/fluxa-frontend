@@ -26,6 +26,12 @@ import importEn from '#/features/import/i18n/en.json'
 import importPt from '#/features/import/i18n/pt.json'
 import departmentsImportEn from '#/features/import/sub-pages/departments-import/i18n/en.json'
 import departmentsImportPt from '#/features/import/sub-pages/departments-import/i18n/pt.json'
+import vehiclesImportEn from '#/features/import/sub-pages/vehicles-import/i18n/en.json'
+import vehiclesImportPt from '#/features/import/sub-pages/vehicles-import/i18n/pt.json'
+import usersImportEn from '#/features/import/sub-pages/users-import/i18n/en.json'
+import usersImportPt from '#/features/import/sub-pages/users-import/i18n/pt.json'
+import userVehiclesImportEn from '#/features/import/sub-pages/user-vehicles-import/i18n/en.json'
+import userVehiclesImportPt from '#/features/import/sub-pages/user-vehicles-import/i18n/pt.json'
 import vehiclesEn from '#/features/vehicles/i18n/en.json'
 import vehiclesPt from '#/features/vehicles/i18n/pt.json'
 
@@ -47,6 +53,9 @@ i18n
         vehicles: vehiclesPt,
         import: importPt,
         departmentsImport: departmentsImportPt,
+        vehiclesImport: vehiclesImportPt,
+        usersImport: usersImportPt,
+        userVehiclesImport: userVehiclesImportPt,
       },
 
       en: {
@@ -62,6 +71,9 @@ i18n
         vehicles: vehiclesEn,
         import: importEn,
         departmentsImport: departmentsImportEn,
+        vehiclesImport: vehiclesImportEn,
+        usersImport: usersImportEn,
+        userVehiclesImport: userVehiclesImportEn,
       },
     },
 
@@ -82,6 +94,9 @@ i18n
       'vehicles',
       'import',
       'departmentsImport',
+      'vehiclesImport',
+      'usersImport',
+      'userVehiclesImport',
     ],
 
     defaultNS: 'common',

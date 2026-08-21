@@ -1,21 +1,24 @@
 // TanStack Table
 import { createColumnHelper } from '@tanstack/react-table'
 
+// i18n
+import { useTranslation } from 'react-i18next'
+
 // Components
-import { JobStatusBadge } from '../../../components/job-status-badge'
+import { JobStatusBadge } from '../components/job-status-badge'
 
 // Types
-import type { ImportJobViewModel } from '../../../types/import.types'
+import type { ImportJobViewModel } from '../types/import.types'
 
 const columnHelper = createColumnHelper<ImportJobViewModel>()
 
 /**
- * Colunas da tabela de histórico de importações.
- *
- * @param t Função de tradução da sub-página.
- * @returns Colunas da `GenericTable`.
+ * Colunas da tabela de histórico de importações — compartilhadas por todas
+ * as sub-páginas (AGENTS.md). Labels vêm do namespace compartilhado `import`.
  */
-export function createJobsColumns(t: (key: string) => string) {
+export function useJobsColumns() {
+  const { t } = useTranslation('import')
+
   return [
     columnHelper.accessor('fileName', {
       header: t('columns.fileName'),

@@ -1,27 +1,31 @@
 {
   "tab": {
-    "label": "Departamentos"
+    "label": "Veículos"
   },
   "upload": {
-    "title": "Importar departamentos",
-    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar departamentos em lote."
+    "title": "Importar veículos",
+    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar veículos em lote."
   },
   "history": {
-    "empty": "Nenhuma importação de departamentos realizada ainda"
+    "empty": "Nenhuma importação de veículos realizada ainda"
   },
   "notifications": {
     "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
   },
   "template": {
-    "filename": "modelo-importacao-departamentos.xlsx",
+    "filename": "modelo-importacao-veiculos.xlsx",
     "sheets": {
       "rules": "Regras"
     }
   },
   "example": {
-    "name": "Recepção",
-    "parkingSpace": "10",
-    "description": "Portaria principal"
+    "plate": "ABC1234",
+    "vehicleType": "FROTA",
+    "model": "Gol",
+    "color": "Preto",
+    "observation": "Veículo da frota",
+    "freePass": "false",
+    "department": "Recepção"
   },
   "columns": {
     "fileName": "Arquivo",

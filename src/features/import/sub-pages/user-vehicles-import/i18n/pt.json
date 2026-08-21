@@ -1,27 +1,28 @@
 {
   "tab": {
-    "label": "Departamentos"
+    "label": "Vínculo Usuário-Veículo"
   },
   "upload": {
-    "title": "Importar departamentos",
-    "description": "Envie um arquivo XLSX seguindo o modelo para cadastrar departamentos em lote."
+    "title": "Importar vínculo usuário-veículo",
+    "description": "Envie um arquivo XLSX seguindo o modelo para vincular motoristas a veículos em lote (por placa e e-mail)."
   },
   "history": {
-    "empty": "Nenhuma importação de departamentos realizada ainda"
+    "empty": "Nenhuma importação de vínculos realizada ainda"
   },
   "notifications": {
     "upload-success": "Arquivo enviado! Acompanhe o progresso abaixo."
   },
   "template": {
-    "filename": "modelo-importacao-departamentos.xlsx",
+    "filename": "modelo-importacao-vinculos-usuario-veiculo.xlsx",
     "sheets": {
       "rules": "Regras"
     }
   },
   "example": {
-    "name": "Recepção",
-    "parkingSpace": "10",
-    "description": "Portaria principal"
+    "vehiclePlate": "ABC1234",
+    "userEmail": "motorista@empresa.local",
+    "isPrimary": "true",
+    "canDrive": "true"
   },
   "columns": {
     "fileName": "Arquivo",

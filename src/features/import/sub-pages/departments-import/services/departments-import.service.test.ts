@@ -4,9 +4,6 @@ import { describe, expect, it, vi } from 'vitest'
 // Controller
 import baseController from '#/shared/controller/base.controller'
 
-// Types
-import type { ImportJobResponse } from '#/features/import/types/import.types'
-
 // Service
 import { departmentsImportService } from './departments-import.service'
 

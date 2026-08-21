@@ -1,29 +1,33 @@
 // React
 import { useEffect, useState } from 'react'
 
-// Service
-import { departmentsImportService } from '../services/departments-import.service'
-
 // Mappers
-import { normalizeImportJob } from '../../../mappers/import.mapper'
+import { normalizeImportJob } from '../mappers/import.mapper'
 
 // Types
-import type { ImportJobViewModel } from '../../../types/import.types'
+import type { ImportJobResponse, ImportJobViewModel } from '../types/import.types'
+
+/** Contrato mínimo de um service de importação (método de status). */
+export type ImportJobServiceLike = {
+  getJob: (jobId: string) => Promise<ImportJobResponse>
+}
 
 /** Intervalo do polling em milissegundos (ADR 0007 §9). */
 const POLLING_INTERVAL_MS = 3000
 
 /**
- * Hook de polling do job ativo de importação.
+ * Hook genérico de polling do job ativo de importação. Compartilhado por
+ * todas as sub-páginas (AGENTS.md).
  *
  * Enquanto o job não finaliza (`DONE`/`FAILED`), busca o status a cada 3s e
  * devolve o viewmodel atualizado. Ao finalizar, para e sinaliza via
  * `isFinished`.
  *
+ * @param service Service de importação da sub-página.
  * @param jobId Id do job ativo (ou `null`).
  * @returns ViewModel do job e se está em polling.
  */
-export function useImportJobPolling(jobId: string | null) {
+export function useImportJobPolling(service: ImportJobServiceLike, jobId: string | null) {
   const [job, setJob] = useState<ImportJobViewModel | null>(null)
   const [isPolling, setIsPolling] = useState(false)
 
@@ -40,7 +44,7 @@ export function useImportJobPolling(jobId: string | null) {
     const poll = async () => {
       while (!cancelled) {
         try {
-          const response = await departmentsImportService.getJob(jobId)
+          const response = await service.getJob(jobId)
           const normalized = normalizeImportJob(response)
           setJob(normalized)
 
@@ -63,7 +67,7 @@ export function useImportJobPolling(jobId: string | null) {
     return () => {
       cancelled = true
     }
-  }, [jobId])
+  }, [service, jobId])
 
   return { job, isPolling }
 }

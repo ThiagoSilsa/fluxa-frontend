@@ -6,9 +6,9 @@ import { useImportJobPolling } from './use-import-job-polling'
 import type { ReactNode } from 'react'
 
 const mockGetJob = vi.fn()
-vi.mock('../services/departments-import.service', () => ({
-  departmentsImportService: { getJob: (...args: unknown[]) => mockGetJob(...args) },
-}))
+const service = {
+  getJob: (...args: unknown[]) => mockGetJob(...args),
+}
 
 function createWrapper({ children }: { children: ReactNode }) {
   return React.createElement('div', null, children)
@@ -21,7 +21,7 @@ describe('useImportJobPolling', () => {
   })
 
   it('sem jobId: job null e sem polling', () => {
-    const { result } = renderHook(() => useImportJobPolling(null), {
+    const { result } = renderHook(() => useImportJobPolling(service, null), {
       wrapper: createWrapper,
     })
 
@@ -45,7 +45,7 @@ describe('useImportJobPolling', () => {
       completedAt: '2026-08-20T10:00:05.000Z',
     })
 
-    const { result } = renderHook(() => useImportJobPolling('job-1'), {
+    const { result } = renderHook(() => useImportJobPolling(service, 'job-1'), {
       wrapper: createWrapper,
     })
 
@@ -70,7 +70,7 @@ describe('useImportJobPolling', () => {
       completedAt: null,
     })
 
-    const { result } = renderHook(() => useImportJobPolling('job-1'), {
+    const { result } = renderHook(() => useImportJobPolling(service, 'job-1'), {
       wrapper: createWrapper,
     })
 

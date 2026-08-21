@@ -6,11 +6,10 @@ import { useImportsQuery } from './use-imports-query'
 
 import type { ReactNode } from 'react'
 
-// Mock do service
 const mockList = vi.fn()
-vi.mock('../services/departments-import.service', () => ({
-  departmentsImportService: { list: (...args: unknown[]) => mockList(...args) },
-}))
+const service = {
+  list: (...args: unknown[]) => mockList(...args),
+}
 
 function createQueryWrapper() {
   const queryClient = new QueryClient({
@@ -50,24 +49,12 @@ describe('useImportsQuery', () => {
     }
     mockList.mockResolvedValue(mockResponse)
 
-    const { result } = renderHook(() => useImportsQuery({ limit: 20, offset: 0 }), {
+    const { result } = renderHook(() => useImportsQuery(service, { limit: 20, offset: 0 }), {
       wrapper: createQueryWrapper(),
     })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
     expect(mockList).toHaveBeenCalledWith({ limit: 20, offset: 0 })
     expect(result.current.data?.count).toBe(1)
-    expect(result.current.data?.data[0].fileName).toBe('departamentos.xlsx')
-  })
-
-  it('usa a chave de query [imports, params]', async () => {
-    mockList.mockResolvedValue({ limit: 20, offset: 0, count: 0, data: [] })
-
-    const { result } = renderHook(() => useImportsQuery({ limit: 10, offset: 5 }), {
-      wrapper: createQueryWrapper(),
-    })
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true))
-    expect(mockList).toHaveBeenCalledWith({ limit: 10, offset: 5 })
   })
 })

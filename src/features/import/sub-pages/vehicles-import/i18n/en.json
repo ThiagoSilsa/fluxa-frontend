@@ -1,27 +1,31 @@
 {
   "tab": {
-    "label": "Departments"
+    "label": "Vehicles"
   },
   "upload": {
-    "title": "Import departments",
-    "description": "Upload an XLSX file following the template to bulk-create departments."
+    "title": "Import vehicles",
+    "description": "Upload an XLSX file following the template to bulk-create vehicles."
   },
   "history": {
-    "empty": "No department imports yet"
+    "empty": "No vehicle imports yet"
   },
   "notifications": {
     "upload-success": "File sent! Track the progress below."
   },
   "template": {
-    "filename": "department-import-template.xlsx",
+    "filename": "vehicle-import-template.xlsx",
     "sheets": {
       "rules": "Rules"
     }
   },
   "example": {
-    "name": "Reception",
-    "parkingSpace": "10",
-    "description": "Main gate"
+    "plate": "ABC1234",
+    "vehicleType": "FROTA",
+    "model": "Gol",
+    "color": "Black",
+    "observation": "Fleet vehicle",
+    "freePass": "false",
+    "department": "Reception"
   },
   "columns": {
     "fileName": "File",
