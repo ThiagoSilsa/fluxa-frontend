@@ -27,6 +27,25 @@ export const searchOverrides: Record<string, SearchOverride> = {
     description: 'sidebar.items.portaria-desc',
     keywords: ['entrada', 'saída', 'saida', 'portaria', 'gate', 'qr', 'entry', 'exit', 'guarita'],
   },
+  'sidebar.items.management': {
+    description: 'sidebar.items.management-desc',
+    keywords: ['gerenciamento', 'management', 'cadastros', 'administração', 'admin'],
+  },
+  'sidebar.items.connections': {
+    description: 'sidebar.items.connections-desc',
+    keywords: ['conexões', 'conexoes', 'connections', 'dispositivos', 'devices'],
+  },
+  'sidebar.items.configurations': {
+    description: 'sidebar.items.configurations-desc',
+    keywords: [
+      'configurações',
+      'configuracoes',
+      'settings',
+      'importações',
+      'importacoes',
+      'imports',
+    ],
+  },
   'sidebar.items.ocupacao': {
     description: 'sidebar.items.ocupacao-desc',
     keywords: [

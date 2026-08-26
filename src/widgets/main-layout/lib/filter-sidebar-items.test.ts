@@ -188,4 +188,43 @@ describe('filterSidebarItems', () => {
     expect(result[0].children![0].children).toHaveLength(1)
     expect(result[0].children![0].children![0].label).toBe('users')
   })
+
+  it('mantém a categoria quando o usuário tem ao menos uma permissão da união (padrão de categorias)', () => {
+    const items: SidebarItem[] = [
+      {
+        label: 'management',
+        icon: SettingsIcon,
+        // União das permissões dos filhos — o pai aparece se o usuário tiver
+        // qualquer uma delas; os filhos continuam filtrados individualmente.
+        permissions: ['MANAGE_USERS', 'MANAGE_ROLES', 'MANAGE_DEPARTMENTS'],
+        children: [
+          { label: 'users', icon: UserIcon, permissions: ['MANAGE_USERS'] },
+          { label: 'roles', icon: UserIcon, permissions: ['MANAGE_ROLES'] },
+          { label: 'departments', icon: UnitIcon, permissions: ['MANAGE_DEPARTMENTS'] },
+        ],
+      },
+    ]
+
+    const result = filterSidebarItems(items, user)
+
+    expect(result).toHaveLength(1)
+    expect(result[0].label).toBe('management')
+    expect(result[0].children).toHaveLength(2)
+    expect(result[0].children!.map((child) => child.label)).toEqual(['users', 'roles'])
+  })
+
+  it('remove a categoria quando o usuário não tem nenhuma permissão da união', () => {
+    const items: SidebarItem[] = [
+      {
+        label: 'connections',
+        icon: SettingsIcon,
+        permissions: ['MANAGE_DEVICES'],
+        children: [{ label: 'devices', icon: UnitIcon, permissions: ['MANAGE_DEVICES'] }],
+      },
+    ]
+
+    const result = filterSidebarItems(items, user)
+
+    expect(result).toHaveLength(0)
+  })
 })

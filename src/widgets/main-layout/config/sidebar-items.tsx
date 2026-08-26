@@ -11,7 +11,9 @@ import {
   FileUp,
   Gauge,
   Home,
+  Network,
   Settings2,
+  SlidersHorizontal,
   Users,
   Warehouse,
 } from 'lucide-react'
@@ -64,6 +66,17 @@ export const sidebarItems: SidebarItem[] = [
   {
     label: 'sidebar.items.management',
     icon: Settings2,
+    // Categoria "Gerenciamento": o pai carrega a **união** das permissões dos
+    // filhos — o item aparece quando o usuário tem ao menos uma delas (padrão
+    // do projeto de referência), e os filhos continuam filtrados por permissão.
+    permissions: [
+      PermissionCode.MANAGE_USERS,
+      PermissionCode.MANAGE_ROLES,
+      PermissionCode.MANAGE_DEPARTMENTS,
+      PermissionCode.MANAGE_ENTRANCES,
+      PermissionCode.MANAGE_VEHICLE_TYPES,
+      PermissionCode.MANAGE_VEHICLES,
+    ],
     children: [
       {
         label: 'sidebar.items.users',
@@ -101,17 +114,31 @@ export const sidebarItems: SidebarItem[] = [
         path: '/management/vehicles',
         permissions: [PermissionCode.MANAGE_VEHICLES],
       },
-      {
-        label: 'sidebar.items.imports',
-        icon: FileUp,
-        path: '/management/imports',
-        permissions: [PermissionCode.MANAGE_IMPORTS],
-      },
+    ],
+  },
+  {
+    label: 'sidebar.items.connections',
+    icon: Network,
+    permissions: [PermissionCode.MANAGE_DEVICES],
+    children: [
       {
         label: 'sidebar.items.devices',
         icon: Cpu,
         path: '/management/devices',
         permissions: [PermissionCode.MANAGE_DEVICES],
+      },
+    ],
+  },
+  {
+    label: 'sidebar.items.configurations',
+    icon: SlidersHorizontal,
+    permissions: [PermissionCode.MANAGE_IMPORTS],
+    children: [
+      {
+        label: 'sidebar.items.imports',
+        icon: FileUp,
+        path: '/management/imports',
+        permissions: [PermissionCode.MANAGE_IMPORTS],
       },
     ],
   },
