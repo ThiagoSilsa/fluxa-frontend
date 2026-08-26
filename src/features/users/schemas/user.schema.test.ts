@@ -215,6 +215,30 @@ describe('userEditFormSchema', () => {
     expect(result.success).toBe(true)
   })
 
+  it('should accept a password with at least 6 characters', () => {
+    const result = userEditFormSchema.safeParse({
+      ...MINIMAL_EDIT,
+      password: 'senha123',
+    })
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject a password shorter than 6 characters', () => {
+    const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, password: '12345' })
+
+    expect(result.success).toBe(false)
+  })
+
+  it('should reject a password longer than 128 characters', () => {
+    const result = userEditFormSchema.safeParse({
+      ...MINIMAL_EDIT,
+      password: 'A'.repeat(129),
+    })
+
+    expect(result.success).toBe(false)
+  })
+
   it('should reject empty name', () => {
     const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, name: '' })
 
