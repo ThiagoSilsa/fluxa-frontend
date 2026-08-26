@@ -130,29 +130,4 @@ describe('UsersService', () => {
       })
     })
   })
-
-  describe('listRoles', () => {
-    it('should map GET /roles response to role options', async () => {
-      mockedMakeRequest.mockResolvedValue({
-        limit: 100,
-        offset: 0,
-        data: [
-          { id: 'role-1', name: 'Porteiro', isAdmin: false, isActive: true },
-          { id: 'role-2', name: 'Administração', isAdmin: true, isActive: true },
-        ],
-        count: 2,
-      })
-
-      const result = await usersService.listRoles()
-
-      expect(mockedMakeRequest).toHaveBeenCalledWith({
-        endpoint: '/roles?limit=100',
-        method: 'GET',
-      })
-      expect(result).toEqual([
-        { id: 'role-1', name: 'Porteiro', isAdmin: false, isActive: true },
-        { id: 'role-2', name: 'Administração', isAdmin: true, isActive: true },
-      ])
-    })
-  })
 })

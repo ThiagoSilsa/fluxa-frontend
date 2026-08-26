@@ -109,7 +109,7 @@ export function UsersPage() {
 
   // --- Queries ---
   const { data, isPending, error } = useUsersQuery(listParams)
-  const roleOptions = useRoleOptions(isAdminActor)
+  const roleOptions = useRoleOptions(isAdminActor, data)
 
   // --- Mutations ---
   const { createUser, updateUser, deleteUser, changePassword } = useUserMutations()
