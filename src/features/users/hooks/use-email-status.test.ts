@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEmailStatus } from './use-email-status'
@@ -21,13 +21,19 @@ function createQueryWrapper() {
   }
 }
 
-/** Avança o debounce e dá flush nas microtasks do React Query. */
-async function flushDebounce() {
+/**
+ * Dispara o debounce com os fake timers e devolve ao ambiente de timers reais.
+ *
+ * A espera pela resolução da query deve acontecer depois (com `waitFor` do
+ * Testing Library, que embrulha em `act`) — avançar timers e resolver a query
+ * no mesmo fluxo faz a atualização de estado vazar para fora do `act` (warning)
+ * quando a suíte roda completa.
+ */
+function fireDebounce() {
   act(() => {
     vi.advanceTimersByTime(600)
   })
-  await act(async () => {})
-  await act(async () => {})
+  vi.useRealTimers()
 }
 
 // ---------------------------------------------------------------------------
@@ -60,29 +66,29 @@ describe('useEmailStatus', () => {
       wrapper: createQueryWrapper(),
     })
 
-    await flushDebounce()
+    fireDebounce()
 
+    await waitFor(() => expect(result.current.exists).toBe(true))
     expect(mockEmailStatus).toHaveBeenCalledWith('maria@somar.local')
-    await vi.waitFor(() => expect(result.current.exists).toBe(true))
   })
 
-  it('should not query for invalid format', async () => {
+  it('should not query for invalid format', () => {
     const { result } = renderHook(() => useEmailStatus('nao-e-email'), {
       wrapper: createQueryWrapper(),
     })
 
-    await flushDebounce()
+    fireDebounce()
 
     expect(mockEmailStatus).not.toHaveBeenCalled()
     expect(result.current.exists).toBe(false)
   })
 
-  it('should not query when disabled', async () => {
+  it('should not query when disabled', () => {
     renderHook(() => useEmailStatus('maria@somar.local', false), {
       wrapper: createQueryWrapper(),
     })
 
-    await flushDebounce()
+    fireDebounce()
 
     expect(mockEmailStatus).not.toHaveBeenCalled()
   })
