@@ -94,7 +94,7 @@
     },
     "role": {
       "label": "Role",
-      "placeholder": "Select a role",
+      "placeholder": "None selected",
       "no-role": "No role",
       "admin-hint": "This role grants full administration access.",
       "select-hint": "The user will have a single role in this company."

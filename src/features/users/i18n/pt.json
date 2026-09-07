@@ -94,7 +94,7 @@
     },
     "role": {
       "label": "Cargo",
-      "placeholder": "Selecione um cargo",
+      "placeholder": "Nenhum selecionado",
       "no-role": "Sem cargo",
       "admin-hint": "Este cargo dá acesso total de administração.",
       "select-hint": "O usuário terá um único cargo nesta empresa."

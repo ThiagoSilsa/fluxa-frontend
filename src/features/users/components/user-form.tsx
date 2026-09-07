@@ -345,7 +345,7 @@ export function UserForm({
                     disabled={readOnly}
                   >
                     <SelectTrigger className="w-full" aria-invalid={!!errors.roleId}>
-                      <SelectValue />
+                      <SelectValue placeholder={t('form.role.placeholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {isEdit ? (
