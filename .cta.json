@@ -13,13 +13,5 @@
   "routerOnly": false,
   "version": 1,
   "framework": "react",
-  "chosenAddOns": [
-    "eslint",
-    "nitro",
-    "form",
-    "shadcn",
-    "table",
-    "tanstack-query",
-    "resume"
-  ]
+  "chosenAddOns": ["eslint", "nitro", "form", "shadcn", "table", "tanstack-query"]
 }

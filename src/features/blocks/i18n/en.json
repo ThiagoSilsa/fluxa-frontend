@@ -1,0 +1,87 @@
+{
+  "title": "Blocks",
+  "subtitle": "Manage vehicle blocks and gatekeeper requests.",
+  "tabs": {
+    "blocks": "Blocks",
+    "requests": "Block requests"
+  },
+  "toolbar": {
+    "createBlock": "Block vehicle",
+    "createRequest": "Request block"
+  },
+  "filters": {
+    "status": { "label": "Status", "all": "All" },
+    "search": { "placeholder": "Search by plate" }
+  },
+  "empty": {
+    "title": "No records found",
+    "description": "Adjust the filters or create a new one."
+  },
+  "columns": {
+    "plate": "Plate",
+    "reason": "Reason",
+    "status": "Status",
+    "requestedBy": "Requested by",
+    "requestedAt": "When",
+    "actions": "Actions"
+  },
+  "actions": {
+    "revoke": "Revoke",
+    "approve": "Approve",
+    "reject": "Reject",
+    "create": "New"
+  },
+  "blockStatus": { "ACTIVE": "Active", "REVOKED": "Revoked" },
+  "blockType": { "MANUAL": "Manual", "AUTOMATIC": "Automatic" },
+  "requestStatus": {
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled"
+  },
+  "createBlock": {
+    "title": "Block vehicle",
+    "description": "Enter the plate and the block reason.",
+    "submit": "Block",
+    "submitting": "Blocking..."
+  },
+  "createRequest": {
+    "title": "Request block",
+    "description": "The gatekeeper requests a vehicle block to the administration.",
+    "submit": "Request",
+    "submitting": "Requesting..."
+  },
+  "revoke": {
+    "title": "Revoke block",
+    "description": "Enter the reason to revoke the block of {{plate}}.",
+    "submit": "Revoke",
+    "submitting": "Revoking..."
+  },
+  "form": {
+    "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+    "reason": { "label": "Reason", "placeholder": "e.g. Suspected theft" },
+    "errors": {
+      "plate-required": "Enter the plate.",
+      "plate-max": "Plate must have at most 10 characters.",
+      "plate-invalid": "Invalid plate format (use ABC1234 or ABC1D23).",
+      "reason-required": "Enter the reason.",
+      "reason-max": "Reason must have at most 2000 characters."
+    }
+  },
+  "confirm": {
+    "approve-title": "Approve request",
+    "approve-description": "Approving creates the block of vehicle {{plate}}.",
+    "reject-title": "Reject request",
+    "reject-description": "Confirm rejecting the request of {{plate}}?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "notifications": {
+    "create-block-success": "Vehicle blocked.",
+    "revoke-success": "Block revoked.",
+    "create-request-success": "Block request created.",
+    "approve-success": "Request approved and block created.",
+    "reject-success": "Request rejected.",
+    "cancel-success": "Request cancelled."
+  }
+}

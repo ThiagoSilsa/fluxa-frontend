@@ -1,0 +1,129 @@
+{
+  "title": "Solicitações de acesso",
+  "subtitle": "Avalie e resolva as solicitações de acesso dos porteiros.",
+  "toolbar": { "create": "Nova solicitação" },
+  "filters": {
+    "status": { "label": "Status", "all": "Todos" },
+    "search": { "placeholder": "Buscar por placa" }
+  },
+  "empty": {
+    "title": "Nenhuma solicitação encontrada",
+    "description": "Ajuste os filtros ou crie uma nova solicitação."
+  },
+  "columns": {
+    "plate": "Placa",
+    "type": "Tipo",
+    "status": "Status",
+    "requestedBy": "Solicitado por",
+    "requestedAt": "Quando",
+    "actions": "Ações"
+  },
+  "actions": {
+    "view": "Ver",
+    "open": "Abrir",
+    "cancel": "Cancelar",
+    "accept": "Aceitar",
+    "reject": "Rejeitar",
+    "inContact": "Em contato",
+    "close": "Fechar"
+  },
+  "type": {
+    "NEW_USER": "Novo motorista",
+    "NEW_VEHICLE": "Novo veículo",
+    "LINK": "Vincular",
+    "BOTH": "Motorista e veículo"
+  },
+  "status": {
+    "PENDING": "Pendente",
+    "IN_CONTACT": "Em contato",
+    "REGISTERED": "Registrada",
+    "REJECTED": "Rejeitada",
+    "CANCELLED": "Cancelada"
+  },
+  "detail": {
+    "title": "Solicitação {{plate}}",
+    "driver": "Motorista",
+    "vehicle": "Veículo",
+    "requestedBy": "Solicitado por",
+    "requestedAt": "Solicitado em",
+    "handledBy": "Atendido por",
+    "handledAt": "Atendido em",
+    "contactChannel": "Canal",
+    "contactPhone": "Telefone",
+    "departmentId": "Departamento",
+    "observation": "Observação",
+    "entryAuthorized": "Entrada autorizada",
+    "yes": "Sim",
+    "no": "Não",
+    "notHandled": "—",
+    "resolvedUser": "Usuário criado/vinculado",
+    "resolvedVehicle": "Veículo criado/vinculado",
+    "acceptTitle": "Aceitar e autorizar entrada",
+    "acceptHint": "Aceitar cria/vincula os cadastros (resolução retroativa) e autoriza a entrada.",
+    "vehicleType": { "label": "Tipo do veículo a criar", "placeholder": "Selecione o tipo" },
+    "rejectHint": "Recusar a solicitação (com observação opcional).",
+    "inContactHint": "Marcar como em contato estende o prazo de espera."
+  },
+  "create": {
+    "title": "Nova solicitação de acesso",
+    "description": "Selecione o cenário e preencha os dados.",
+    "type": { "label": "Cenário" },
+    "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+    "vehicle": {
+      "label": "Veículo (já cadastrado)",
+      "search": "Buscar por placa ou modelo",
+      "none": "Nenhum veículo encontrado",
+      "selected": "Veículo selecionado"
+    },
+    "user": {
+      "label": "Usuário (já cadastrado)",
+      "search": "Buscar por nome ou e-mail",
+      "none": "Nenhum usuário encontrado",
+      "selected": "Usuário selecionado"
+    },
+    "contactChannel": { "label": "Canal de contato" },
+    "contactPhone": { "label": "Telefone de contato", "placeholder": "Ex.: 11999999999" },
+    "driver": {
+      "title": "Dados do motorista (será criado)",
+      "name": { "label": "Nome", "placeholder": "Nome completo" },
+      "email": { "label": "E-mail", "placeholder": "email@empresa.com" },
+      "document": { "label": "Documento", "placeholder": "CPF (opcional)" },
+      "phone": { "label": "Telefone", "placeholder": "Telefone (opcional)" }
+    },
+    "vehicleData": {
+      "title": "Dados do veículo (será criado)",
+      "model": { "label": "Modelo", "placeholder": "Ex.: Gol" },
+      "color": { "label": "Cor", "placeholder": "Ex.: Preto" }
+    },
+    "submit": "Criar solicitação",
+    "submitting": "Criando...",
+    "errors": {
+      "plate-required": "Informe a placa.",
+      "plate-max": "A placa deve ter no máximo 10 caracteres.",
+      "plate-invalid": "Placa em formato inválido (use ABC1234 ou ABC1D23).",
+      "vehicle-required": "Selecione o veículo.",
+      "vehicle-invalid": "Seleção de veículo inválida.",
+      "user-required": "Selecione o usuário.",
+      "user-invalid": "Seleção de usuário inválida.",
+      "driver-name-required": "Informe o nome do motorista.",
+      "driver-email-required": "Informe o e-mail do motorista.",
+      "vehicle-model-required": "Informe o modelo do veículo.",
+      "contact-required": "Informe o telefone de contato."
+    }
+  },
+  "confirm": {
+    "cancel-title": "Cancelar solicitação",
+    "cancel-description": "Confirma o cancelamento desta solicitação?",
+    "reject-title": "Rejeitar solicitação",
+    "reject-description": "Confirma a rejeição desta solicitação?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "notifications": {
+    "create-success": "Solicitação criada.",
+    "accept-success": "Solicitação aceita e entrada autorizada.",
+    "reject-success": "Solicitação rejeitada.",
+    "in-contact-success": "Solicitação marcada como em contato.",
+    "cancel-success": "Solicitação cancelada."
+  }
+}

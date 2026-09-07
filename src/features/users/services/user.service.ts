@@ -10,41 +10,31 @@ import type {
   UserEntity,
   UserListParams,
   UserListResponse,
-  UserRoleOption,
 } from '../types/users.types'
 
 // Controller
 import baseController from '#/shared/controller/base.controller'
 
-/** Resposta crua de `GET /roles` (contrato do backend, feature `roles`). */
-type RoleListResponse = {
-  limit: number
-  offset: number
-  data: Array<{
-    id: string
-    name: string
-    isAdmin: boolean
-    isActive: boolean
-  }>
-  count: number
-}
-
 /**
  * Service de usuários.
  *
  * Responsável por toda comunicação com a API de usuários (`/users`).
- * Contrato (ADR 0005 + Fase 0): listagem paginada com filtros server-side,
- * criação já vinculada (com `roleId`), edição parcial (com replace de cargo),
- * desativação soft e troca de senha. O catálogo de cargos para o Select é
- * buscado via `GET /roles` — sem importar a feature `roles` (AGENTS.md: sem
- * dependências entre features).
+ * Contrato (ADR 0005 + Fase 0): listagem paginada com filtros server-side e
+ * catálogo de cargos nos `parameters` (chave `role_id`), criação já vinculada
+ * (com `roleId`), edição parcial (com replace de cargo), desativação soft e
+ * troca de senha.
  */
 class UsersService {
   /**
    * Lista usuários da empresa da sessão (paginado, filtros server-side).
    *
+   * A resposta traz `parameters` com os **cargos ativos** da empresa (chave
+   * `role_id`) para o Select do formulário — mesmo padrão de veículos
+   * (ADR 0006 §11). Isso evita depender de `GET /roles` (MANAGE_ROLES) na
+   * página de usuários.
+   *
    * @param params Busca, filtros e paginação.
-   * @returns Envelope paginado `{ limit, offset, data, count }`.
+   * @returns Envelope paginado `{ limit, offset, data, count, parameters }`.
    */
   async list(params: UserListParams): Promise<UserListResponse> {
     const query = buildUserListQuery(params)
@@ -127,30 +117,6 @@ class UsersService {
       method: 'PATCH',
       body: { newPassword },
     })
-  }
-
-  /**
-   * Busca o catálogo de cargos para o Select do formulário.
-   *
-   * Endpoint próprio (`GET /roles`) com tipo local mínimo — evita dependência
-   * entre features. A filtragem (apenas ativos; ocultar `is_admin` para
-   * não-admin) fica no hook.
-   *
-   * @param limit Quantidade máxima de cargos (padrão 100).
-   * @returns Opções de cargo.
-   */
-  async listRoles(limit = 100): Promise<UserRoleOption[]> {
-    const response = (await baseController.makeRequest({
-      endpoint: `/roles?limit=${limit}`,
-      method: 'GET',
-    })) as RoleListResponse
-
-    return response.data.map((role) => ({
-      id: role.id,
-      name: role.name,
-      isAdmin: role.isAdmin,
-      isActive: role.isActive,
-    }))
   }
 }
 

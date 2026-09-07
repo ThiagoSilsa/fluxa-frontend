@@ -1,0 +1,129 @@
+{
+  "title": "Access requests",
+  "subtitle": "Review and resolve gatekeepers' access requests.",
+  "toolbar": { "create": "New request" },
+  "filters": {
+    "status": { "label": "Status", "all": "All" },
+    "search": { "placeholder": "Search by plate" }
+  },
+  "empty": {
+    "title": "No requests found",
+    "description": "Adjust the filters or create a new request."
+  },
+  "columns": {
+    "plate": "Plate",
+    "type": "Type",
+    "status": "Status",
+    "requestedBy": "Requested by",
+    "requestedAt": "When",
+    "actions": "Actions"
+  },
+  "actions": {
+    "view": "View",
+    "open": "Open",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "reject": "Reject",
+    "inContact": "In contact",
+    "close": "Close"
+  },
+  "type": {
+    "NEW_USER": "New driver",
+    "NEW_VEHICLE": "New vehicle",
+    "LINK": "Link",
+    "BOTH": "Driver and vehicle"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "IN_CONTACT": "In contact",
+    "REGISTERED": "Registered",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled"
+  },
+  "detail": {
+    "title": "Request {{plate}}",
+    "driver": "Driver",
+    "vehicle": "Vehicle",
+    "requestedBy": "Requested by",
+    "requestedAt": "Requested at",
+    "handledBy": "Handled by",
+    "handledAt": "Handled at",
+    "contactChannel": "Channel",
+    "contactPhone": "Phone",
+    "departmentId": "Department",
+    "observation": "Observation",
+    "entryAuthorized": "Entry authorized",
+    "yes": "Yes",
+    "no": "No",
+    "notHandled": "—",
+    "resolvedUser": "Created/linked user",
+    "resolvedVehicle": "Created/linked vehicle",
+    "acceptTitle": "Accept and authorize entry",
+    "acceptHint": "Accepting creates/links records (retroactive resolution) and authorizes the entry.",
+    "vehicleType": { "label": "Vehicle type to create", "placeholder": "Select the type" },
+    "rejectHint": "Reject the request (with optional observation).",
+    "inContactHint": "Marking as in contact extends the waiting period."
+  },
+  "create": {
+    "title": "New access request",
+    "description": "Select the scenario and fill in the data.",
+    "type": { "label": "Scenario" },
+    "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+    "vehicle": {
+      "label": "Vehicle (already registered)",
+      "search": "Search by plate or model",
+      "none": "No vehicles found",
+      "selected": "Selected vehicle"
+    },
+    "user": {
+      "label": "User (already registered)",
+      "search": "Search by name or email",
+      "none": "No users found",
+      "selected": "Selected user"
+    },
+    "contactChannel": { "label": "Contact channel" },
+    "contactPhone": { "label": "Contact phone", "placeholder": "e.g. 11999999999" },
+    "driver": {
+      "title": "Driver data (will be created)",
+      "name": { "label": "Name", "placeholder": "Full name" },
+      "email": { "label": "Email", "placeholder": "email@company.com" },
+      "document": { "label": "Document", "placeholder": "CPF (optional)" },
+      "phone": { "label": "Phone", "placeholder": "Phone (optional)" }
+    },
+    "vehicleData": {
+      "title": "Vehicle data (will be created)",
+      "model": { "label": "Model", "placeholder": "e.g. Gol" },
+      "color": { "label": "Color", "placeholder": "e.g. Black" }
+    },
+    "submit": "Create request",
+    "submitting": "Creating...",
+    "errors": {
+      "plate-required": "Enter the plate.",
+      "plate-max": "Plate must have at most 10 characters.",
+      "plate-invalid": "Invalid plate format (use ABC1234 or ABC1D23).",
+      "vehicle-required": "Select the vehicle.",
+      "vehicle-invalid": "Invalid vehicle selection.",
+      "user-required": "Select the user.",
+      "user-invalid": "Invalid user selection.",
+      "driver-name-required": "Enter the driver name.",
+      "driver-email-required": "Enter the driver email.",
+      "vehicle-model-required": "Enter the vehicle model.",
+      "contact-required": "Enter the contact phone."
+    }
+  },
+  "confirm": {
+    "cancel-title": "Cancel request",
+    "cancel-description": "Confirm cancelling this request?",
+    "reject-title": "Reject request",
+    "reject-description": "Confirm rejecting this request?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "notifications": {
+    "create-success": "Request created.",
+    "accept-success": "Request accepted and entry authorized.",
+    "reject-success": "Request rejected.",
+    "in-contact-success": "Request marked as in contact.",
+    "cancel-success": "Request cancelled."
+  }
+}

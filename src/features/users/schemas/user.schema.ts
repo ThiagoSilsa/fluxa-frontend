@@ -69,9 +69,21 @@ export const userLinkFormSchema = z.object({
 /**
  * Schema de edição de usuário (parcial).
  *
- * Senha e cargo opcionais ('' = sem cargo); `isActive` editável no vínculo.
+ * Senha e cargo opcionais ('' = sem cargo / sem troca de senha); `isActive`
+ * editável no vínculo. Quando uma nova senha é digitada na edição, ela segue
+ * as mesmas regras da criação (6–128 caracteres).
  */
-export const userEditFormSchema = userFormBaseSchema
+export const userEditFormSchema = userFormBaseSchema.extend({
+  password: z
+    .string()
+    .refine((value) => value === '' || value.length >= 6, {
+      message: 'form.errors.password-min',
+    })
+    .refine((value) => value === '' || value.length <= 128, {
+      message: 'form.errors.password-max',
+    })
+    .optional(),
+})
 
 /** Tipo inferido do formulário de usuário (união de todos os campos). */
 export type UserFormValues = z.infer<typeof userCreateFormSchema>

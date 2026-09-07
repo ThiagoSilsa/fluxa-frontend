@@ -36,12 +36,22 @@ export type UserListParams = {
   offset: number
 }
 
+/** Valor do parâmetro de listagem (AGENTS.md §3 — `parameters`). */
+export type UserListParameter = {
+  key: string
+  label: string
+  /** Valores permitidos (objetos completos — ex.: cargos com `isAdmin`). */
+  allowed_values?: Array<{ id: string; name: string; isAdmin?: boolean }>
+}
+
 /** Resposta da listagem de usuários (envelope paginado). */
 export type UserListResponse = {
   limit: number
   offset: number
   data: UserEntity[]
   count: number
+  /** Metadados da listagem (ex.: catálogo de cargos ativos p/ o Select). */
+  parameters?: UserListParameter[]
 }
 
 /** Payload de criação de usuário (pessoa nova já vinculada com cargo). */
@@ -88,7 +98,12 @@ export type UserStatusFilterValue = 'all' | 'active' | 'inactive'
 /** Valores possíveis do filtro de tipo. */
 export type UserTypeFilterValue = 'all' | UserTypeValue
 
-/** Opção de cargo para o Select do formulário (catálogo `GET /roles`). */
+/**
+ * Opção de cargo para o Select do formulário.
+ *
+ * Catálogo vindo dos `parameters` do `GET /users` (cargos ativos da empresa —
+ * não depende de `GET /roles`/MANAGE_ROLES).
+ */
 export type UserRoleOption = {
   id: string
   name: string

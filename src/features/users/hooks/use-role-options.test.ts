@@ -1,59 +1,63 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { renderHook, waitFor } from '@testing-library/react'
-import React from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { describe, expect, it } from 'vitest'
 import { useRoleOptions } from './use-role-options'
 
-import type { ReactNode } from 'react'
+import type { UserListResponse } from '../types/users.types'
 
-// Mock do service
-const mockListRoles = vi.fn()
-vi.mock('../services/user.service', () => ({
-  usersService: { listRoles: (...args: unknown[]) => mockListRoles(...args) },
-}))
-
-function createQueryWrapper() {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  })
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return React.createElement(QueryClientProvider, { client: queryClient }, children)
+/** Listagem com o catálogo de cargos no `parameters` (chave `role_id`). */
+function buildUsersData(
+  allowedValues: Array<{ id: string; name: string; isAdmin?: boolean }>,
+): UserListResponse {
+  return {
+    limit: 10,
+    offset: 0,
+    data: [],
+    count: 0,
+    parameters: [{ key: 'role_id', label: 'Cargo', allowed_values: allowedValues }],
   }
 }
 
-const CATALOG = [
-  { id: 'r1', name: 'Porteiro', isAdmin: false, isActive: true },
-  { id: 'r2', name: 'Inativo', isAdmin: false, isActive: false },
-  { id: 'r3', name: 'Administração', isAdmin: true, isActive: true },
-]
-
 // ---------------------------------------------------------------------------
-// useRoleOptions
+// useRoleOptions (derivação dos `parameters` do GET /users)
 // ---------------------------------------------------------------------------
 describe('useRoleOptions', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
+  it('retorna todos os cargos ativos para um admin', () => {
+    const result = useRoleOptions(
+      true,
+      buildUsersData([
+        { id: 'r1', name: 'Porteiro', isAdmin: false },
+        { id: 'r3', name: 'Administração', isAdmin: true },
+      ]),
+    )
+
+    expect(result.map((role) => role.id)).toEqual(['r1', 'r3'])
+    expect(result[0]).toEqual({
+      id: 'r1',
+      name: 'Porteiro',
+      isAdmin: false,
+      isActive: true,
+    })
   })
 
-  it('should return only active roles for an admin', async () => {
-    mockListRoles.mockResolvedValue(CATALOG)
+  it('oculta cargos is_admin para quem não gerencia administradores', () => {
+    const result = useRoleOptions(
+      false,
+      buildUsersData([
+        { id: 'r1', name: 'Porteiro', isAdmin: false },
+        { id: 'r3', name: 'Administração', isAdmin: true },
+      ]),
+    )
 
-    const { result } = renderHook(() => useRoleOptions(true), {
-      wrapper: createQueryWrapper(),
-    })
-
-    await waitFor(() => expect(result.current.length).toBe(2))
-    expect(result.current.map((role) => role.id)).toEqual(['r1', 'r3'])
+    expect(result.map((role) => role.id)).toEqual(['r1'])
   })
 
-  it('should hide admin roles for a non-admin', async () => {
-    mockListRoles.mockResolvedValue(CATALOG)
+  it('normaliza isAdmin ausente como false', () => {
+    const result = useRoleOptions(true, buildUsersData([{ id: 'r1', name: 'Porteiro' }]))
 
-    const { result } = renderHook(() => useRoleOptions(false), {
-      wrapper: createQueryWrapper(),
-    })
+    expect(result[0].isAdmin).toBe(false)
+  })
 
-    await waitFor(() => expect(result.current.length).toBe(1))
-    expect(result.current[0].id).toBe('r1')
+  it('devolve lista vazia sem data/parameters', () => {
+    expect(useRoleOptions(true, undefined)).toEqual([])
+    expect(useRoleOptions(true, { limit: 10, offset: 0, data: [], count: 0 })).toEqual([])
   })
 })
