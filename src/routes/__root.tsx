@@ -3,6 +3,7 @@ import { createRootRouteWithContext } from '@tanstack/react-router'
 import appCss from '#/styles/globals.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { NotFoundPage } from '#/shared/components'
 import { RootDocument } from '#/app/layouts/root-document'
 
 import '../shared/i18n'
@@ -15,8 +16,7 @@ interface MyRouterContext {
  * including the head and body. You can also include any global components or providers here.
  */
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  // TODO: Adicionar página de erro 404 personalizada.
-  // notFoundComponent: NotFoundPage,
+  notFoundComponent: NotFoundPage,
   head: () => ({
     meta: [
       {

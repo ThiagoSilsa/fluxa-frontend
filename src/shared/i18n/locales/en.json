@@ -16,6 +16,11 @@
     "title": "No access",
     "description": "You don't have permission to access this page."
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The address you visited does not exist or was moved.",
+    "action": "Back to home"
+  },
   "pagination": {
     "limit": "Items per page",
     "first": "First page",

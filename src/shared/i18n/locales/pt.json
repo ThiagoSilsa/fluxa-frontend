@@ -16,6 +16,11 @@
     "title": "Sem acesso",
     "description": "Você não tem permissão para acessar esta página."
   },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "O endereço que você acessou não existe ou foi movido.",
+    "action": "Voltar ao início"
+  },
   "pagination": {
     "limit": "Itens por página",
     "first": "Primeira página",

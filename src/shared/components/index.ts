@@ -39,6 +39,7 @@ export { Header } from './header'
 export { ReturnButton } from './return-button'
 export { FormDialog } from './form-dialog'
 export { ConfirmDialog } from './confirm-dialog'
+export { NotFoundPage } from './not-found-page'
 export { SortableHeader } from './sortable-header'
 
 // Campos e seletores compartilhados entre features
