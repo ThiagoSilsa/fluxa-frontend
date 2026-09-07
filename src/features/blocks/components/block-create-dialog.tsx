@@ -15,7 +15,7 @@ import { blockFormSchema } from '../schemas/block.schema'
 import type { BlockFormValues } from '../schemas/block.schema'
 
 // Shared
-import { Button, FormDialog, Input, Label, Textarea } from '#/shared/components'
+import { Button, FormDialog, PlateReasonFields } from '#/shared/components'
 
 export type BlockCreateDialogProps = {
   /** Controla a abertura do dialog. */
@@ -74,40 +74,18 @@ export function BlockCreateDialog({
       size="lg"
     >
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="space-y-2">
-          <Label htmlFor="block-plate">
-            {t('form.plate.label')}
-            <span className="text-destructive"> *</span>
-          </Label>
-          <Input
-            id="block-plate"
-            {...register('plate')}
-            aria-invalid={!!errors.plate}
-            placeholder={t('form.plate.placeholder')}
-            className="uppercase"
-            maxLength={10}
-          />
-          {errors.plate?.message ? (
-            <p className="text-destructive text-xs">{t(errors.plate.message)}</p>
-          ) : null}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="block-reason">
-            {t('form.reason.label')}
-            <span className="text-destructive"> *</span>
-          </Label>
-          <Textarea
-            id="block-reason"
-            {...register('reason')}
-            aria-invalid={!!errors.reason}
-            placeholder={t('form.reason.placeholder')}
-            rows={3}
-          />
-          {errors.reason?.message ? (
-            <p className="text-destructive text-xs">{t(errors.reason.message)}</p>
-          ) : null}
-        </div>
+        <PlateReasonFields
+          idPrefix="block"
+          register={register}
+          errors={errors}
+          translateError={(key) => (key ? t(key) : '')}
+          texts={{
+            plateLabel: t('form.plate.label'),
+            platePlaceholder: t('form.plate.placeholder'),
+            reasonLabel: t('form.reason.label'),
+            reasonPlaceholder: t('form.reason.placeholder'),
+          }}
+        />
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting

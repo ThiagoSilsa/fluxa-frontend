@@ -40,3 +40,8 @@ export { ReturnButton } from './return-button'
 export { FormDialog } from './form-dialog'
 export { ConfirmDialog } from './confirm-dialog'
 export { SortableHeader } from './sortable-header'
+
+// Campos e seletores compartilhados entre features
+// (sem importação entre features — AGENTS.md)
+export * from './plate-reason-fields'
+export * from './search-picker'

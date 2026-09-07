@@ -15,7 +15,7 @@ import { revokeBlockSchema } from '../schemas/block.schema'
 import type { RevokeBlockValues } from '../schemas/block.schema'
 
 // Shared
-import { Button, FormDialog, Label, Textarea } from '#/shared/components'
+import { Button, FormDialog, PlateReasonFields } from '#/shared/components'
 
 export type BlockRevokeDialogProps = {
   /** Controla a abertura do dialog. */
@@ -70,22 +70,17 @@ export function BlockRevokeDialog({
       size="lg"
     >
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="space-y-2">
-          <Label htmlFor="revoke-reason">
-            {t('form.reason.label')}
-            <span className="text-destructive"> *</span>
-          </Label>
-          <Textarea
-            id="revoke-reason"
-            {...register('reason')}
-            aria-invalid={!!errors.reason}
-            placeholder={t('form.reason.placeholder')}
-            rows={3}
-          />
-          {errors.reason?.message ? (
-            <p className="text-destructive text-xs">{t(errors.reason.message)}</p>
-          ) : null}
-        </div>
+        <PlateReasonFields
+          idPrefix="revoke"
+          register={register}
+          errors={errors}
+          showPlate={false}
+          translateError={(key) => (key ? t(key) : '')}
+          texts={{
+            reasonLabel: t('form.reason.label'),
+            reasonPlaceholder: t('form.reason.placeholder'),
+          }}
+        />
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? t('revoke.submitting') : t('revoke.submit')}
