@@ -1,224 +1,154 @@
-Welcome to your new TanStack Start app!
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Em%20desenvolvimento-FFB020?style=flat-square" alt="Status">
+</p>
 
-# Getting Started
+# Fluxa — Frontend Web
 
-To run this application:
+Aplicação **web (SPA)** do sistema **Fluxa** para **controle de acesso de veículos**: tela de portaria (entrada/saída), ocupação, solicitações e bloqueios, além das telas de gerenciamento (usuários, cargos, veículos, departamentos, portarias, dispositivos e importações).
+
+> Este repositório contém **apenas o frontend** do Fluxa. As convenções de arquitetura e de contribuição estão no [`AGENTS.md`](./AGENTS.md).
+
+---
+
+## 🧰 Stack e tecnologias
+
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TanStack](https://img.shields.io/badge/TanStack-30A9DE?style=for-the-badge&logo=tanstack&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![i18next](https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+
+| Tecnologia | Finalidade |
+|---|---|
+| **React 19** + **TypeScript** | Interface e linguagem (modo estrito) |
+| **TanStack Start** (Vite) | Meta-framework de aplicação sobre Vite (modo SPA) |
+| **TanStack Router** | Roteamento file-based com árvore de rotas gerada |
+| **TanStack Query** | Cache/estado de dados no servidor (hooks de query/mutation) |
+| **Tailwind CSS v4** | Estilização utilitária |
+| **shadcn/ui + Radix UI** | Componentes de interface acessíveis |
+| **React Hook Form + Zod** | Formulários e validação (schemas) |
+| **i18next / react-i18next** | Internacionalização (pt / en) com detecção de idioma |
+| **Recharts** | Gráficos e dashboards |
+| **lucide-react** | Ícones |
+| **sonner** | Notificações (toasts) |
+| **next-themes** | Tema claro/escuro |
+| **Vitest** | Testes unitários |
+
+---
+
+## ✨ O que este projeto faz
+
+Organizado em **rotas públicas** (login) e **rotas privadas** (autenticadas, protegidas por guardas e permissões):
+
+- **Início** — home do usuário autenticado;
+- **Portaria** — registro de entrada/saída de veículos;
+- **Ocupação** — visão da ocupação/vagas;
+- **Solicitações** e **Bloqueios** — fluxos de acesso de veículos/motoristas não cadastrados;
+- **Gerenciamento** — usuários, cargos, tipos de veículo, veículos, departamentos, portarias, dispositivos e importações.
+
+Cada item de navegação é exibido conforme a permissão do usuário (espelho do domínio de permissões).
+
+---
+
+## 📁 Estrutura do projeto
+
+```
+src/
+├── app/                         # Configuração global da aplicação
+│   ├── config/                  # Variáveis de ambiente (EnvConfig)
+│   ├── guards/                  # Proteções de rota e autenticação
+│   ├── integrations/            # Integrações externas
+│   ├── layouts/                 # Layouts raiz
+│   ├── providers/               # Providers (auth, linguagem, tema, query)
+│   └── router/                  # Configuração do TanStack Router
+├── features/                    # Funcionalidades/domínios (feature-based)
+│   └── <feature>/
+│       ├── components/  hooks/  i18n/  lib/  mappers/
+│       ├── pages/       routes/ schemas/  services/  types/
+│       └── config/      utils/
+├── shared/                      # Código reutilizável
+│   ├── components/  controller/  enum/  hoc/  hooks/
+│   ├── i18n/         lib/  schemas/  services/  types/  utils/
+├── widgets/                     # Composições (ex.: main-layout)
+├── routes/                      # File-based routing do TanStack Router
+│   ├── __root.tsx / _public/    # Rotas públicas
+│   └── _private/                # Rotas autenticadas
+├── styles/globals.css           # Estilos globais
+├── routeTree.gen.ts             # Árvore de rotas gerada (tsr generate)
+└── router.tsx
+```
+
+> Arquitetura **feature-based**: cada feature é autocontida e **não pode importar outra feature**. Convenções detalhadas no [`AGENTS.md`](./AGENTS.md).
+
+---
+
+## 🚀 Como rodar o projeto
+
+### Pré-requisitos
+
+- **Node.js** LTS e **npm**
+
+### 1. Instale as dependências
 
 ```bash
 npm install
+```
+
+### 2. Configure as variáveis de ambiente
+
+```bash
+cp .env.example .env
+```
+
+Variáveis disponíveis:
+
+| Variável | Descrição |
+|---|---|
+| `VITE_API_URL` | URL base da API consumida pela aplicação |
+| `VITE_USE_MOCK` | `true` para usar dados mockados (sem API) |
+
+### 3. Inicie em modo desenvolvimento
+
+```bash
 npm run dev
 ```
 
-# Building For Production
+O servidor de desenvolvimento sobe em `http://localhost:3001`.
 
-To build this application for production:
+---
 
-```bash
-npm run build
-```
+## 🧪 Scripts úteis
 
-## Styling
+| Comando | Descrição |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento (porta 3001) |
+| `npm run build` | Build de produção |
+| `npm run preview` | Pré-visualização do build |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier + ESLint `--fix` |
+| `npm run check` | Verificação do Prettier (`prettier --check`) |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run test` | Testes unitários (Vitest) |
+| `npm run generate-routes` | Regenera a árvore de rotas do TanStack Router |
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+---
 
-### Removing Tailwind CSS
+## 🌍 Internacionalização
 
-If you prefer not to use Tailwind CSS:
+O projeto suporta **português (`pt`) e inglês (`en`)** via i18next, com detecção automática de idioma e seletor na interface. As traduções são organizadas por namespace em `shared/i18n/` e por feature (`<feature>/i18n/`); toda nova chave deve ser registrada em `shared/i18n/index.ts`.
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+---
 
-## Linting & Formatting
+## 📚 Documentação do projeto
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+- **Convenções de código e arquitetura** (feature-based, nomenclatura, testes obrigatórios, checklist de contribuição): [`AGENTS.md`](./AGENTS.md)
+- **Idiomas**: `src/shared/i18n/locales/` (`pt.json`, `en.json`)
+- **Configuração visual**: `tailwind.config.js` e `components.json` (shadcn/ui)
 
-```bash
-npm run lint
-npm run format
-npm run check
-```
+---
 
-## Deploy with Nitro
+## 📄 Licença
 
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
-
-```bash
-npm run build
-node dist/server/index.mjs
-```
-
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
-
-```bash
-pnpm dlx shadcn@latest add button
-```
-
-## Development
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Distribuído sob a licença **MIT** — veja o arquivo [`LICENSE`](./LICENSE).
