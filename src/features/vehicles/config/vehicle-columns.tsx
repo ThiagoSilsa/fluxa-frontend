@@ -48,15 +48,18 @@ export function createVehicleColumns({
     }),
     columnHelper.accessor('model', {
       header: t('columns.model'),
+      enableSorting: false,
       cell: ({ getValue }) => getValue() ?? '—',
     }),
     columnHelper.accessor('color', {
       header: t('columns.color'),
+      enableSorting: false,
       cell: ({ getValue }) => getValue() ?? '—',
     }),
     columnHelper.accessor((row) => row.vehicleType?.name ?? '—', {
       id: 'vehicleType',
       header: t('columns.type'),
+      enableSorting: false,
       cell: ({ row }) => row.original.vehicleType?.name ?? '—',
     }),
     columnHelper.accessor('isActive', {
@@ -88,6 +91,7 @@ export function createVehicleColumns({
     }),
     columnHelper.accessor('freePass', {
       header: t('columns.freePass'),
+      enableSorting: false,
       size: 110,
       cell: ({ getValue }) => (
         <Badge
@@ -104,6 +108,7 @@ export function createVehicleColumns({
     columnHelper.display({
       id: 'actions',
       header: '',
+      enableSorting: false,
       size: 90,
       cell: ({ row }) => (
         <div className="flex items-center justify-end gap-1">
