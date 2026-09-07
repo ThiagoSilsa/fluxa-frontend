@@ -96,6 +96,27 @@ export interface CreateBlockRequestPayload {
   reason: string
 }
 
+/** Status de uma solicitação de bloqueio (visão "minhas solicitações"). */
+export type BlockRequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
+
+/** Solicitação de bloqueio (visão enxuta — "minhas solicitações"). */
+export interface BlockRequestItem {
+  id: string
+  plate: string
+  reason: string
+  status: BlockRequestStatus
+  requestedBy: { id: string; name: string }
+  requestedAt: string
+}
+
+/** Resposta paginada de solicitações de bloqueio. */
+export interface ListBlockRequestsResponse {
+  limit: number
+  offset: number
+  data: BlockRequestItem[]
+  count: number
+}
+
 /** Payload de transições com observação (rejeitar/in-contact). */
 export interface HandleAccessRequestPayload {
   observation?: string

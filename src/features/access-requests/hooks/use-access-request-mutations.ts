@@ -43,6 +43,11 @@ export function useAccessRequestMutations() {
     })
   }
 
+  /** Invalida as "minhas solicitações" de bloqueio (chave local da feature). */
+  const invalidateMyBlockRequests = () => {
+    queryClient.invalidateQueries({ queryKey: ['my-block-requests'] })
+  }
+
   /** Mutation para criar uma solicitação (porteiro). */
   const create = useMutation({
     mutationFn: (payload: CreateAccessRequestPayload) => accessRequestService.create(payload),
@@ -60,7 +65,20 @@ export function useAccessRequestMutations() {
     mutationFn: (payload: CreateBlockRequestPayload) =>
       accessRequestService.createBlockRequest(payload),
     onSuccess: () => {
+      invalidateMyBlockRequests()
       toast.success(t('notifications.create-block-request-success'))
+    },
+    onError: (error) => {
+      toast.error(tc(getAPIErrorTranslationKey(error)))
+    },
+  })
+
+  /** Mutation para cancelar uma solicitação de bloqueio própria (PENDING). */
+  const cancelBlockRequest = useMutation({
+    mutationFn: (id: string) => accessRequestService.cancelBlockRequest(id),
+    onSuccess: () => {
+      invalidateMyBlockRequests()
+      toast.success(t('notifications.cancel-block-success'))
     },
     onError: (error) => {
       toast.error(tc(getAPIErrorTranslationKey(error)))
@@ -117,5 +135,13 @@ export function useAccessRequestMutations() {
     },
   })
 
-  return { create, createBlockRequest, accept, reject, markInContact, cancel }
+  return {
+    create,
+    createBlockRequest,
+    cancelBlockRequest,
+    accept,
+    reject,
+    markInContact,
+    cancel,
+  }
 }

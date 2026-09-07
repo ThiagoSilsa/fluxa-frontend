@@ -10,6 +10,13 @@
     "title": "Nenhuma solicitação encontrada",
     "description": "Ajuste os filtros ou crie uma nova solicitação."
   },
+  "mine": {
+    "title": "Minhas solicitações",
+    "accessTitle": "Solicitações de acesso",
+    "blockTitle": "Solicitações de bloqueio",
+    "empty": "Nenhuma solicitação ainda.",
+    "error": "Não foi possível carregar suas solicitações."
+  },
   "columns": {
     "plate": "Placa",
     "type": "Tipo",
@@ -38,6 +45,12 @@
     "PENDING": "Pendente",
     "IN_CONTACT": "Em contato",
     "REGISTERED": "Registrada",
+    "REJECTED": "Rejeitada",
+    "CANCELLED": "Cancelada"
+  },
+  "blockStatus": {
+    "PENDING": "Pendente",
+    "APPROVED": "Aprovada",
     "REJECTED": "Rejeitada",
     "CANCELLED": "Cancelada"
   },
@@ -135,6 +148,7 @@
   "notifications": {
     "create-success": "Solicitação criada.",
     "create-block-request-success": "Solicitação de bloqueio criada.",
+    "cancel-block-success": "Solicitação de bloqueio cancelada.",
     "accept-success": "Solicitação aceita e entrada autorizada.",
     "reject-success": "Solicitação rejeitada.",
     "in-contact-success": "Solicitação marcada como em contato.",

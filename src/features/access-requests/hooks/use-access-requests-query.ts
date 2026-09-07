@@ -16,7 +16,7 @@ import type { AccessRequestListParams } from '../types/access-requests.types'
  * @param params Filtros e paginação.
  * @returns Resultado com o envelope paginado.
  */
-export function useAccessRequestsQuery(params: AccessRequestListParams) {
+export function useAccessRequestsQuery(params: AccessRequestListParams, enabled = true) {
   return useQuery({
     queryKey: [
       'access-requests',
@@ -28,5 +28,6 @@ export function useAccessRequestsQuery(params: AccessRequestListParams) {
       },
     ],
     queryFn: () => accessRequestService.list(params),
+    enabled,
   })
 }

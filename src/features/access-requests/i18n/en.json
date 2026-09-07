@@ -10,6 +10,13 @@
     "title": "No requests found",
     "description": "Adjust the filters or create a new request."
   },
+  "mine": {
+    "title": "My requests",
+    "accessTitle": "Access requests",
+    "blockTitle": "Block requests",
+    "empty": "No requests yet.",
+    "error": "Could not load your requests."
+  },
   "columns": {
     "plate": "Plate",
     "type": "Type",
@@ -38,6 +45,12 @@
     "PENDING": "Pending",
     "IN_CONTACT": "In contact",
     "REGISTERED": "Registered",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled"
+  },
+  "blockStatus": {
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
     "REJECTED": "Rejected",
     "CANCELLED": "Cancelled"
   },
@@ -135,6 +148,7 @@
   "notifications": {
     "create-success": "Request created.",
     "create-block-request-success": "Block request created.",
+    "cancel-block-success": "Block request cancelled.",
     "accept-success": "Request accepted and entry authorized.",
     "reject-success": "Request rejected.",
     "in-contact-success": "Request marked as in contact.",

@@ -13,6 +13,7 @@ import type {
   CreateBlockRequestPayload,
   HandleAccessRequestPayload,
   ListAccessRequestsResponse,
+  ListBlockRequestsResponse,
   UserOption,
   VehicleOption,
   VehicleTypeOption,
@@ -83,6 +84,35 @@ class AccessRequestService {
       endpoint: '/block-requests',
       method: 'POST',
       body: payload,
+    })
+  }
+
+  /**
+   * Lista as solicitações de bloqueio do próprio usuário (porteiro —
+   * listagem escalonada ADR 0012: sem gestão, retorna apenas as próprias).
+   *
+   * @param limit Limite da página.
+   * @param offset Deslocamento da página.
+   * @returns Envelope paginado de solicitações de bloqueio.
+   */
+  async listBlockRequests(limit: number, offset: number): Promise<ListBlockRequestsResponse> {
+    return baseController.makeRequest({
+      endpoint: `/block-requests?limit=${limit}&offset=${offset}`,
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Cancela uma solicitação de bloqueio própria (porteiro — apenas PENDING).
+   *
+   * @param id Id da solicitação.
+   * @returns Solicitação de bloqueio cancelada.
+   */
+  async cancelBlockRequest(id: string): Promise<unknown> {
+    return baseController.makeRequest({
+      endpoint: `/block-requests/${id}/cancel`,
+      method: 'POST',
+      body: {},
     })
   }
 

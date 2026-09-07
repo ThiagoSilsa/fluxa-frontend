@@ -20,11 +20,13 @@ import { getAccessRequestTypeLabelKey } from '../lib/access-request.lib'
 // Hooks
 import { useAccessRequestMutations } from '../hooks/use-access-request-mutations'
 import { useAccessRequestsQuery } from '../hooks/use-access-requests-query'
+import { useMyBlockRequestsQuery } from '../hooks/use-my-block-requests-query'
 
 // Components
 import { AccessRequestCreateDialog } from '../components/access-request-create-dialog'
 import { AccessRequestDetailDialog } from '../components/access-request-detail-dialog'
 import { AccessRequestStatusBadge } from '../components/status-badge'
+import { BlockRequestStatusBadge } from '../components/block-request-status-badge'
 
 // Types
 import type {
@@ -41,6 +43,7 @@ import { canAccess } from '#/shared/lib/auth-access'
 import { PermissionCode } from '#/shared/enum/permission-code'
 import {
   Button,
+  ConfirmDialog,
   Header,
   Input,
   PageLayout,
@@ -57,6 +60,12 @@ import {
 import { useAuth } from '#/app/providers/auth-provider'
 
 const PAGE_SIZE = 20
+
+/** Limite da "minhas solicitações" do porteiro (sem paginação na tela). */
+const MY_REQUESTS_LIMIT = 100
+
+/** Alvo de cancelamento a partir das listas "minhas solicitações". */
+type CancelTarget = { kind: 'access' | 'block'; id: string }
 
 const STATUS_FILTERS: Array<{ value: AccessRequestStatus | 'all'; label: string }> = [
   { value: 'all', label: 'all' },
@@ -104,15 +113,27 @@ export function AccessRequestsPage() {
 
   const [createOpen, setCreateOpen] = useState(false)
   const [detail, setDetail] = useState<AccessRequestResponse | null>(null)
+  const [cancelTarget, setCancelTarget] = useState<CancelTarget | null>(null)
 
-  const { data, isPending } = useAccessRequestsQuery({
-    status: status === 'all' ? undefined : status,
-    plate: debouncedPlate.trim() || undefined,
-    limit: PAGE_SIZE,
-    offset,
-  })
+  const { data, isPending, isError } = useAccessRequestsQuery(
+    canList
+      ? {
+          status: status === 'all' ? undefined : status,
+          plate: debouncedPlate.trim() || undefined,
+          limit: PAGE_SIZE,
+          offset,
+        }
+      : { status: undefined, plate: undefined, limit: MY_REQUESTS_LIMIT, offset: 0 },
+    canList || canCreate,
+  )
 
-  const { create, createBlockRequest, accept, reject, markInContact, cancel } =
+  const {
+    data: blockData,
+    isPending: blockPending,
+    isError: blockError,
+  } = useMyBlockRequestsQuery(!canList && canRequestBlock)
+
+  const { create, createBlockRequest, cancelBlockRequest, accept, reject, markInContact, cancel } =
     useAccessRequestMutations()
 
   if (!canList && !canCreate && !canRequestBlock) {
@@ -126,6 +147,7 @@ export function AccessRequestsPage() {
   const isAnyPending =
     create.isPending ||
     createBlockRequest.isPending ||
+    cancelBlockRequest.isPending ||
     accept.isPending ||
     reject.isPending ||
     markInContact.isPending ||
@@ -169,6 +191,19 @@ export function AccessRequestsPage() {
       return
     }
     cancel.mutate(detail.id, { onSuccess: () => setDetail(null) })
+  }
+
+  const handleConfirmCancel = () => {
+    if (!cancelTarget) {
+      return
+    }
+    const target = cancelTarget
+    setCancelTarget(null)
+    if (target.kind === 'access') {
+      cancel.mutate(target.id)
+    } else {
+      cancelBlockRequest.mutate(target.id)
+    }
   }
 
   const totalPages = data ? Math.max(1, Math.ceil(data.count / PAGE_SIZE)) : 1
@@ -300,7 +335,110 @@ export function AccessRequestsPage() {
           ) : null}
         </>
       ) : (
-        <p className="text-muted-foreground text-sm">{t('subtitle')}</p>
+        <div className="flex flex-col gap-8">
+          {canCreate ? (
+            <section className="space-y-3">
+              <h2 className="text-lg font-semibold tracking-tight">{t('mine.accessTitle')}</h2>
+              {isPending ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : null}
+              {!isPending && isError ? (
+                <p className="text-destructive text-sm">{t('mine.error')}</p>
+              ) : null}
+              {!isPending && !isError && (!data || data.data.length === 0) ? (
+                <p className="text-muted-foreground text-sm">{t('mine.empty')}</p>
+              ) : null}
+              {!isPending && !isError && data && data.data.length > 0 ? (
+                <div className="divide-y rounded-md border">
+                  {data.data.map((request) => (
+                    <div
+                      key={request.id}
+                      className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+                        <span className="font-medium uppercase">{request.plate}</span>
+                        <span className="text-muted-foreground text-sm">
+                          {t(getAccessRequestTypeLabelKey(request.type))}
+                        </span>
+                        <AccessRequestStatusBadge status={request.status} />
+                      </div>
+                      <div className="flex items-center justify-between gap-2 sm:justify-end">
+                        {canCancel && request.status === 'PENDING' ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={cancel.isPending}
+                            onClick={() => setCancelTarget({ kind: 'access', id: request.id })}
+                          >
+                            {t('actions.cancel')}
+                          </Button>
+                        ) : null}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setDetail(request)}
+                        >
+                          {t('actions.view')}
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+
+          {canRequestBlock ? (
+            <section className="space-y-3">
+              <h2 className="text-lg font-semibold tracking-tight">{t('mine.blockTitle')}</h2>
+              {blockPending ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : null}
+              {!blockPending && blockError ? (
+                <p className="text-destructive text-sm">{t('mine.error')}</p>
+              ) : null}
+              {!blockPending && !blockError && (!blockData || blockData.data.length === 0) ? (
+                <p className="text-muted-foreground text-sm">{t('mine.empty')}</p>
+              ) : null}
+              {!blockPending && !blockError && blockData && blockData.data.length > 0 ? (
+                <div className="divide-y rounded-md border">
+                  {blockData.data.map((request) => (
+                    <div
+                      key={request.id}
+                      className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+                        <span className="font-medium uppercase">{request.plate}</span>
+                        <BlockRequestStatusBadge status={request.status} />
+                      </div>
+                      <div className="flex items-center justify-between gap-2 sm:justify-end">
+                        {request.status === 'PENDING' ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={cancelBlockRequest.isPending}
+                            onClick={() => setCancelTarget({ kind: 'block', id: request.id })}
+                          >
+                            {t('actions.cancel')}
+                          </Button>
+                        ) : null}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+        </div>
       )}
 
       <AccessRequestCreateDialog
@@ -328,6 +466,23 @@ export function AccessRequestsPage() {
         onReject={handleReject}
         onMarkInContact={handleMarkInContact}
         onCancel={handleCancel}
+      />
+
+      <ConfirmDialog
+        open={cancelTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCancelTarget(null)
+          }
+        }}
+        title={t('confirm.cancel-title')}
+        description={t('confirm.cancel-description')}
+        confirmLabel={t('confirm.confirm')}
+        cancelLabel={t('confirm.cancel')}
+        isPending={
+          cancelTarget?.kind === 'access' ? cancel.isPending : cancelBlockRequest.isPending
+        }
+        onConfirm={handleConfirmCancel}
       />
     </PageLayout>
   )
