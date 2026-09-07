@@ -29,7 +29,7 @@
     "title": "Welcome to Fluxa",
     "description": "Fluxa is a platform for controlling access to your company's resources. Please sign in to continue."
   },
-  "login":{
+  "login": {
     "welcome": "Welcome back!",
     "description": "Please sign in to your account to continue."
   }
