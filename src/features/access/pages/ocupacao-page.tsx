@@ -161,7 +161,16 @@ export function OcupacaoPage() {
             <CardHeader>
               <CardTitle className="text-sm font-medium">{t('occupancy.totalRate')}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
+              {data.totalCapacity > 0 ? (
+                <p className="text-foreground text-3xl font-semibold tracking-tight">
+                  {data.totalOccupied}
+                  <span className="text-muted-foreground mx-1 text-xl font-normal">/</span>
+                  {data.totalCapacity}
+                </p>
+              ) : (
+                <p className="text-muted-foreground text-sm">{t('occupancy.noCapacity')}</p>
+              )}
               <div className="flex items-center gap-3">
                 <div className="flex-1">
                   <OccupancyBar rate={data.totalRate} />
