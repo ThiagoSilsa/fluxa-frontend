@@ -32,6 +32,9 @@ import { buildVehiclesTemplateDownloader } from '../sub-pages/vehicles-import/li
 import { buildUsersTemplateDownloader } from '../sub-pages/users-import/lib/build-users-template-downloader.lib'
 import { buildUserVehiclesTemplateDownloader } from '../sub-pages/user-vehicles-import/lib/build-user-vehicles-template-downloader.lib'
 
+// Shared
+import { Button, Header, PageLayout } from '#/shared/components'
+
 /** Estado de paginação/ordenação via URL (retorno do hook). */
 type ImportTable = ReturnType<typeof useGenericTableSearch>
 
@@ -44,6 +47,32 @@ type ImportTabConfig = {
 }
 
 /**
+ * Botão de subpágina (modalidade) no padrão das demais telas (portaria/blocks).
+ *
+ * O rótulo vem do namespace da própria sub-página (`tab.label`), que já
+ * centraliza a tradução de cada modalidade.
+ *
+ * @param props Estado ativo, namespace e ação de troca.
+ */
+function TabButton({
+  active,
+  namespace,
+  onClick,
+}: {
+  active: boolean
+  namespace: string
+  onClick: () => void
+}) {
+  const { t } = useTranslation(namespace)
+
+  return (
+    <Button type="button" variant={active ? 'default' : 'outline'} onClick={onClick}>
+      {t('tab.label')}
+    </Button>
+  )
+}
+
+/**
  * Página de importações — abas por tipo (departamentos, veículos, usuários,
  * vínculo usuário-veículo), cada uma com upload, acompanhamento e histórico.
  *
@@ -53,6 +82,7 @@ type ImportTabConfig = {
  * @param props Propriedades da página.
  */
 export function ImportPage({ search }: { search: ImportSearch }) {
+  const { t } = useTranslation('import')
   const navigate = useNavigate()
 
   const tabs: ImportTabConfig[] = [
@@ -99,25 +129,19 @@ export function ImportPage({ search }: { search: ImportSearch }) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex gap-2 border-b">
-        {tabs.map((tab) => {
-          const { t } = useTranslation(tab.namespace)
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => handleTabChange(tab.id)}
-              className={`-mb-px rounded-t-lg border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === tab.id
-                  ? 'border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground border-transparent'
-              }`}
-            >
-              {t('tab.label')}
-            </button>
-          )
-        })}
+    <PageLayout>
+      <Header title={t('title')} subtitle={t('subtitle')} />
+
+      {/* Subpáginas (modalidades) */}
+      <div className="flex gap-2">
+        {tabs.map((tab) => (
+          <TabButton
+            key={tab.id}
+            active={activeTab === tab.id}
+            namespace={tab.namespace}
+            onClick={() => handleTabChange(tab.id)}
+          />
+        ))}
       </div>
 
       {tabs.map((tab) => {
@@ -126,7 +150,7 @@ export function ImportPage({ search }: { search: ImportSearch }) {
         }
         return <TabContent key={tab.id} config={tab} table={table} />
       })}
-    </div>
+    </PageLayout>
   )
 }
 

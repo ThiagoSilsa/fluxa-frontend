@@ -1,4 +1,6 @@
 {
+  "title": "Imports",
+  "subtitle": "Bulk-register departments, vehicles, users, and user-vehicle links from XLSX spreadsheets.",
   "upload": {
     "download-template": "Download XLSX template",
     "select-file": "Select file",

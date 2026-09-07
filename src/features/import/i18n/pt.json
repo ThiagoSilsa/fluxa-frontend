@@ -1,4 +1,6 @@
 {
+  "title": "Importações",
+  "subtitle": "Cadastre departamentos, veículos, usuários e vínculos usuário-veículo em lote a partir de planilhas XLSX.",
   "upload": {
     "download-template": "Baixar modelo XLSX",
     "select-file": "Selecionar arquivo",
