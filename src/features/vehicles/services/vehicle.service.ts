@@ -263,6 +263,47 @@ class VehiclesService {
       method: 'POST',
     })
   }
+
+  /**
+   * Bloqueia um veículo pela placa (MANAGE_BLOCKS) — cria um bloqueio MANUAL.
+   *
+   * Consome o endpoint de bloqueios da feature `blocks` (ADR 0010 M1) sem
+   * importar a feature (regra: nenhuma dependência entre features).
+   *
+   * @param plate Placa normalizada.
+   * @param reason Motivo do bloqueio (obrigatório).
+   */
+  async createBlock(plate: string, reason: string): Promise<void> {
+    await baseController.makeRequest({
+      endpoint: '/blocks',
+      method: 'POST',
+      body: { plate, reason },
+    })
+  }
+
+  /**
+   * Desbloqueia um veículo revogando o bloqueio ATIVO da placa.
+   *
+   * Localiza o bloqueio ativo via listagem (status=ACTIVE + busca por placa)
+   * e chama o revoke. Sem bloqueio ativo, lança `NO_ACTIVE_BLOCK`.
+   *
+   * @param plate Placa normalizada.
+   */
+  async unblockVehicle(plate: string): Promise<void> {
+    const list = (await baseController.makeRequest({
+      endpoint: `/blocks?status=ACTIVE&search=${encodeURIComponent(plate)}&limit=10&offset=0`,
+      method: 'GET',
+    })) as { data: { id: string }[] }
+    const active = list.data?.[0]
+    if (!active) {
+      throw new Error('NO_ACTIVE_BLOCK')
+    }
+    await baseController.makeRequest({
+      endpoint: `/blocks/${active.id}/revoke`,
+      method: 'POST',
+      body: {},
+    })
+  }
 }
 
 export const vehiclesService = new VehiclesService()

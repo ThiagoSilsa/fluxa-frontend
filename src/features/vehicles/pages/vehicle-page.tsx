@@ -80,6 +80,10 @@ export function VehiclesPage() {
     () => canAccess(user, { permissions: [PermissionCode.GRANT_FREE_PASS] }),
     [user],
   )
+  const canManageBlocks = useMemo(
+    () => canAccess(user, { permissions: [PermissionCode.MANAGE_BLOCKS] }),
+    [user],
+  )
   const canPrintQr = useMemo(
     () => canAccess(user, { permissions: [PermissionCode.PRINT_QRCODE] }),
     [user],
@@ -127,6 +131,8 @@ export function VehiclesPage() {
     deleteVehicle,
     setVehicleDepartment,
     removeVehicleDepartment,
+    blockVehicle,
+    unblockVehicle,
   } = useVehicleMutations()
 
   // --- Handlers ---
@@ -370,6 +376,9 @@ export function VehiclesPage() {
           typeOptions={typeOptions}
           departmentOptions={departmentOptions}
           canGrantFreePass={canGrantFreePass}
+          canManageBlocks={canManageBlocks}
+          onBlock={(plate, reason) => blockVehicle.mutateAsync({ plate, reason })}
+          onUnblock={(plate) => unblockVehicle.mutateAsync(plate)}
           onCurrentDepartmentChange={handleCurrentDepartmentChange}
           onSubmit={handleSubmitForm}
         />

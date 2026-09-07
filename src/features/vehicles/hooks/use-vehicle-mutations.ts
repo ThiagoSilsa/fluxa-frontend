@@ -153,6 +153,31 @@ export function useVehicleMutations() {
     },
   })
 
+  /** Mutation para bloquear um veículo pela placa (MANAGE_BLOCKS). */
+  const blockVehicle = useMutation({
+    mutationFn: ({ plate, reason }: { plate: string; reason: string }) =>
+      vehiclesService.createBlock(plate, reason),
+    onSuccess: () => {
+      invalidateVehicles()
+      toast.success(t('notifications.block-success'))
+    },
+    onError: (error) => {
+      toast.error(tc(getAPIErrorTranslationKey(error)))
+    },
+  })
+
+  /** Mutation para desbloquear um veículo (revoga o bloqueio ativo da placa). */
+  const unblockVehicle = useMutation({
+    mutationFn: (plate: string) => vehiclesService.unblockVehicle(plate),
+    onSuccess: () => {
+      invalidateVehicles()
+      toast.success(t('notifications.unblock-success'))
+    },
+    onError: (error) => {
+      toast.error(tc(getAPIErrorTranslationKey(error)))
+    },
+  })
+
   return {
     createVehicle,
     updateVehicle,
@@ -162,5 +187,7 @@ export function useVehicleMutations() {
     addDriver,
     updateDriver,
     removeDriver,
+    blockVehicle,
+    unblockVehicle,
   }
 }

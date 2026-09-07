@@ -1,22 +1,48 @@
 {
   "title": "Vehicles",
   "subtitle": "Manage the company's vehicles.",
-  "search": { "placeholder": "Search by plate or model" },
+  "search": {
+    "placeholder": "Search by plate or model"
+  },
   "filters": {
-    "status": { "label": "Status", "all": "All", "active": "Active", "inactive": "Inactive" },
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "freePass": {
       "label": "Free pass",
       "all": "All",
       "free": "With free pass",
       "no-free": "Without free pass"
     },
-    "type": { "label": "Type", "all": "All types" },
-    "department": { "label": "Department", "all": "All departments" }
+    "type": {
+      "label": "Type",
+      "all": "All types"
+    },
+    "department": {
+      "label": "Department",
+      "all": "All departments"
+    }
   },
-  "toolbar": { "create": "New vehicle", "edit": "Edit", "delete": "Delete" },
-  "empty": { "title": "No vehicles found", "description": "Try adjusting the search or filters." },
-  "status": { "active": "Active", "inactive": "Inactive" },
-  "freePass": { "yes": "Free pass", "no": "Regular" },
+  "toolbar": {
+    "create": "New vehicle",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "empty": {
+    "title": "No vehicles found",
+    "description": "Try adjusting the search or filters."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "freePass": {
+    "yes": "Free pass",
+    "no": "Regular"
+  },
   "columns": {
     "plate": "Plate",
     "model": "Model",
@@ -31,20 +57,38 @@
       "title": "Register vehicle",
       "description": "Fill in the details to register the vehicle."
     },
-    "edit": { "title": "Edit vehicle", "description": "Update the vehicle information." }
+    "edit": {
+      "title": "Edit vehicle",
+      "description": "Update the vehicle information."
+    }
   },
   "form": {
-    "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
-    "model": { "label": "Model", "placeholder": "Enter the model" },
-    "color": { "label": "Color", "placeholder": "Enter the color" },
-    "type": { "label": "Vehicle type", "placeholder": "Select the type" },
+    "plate": {
+      "label": "Plate",
+      "placeholder": "e.g. ABC1D23"
+    },
+    "model": {
+      "label": "Model",
+      "placeholder": "Enter the model"
+    },
+    "color": {
+      "label": "Color",
+      "placeholder": "Enter the color"
+    },
+    "type": {
+      "label": "Vehicle type",
+      "placeholder": "Select the type"
+    },
     "department": {
       "label": "Default department",
       "placeholder": "No department",
       "hint": "Set as the vehicle's default department.",
       "empty": "No departments available"
     },
-    "observation": { "label": "Observation", "placeholder": "Enter an observation (optional)" },
+    "observation": {
+      "label": "Observation",
+      "placeholder": "Enter an observation (optional)"
+    },
     "freePass": {
       "label": "Free pass",
       "no-permission": "Granting free pass requires a specific permission."
@@ -113,7 +157,10 @@
       "description": "Issue the QR to print and stick on the vehicle. The image is generated from a permanent token.",
       "emit": "Issue QR"
     },
-    "status": { "active": "QR active", "inactive": "QR expired" },
+    "status": {
+      "active": "QR active",
+      "inactive": "QR expired"
+    },
     "print": "Print",
     "reissue": "Reissue",
     "revoke": "Revoke",
@@ -151,6 +198,24 @@
     "department-remove-success": "Default department removed successfully.",
     "driver-add-success": "Driver linked successfully.",
     "driver-update-success": "Driver updated successfully.",
-    "driver-remove-success": "Driver removed successfully."
+    "driver-remove-success": "Driver removed successfully.",
+    "block-success": "Vehicle blocked.",
+    "unblock-success": "Vehicle unblocked."
+  },
+  "block": {
+    "action": "Block",
+    "unblock": "Unblock",
+    "status-blocked": "Vehicle blocked",
+    "status-free": "Vehicle free",
+    "status-blocked-hint": "This vehicle is blocked. Revoke the block to release it.",
+    "status-free-hint": "Block the vehicle to prevent entry.",
+    "title": "Block vehicle",
+    "description": "Inform the reason for blocking {{plate}}.",
+    "reason-label": "Reason",
+    "reason-placeholder": "e.g. suspicious driver",
+    "reason-required": "Inform the blocking reason.",
+    "confirm": "Confirm block",
+    "unblock-title": "Unblock vehicle",
+    "unblock-description": "Confirm unblocking vehicle {{plate}}?"
   }
 }
