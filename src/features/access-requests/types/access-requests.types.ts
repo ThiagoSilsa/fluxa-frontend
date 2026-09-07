@@ -103,12 +103,14 @@ export interface AcceptAccessRequestPayload {
   observation?: string
 }
 
-/** Opção de veículo para o seletor (cenários NEW_USER/LINK). */
+/**
+ * Opção de veículo para o seletor (cenários NEW_USER/LINK) — endpoint de
+ * baixo privilégio `/vehicles/options` (ADR 0011).
+ */
 export interface VehicleOption {
   id: string
   plate: string
   model: string | null
-  color: string | null
 }
 
 /** Opção de usuário para o seletor (cenários NEW_VEHICLE/LINK). */

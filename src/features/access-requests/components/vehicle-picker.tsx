@@ -7,6 +7,9 @@ import { useTranslation } from 'react-i18next'
 // Hooks
 import { useVehicleOptionsQuery } from '../hooks/use-vehicle-options-query'
 
+// Types
+import type { VehicleOption } from '../types/access-requests.types'
+
 // Shared
 import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
 import { SearchPicker } from '#/shared/components'
@@ -17,6 +20,8 @@ export type VehiclePickerProps = {
   value: string
   /** Reporta a seleção (id) ou a limpeza (`''`). */
   onChange: (vehicleId: string) => void
+  /** Reporta o veículo escolhido (para a placa derivar da seleção). */
+  onVehicleSelect?: (vehicle: VehicleOption) => void
   /** Marca o input de busca como inválido (`aria-invalid`). */
   invalid?: boolean
   /** `id` do elemento que descreve o erro (`aria-describedby`). */
@@ -33,6 +38,7 @@ export type VehiclePickerProps = {
 export function VehiclePicker({
   value,
   onChange,
+  onVehicleSelect,
   invalid = false,
   ariaDescribedBy,
 }: VehiclePickerProps) {
@@ -59,6 +65,12 @@ export function VehiclePicker({
       selectedLabel={t('create.vehicle.selected')}
       value={value}
       onChange={onChange}
+      onSelectOption={(option) => {
+        const vehicle = data?.find((item) => item.id === option.id)
+        if (vehicle) {
+          onVehicleSelect?.(vehicle)
+        }
+      }}
       search={search}
       onSearchChange={setSearch}
       options={options}

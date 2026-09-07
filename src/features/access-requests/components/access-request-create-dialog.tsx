@@ -101,11 +101,16 @@ export function AccessRequestCreateDialog({
 
   const handleTypeChange = (value: AccessRequestType) => {
     setValue('type', value)
-    // Limpa as seleções de cenários anteriores (evita validação velha).
+    // Limpa seleções/placa de cenários anteriores (evita validação velha e
+    // placa órfã que só faria sentido em outro cenário).
+    setValue('plate', '')
     setValue('vehicleId', '')
     setValue('userId', '')
   }
 
+  // Campo livre de placa só quando o veículo será criado (NEW_VEHICLE/BOTH);
+  // em NEW_USER/LINK a placa deriva do veículo escolhido no seletor.
+  const showFreePlate = type === 'NEW_VEHICLE' || type === 'BOTH'
   const showVehiclePicker = type === 'NEW_USER' || type === 'LINK'
   const showUserPicker = type === 'NEW_VEHICLE' || type === 'LINK'
   const showDriverData = type === 'NEW_USER' || type === 'BOTH'
@@ -151,24 +156,26 @@ export function AccessRequestCreateDialog({
           />
         </div>
 
-        {/* Placa */}
-        <div className="space-y-2">
-          <Label htmlFor="ar-plate">
-            {t('create.plate.label')}
-            <span className="text-destructive"> *</span>
-          </Label>
-          <Input
-            id="ar-plate"
-            {...register('plate')}
-            aria-invalid={!!errors.plate}
-            placeholder={t('create.plate.placeholder')}
-            className="uppercase"
-            maxLength={10}
-          />
-          {errors.plate?.message ? (
-            <p className="text-destructive text-xs">{t(errors.plate.message)}</p>
-          ) : null}
-        </div>
+        {/* Placa (veículo a criar — NEW_VEHICLE/BOTH) */}
+        {showFreePlate ? (
+          <div className="space-y-2">
+            <Label htmlFor="ar-plate">
+              {t('create.plate.label')}
+              <span className="text-destructive"> *</span>
+            </Label>
+            <Input
+              id="ar-plate"
+              {...register('plate')}
+              aria-invalid={!!errors.plate}
+              placeholder={t('create.plate.placeholder')}
+              className="uppercase"
+              maxLength={10}
+            />
+            {errors.plate?.message ? (
+              <p className="text-destructive text-xs">{t(errors.plate.message)}</p>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* Veículo existente */}
         {showVehiclePicker ? (
@@ -180,6 +187,7 @@ export function AccessRequestCreateDialog({
                 <VehiclePicker
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  onVehicleSelect={(vehicle) => setValue('plate', vehicle.plate)}
                   invalid={!!errors.vehicleId}
                   ariaDescribedBy={errors.vehicleId?.message ? 'ar-vehicle-error' : undefined}
                 />

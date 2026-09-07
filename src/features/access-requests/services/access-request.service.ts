@@ -21,8 +21,9 @@ import type {
  * Serviço de solicitações de acesso (ADR 0010 M2 — regra 41).
  *
  * Consome `/access-requests` (CRUD + transições) e, para os seletores dos
- * cenários NEW_USER/NEW_VEHICLE/LINK, os endpoints de leitura de veículos e
- * usuários (`GET /vehicles`, `GET /users`).
+ * cenários NEW_USER/NEW_VEHICLE/LINK, os endpoints de seleção de baixo
+ * privilégio (`GET /vehicles/options`, `GET /users/options` — ADR 0011),
+ * acessíveis ao porteiro sem permissões de gestão.
  */
 class AccessRequestService {
   /**
@@ -132,28 +133,30 @@ class AccessRequestService {
   }
 
   /**
-   * Busca veículos para o seletor (cenários NEW_USER/LINK).
+   * Busca veículos para o seletor (cenários NEW_USER/LINK) — `GET
+   * /vehicles/options` (baixo privilégio, ADR 0011).
    *
    * @param search Busca por placa/modelo.
-   * @returns Opções de veículo.
+   * @returns Opções de veículo `{ id, plate, model }`.
    */
   async listVehicles(search: string): Promise<VehicleOption[]> {
     const response = (await baseController.makeRequest({
-      endpoint: `/vehicles?search=${encodeURIComponent(search)}&limit=10&offset=0`,
+      endpoint: `/vehicles/options?search=${encodeURIComponent(search)}&limit=10&offset=0`,
       method: 'GET',
     })) as { data: VehicleOption[] }
     return response.data
   }
 
   /**
-   * Busca usuários para o seletor (cenários NEW_VEHICLE/LINK).
+   * Busca usuários para o seletor (cenários NEW_VEHICLE/LINK) — `GET
+   * /users/options` (baixo privilégio, ADR 0011).
    *
    * @param search Busca por nome/e-mail.
-   * @returns Opções de usuário.
+   * @returns Opções de usuário `{ id, name, email }`.
    */
   async listUsers(search: string): Promise<UserOption[]> {
     const response = (await baseController.makeRequest({
-      endpoint: `/users?search=${encodeURIComponent(search)}&limit=10&offset=0`,
+      endpoint: `/users/options?search=${encodeURIComponent(search)}&limit=10&offset=0`,
       method: 'GET',
     })) as { data: UserOption[] }
     return response.data

@@ -25,10 +25,9 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
 export const accessRequestFormSchema = z
   .object({
     type: z.enum(['NEW_USER', 'NEW_VEHICLE', 'LINK', 'BOTH']),
-    plate: z
-      .string({ message: 'form.errors.plate-required' })
-      .min(1, { message: 'form.errors.plate-required' })
-      .max(10, { message: 'form.errors.plate-max' }),
+    // Placa em campo livre só quando o veículo será criado (NEW_VEHICLE/BOTH);
+    // em NEW_USER/LINK ela deriva do veículo escolhido no seletor.
+    plate: z.string().max(10, { message: 'form.errors.plate-max' }),
     vehicleId: z
       .string()
       .refine((value) => value === '' || uuidPattern.test(value), {
@@ -55,7 +54,7 @@ export const accessRequestFormSchema = z
       ctx.addIssue({ code: 'custom', path, message })
     }
 
-    if (!isValidBrazilianPlate(values.plate)) {
+    if (values.plate && !isValidBrazilianPlate(values.plate)) {
       ctx.addIssue({
         code: 'custom',
         path: ['plate'],
@@ -79,6 +78,9 @@ export const accessRequestFormSchema = z
         }
         break
       case 'NEW_VEHICLE':
+        if (!values.plate?.trim()) {
+          required(['plate'], 'form.errors.plate-required')
+        }
         if (!values.userId) {
           required(['userId'], 'form.errors.user-required')
         }
@@ -98,6 +100,9 @@ export const accessRequestFormSchema = z
         }
         break
       case 'BOTH':
+        if (!values.plate?.trim()) {
+          required(['plate'], 'form.errors.plate-required')
+        }
         if (!values.driverName?.trim()) {
           required(['driverName'], 'form.errors.driver-name-required')
         }

@@ -49,6 +49,8 @@ export type SearchPickerProps = {
   invalid?: boolean
   /** `id` do elemento que descreve o erro (`aria-describedby`). */
   ariaDescribedBy?: string
+  /** Opcional: devolve a opção escolhida (além do `onChange(id)`). */
+  onSelectOption?: (option: SearchPickerOption) => void
 }
 
 /**
@@ -74,6 +76,7 @@ export function SearchPicker({
   uppercase = false,
   invalid = false,
   ariaDescribedBy,
+  onSelectOption,
 }: SearchPickerProps) {
   const [selected, setSelected] = useState<SearchPickerOption | null>(null)
 
@@ -88,6 +91,7 @@ export function SearchPicker({
     setSelected(option)
     onChange(option.id)
     onSearchChange('')
+    onSelectOption?.(option)
   }
 
   const handleClear = () => {
