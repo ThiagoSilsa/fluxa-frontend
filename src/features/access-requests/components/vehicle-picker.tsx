@@ -17,6 +17,10 @@ export type VehiclePickerProps = {
   value: string
   /** Reporta a seleção (id) ou a limpeza (`''`). */
   onChange: (vehicleId: string) => void
+  /** Marca o input de busca como inválido (`aria-invalid`). */
+  invalid?: boolean
+  /** `id` do elemento que descreve o erro (`aria-describedby`). */
+  ariaDescribedBy?: string
 }
 
 /**
@@ -26,7 +30,12 @@ export type VehiclePickerProps = {
  * debounce 400ms) e os textos i18n da feature — sem duplicar o markup de
  * seleção (ticket 01 — prefactor shared).
  */
-export function VehiclePicker({ value, onChange }: VehiclePickerProps) {
+export function VehiclePicker({
+  value,
+  onChange,
+  invalid = false,
+  ariaDescribedBy,
+}: VehiclePickerProps) {
   const { t } = useTranslation('accessRequests')
 
   const [search, setSearch] = useState('')
@@ -54,6 +63,8 @@ export function VehiclePicker({ value, onChange }: VehiclePickerProps) {
       onSearchChange={setSearch}
       options={options}
       isPending={isPending}
+      invalid={invalid}
+      ariaDescribedBy={ariaDescribedBy}
       uppercase
     />
   )

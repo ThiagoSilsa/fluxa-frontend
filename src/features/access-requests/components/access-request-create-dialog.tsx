@@ -177,11 +177,18 @@ export function AccessRequestCreateDialog({
               control={control}
               name="vehicleId"
               render={({ field }) => (
-                <VehiclePicker value={field.value ?? ''} onChange={field.onChange} />
+                <VehiclePicker
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  invalid={!!errors.vehicleId}
+                  ariaDescribedBy={errors.vehicleId?.message ? 'ar-vehicle-error' : undefined}
+                />
               )}
             />
             {errors.vehicleId?.message ? (
-              <p className="text-destructive text-xs">{t(errors.vehicleId.message)}</p>
+              <p id="ar-vehicle-error" className="text-destructive text-xs">
+                {t(errors.vehicleId.message)}
+              </p>
             ) : null}
           </div>
         ) : null}
@@ -193,11 +200,18 @@ export function AccessRequestCreateDialog({
               control={control}
               name="userId"
               render={({ field }) => (
-                <UserPicker value={field.value ?? ''} onChange={field.onChange} />
+                <UserPicker
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  invalid={!!errors.userId}
+                  ariaDescribedBy={errors.userId?.message ? 'ar-user-error' : undefined}
+                />
               )}
             />
             {errors.userId?.message ? (
-              <p className="text-destructive text-xs">{t(errors.userId.message)}</p>
+              <p id="ar-user-error" className="text-destructive text-xs">
+                {t(errors.userId.message)}
+              </p>
             ) : null}
           </div>
         ) : null}

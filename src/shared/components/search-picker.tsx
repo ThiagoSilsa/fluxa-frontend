@@ -45,6 +45,10 @@ export type SearchPickerProps = {
   isPending: boolean
   /** Exibe o input em maiúsculas (ex.: placa). */
   uppercase?: boolean
+  /** Marca o input como inválido (`aria-invalid`). */
+  invalid?: boolean
+  /** `id` do elemento que descreve o erro (`aria-describedby`). */
+  ariaDescribedBy?: string
 }
 
 /**
@@ -68,6 +72,8 @@ export function SearchPicker({
   options,
   isPending,
   uppercase = false,
+  invalid = false,
+  ariaDescribedBy,
 }: SearchPickerProps) {
   const [selected, setSelected] = useState<SearchPickerOption | null>(null)
 
@@ -122,6 +128,8 @@ export function SearchPicker({
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder={searchPlaceholder}
+        aria-invalid={invalid}
+        aria-describedby={ariaDescribedBy}
         className={uppercase ? 'uppercase' : undefined}
       />
       {showNoResults ? <p className="text-muted-foreground text-xs">{noResultsLabel}</p> : null}

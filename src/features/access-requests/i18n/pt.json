@@ -96,7 +96,9 @@
       "color": { "label": "Cor", "placeholder": "Ex.: Preto" }
     },
     "submit": "Criar solicitação",
-    "submitting": "Criando...",
+    "submitting": "Criando..."
+  },
+  "form": {
     "errors": {
       "plate-required": "Informe a placa.",
       "plate-max": "A placa deve ter no máximo 10 caracteres.",

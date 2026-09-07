@@ -17,6 +17,10 @@ export type UserPickerProps = {
   value: string
   /** Reporta a seleção (id) ou a limpeza (`''`). */
   onChange: (userId: string) => void
+  /** Marca o input de busca como inválido (`aria-invalid`). */
+  invalid?: boolean
+  /** `id` do elemento que descreve o erro (`aria-describedby`). */
+  ariaDescribedBy?: string
 }
 
 /**
@@ -26,7 +30,7 @@ export type UserPickerProps = {
  * debounce 400ms) e os textos i18n da feature — sem duplicar o markup de
  * seleção (ticket 01 — prefactor shared).
  */
-export function UserPicker({ value, onChange }: UserPickerProps) {
+export function UserPicker({ value, onChange, invalid = false, ariaDescribedBy }: UserPickerProps) {
   const { t } = useTranslation('accessRequests')
 
   const [search, setSearch] = useState('')
@@ -53,6 +57,8 @@ export function UserPicker({ value, onChange }: UserPickerProps) {
       onSearchChange={setSearch}
       options={options}
       isPending={isPending}
+      invalid={invalid}
+      ariaDescribedBy={ariaDescribedBy}
     />
   )
 }

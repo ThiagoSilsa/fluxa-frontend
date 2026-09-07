@@ -96,7 +96,9 @@
       "color": { "label": "Color", "placeholder": "e.g. Black" }
     },
     "submit": "Create request",
-    "submitting": "Creating...",
+    "submitting": "Creating..."
+  },
+  "form": {
     "errors": {
       "plate-required": "Enter the plate.",
       "plate-max": "Plate must have at most 10 characters.",
