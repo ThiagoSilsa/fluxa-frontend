@@ -90,6 +90,12 @@ export interface CreateAccessRequestPayload {
   payload?: AccessRequestPayload
 }
 
+/** Payload de solicitação de bloqueio (placa + motivo) — `POST /block-requests`. */
+export interface CreateBlockRequestPayload {
+  plate: string
+  reason: string
+}
+
 /** Payload de transições com observação (rejeitar/in-contact). */
 export interface HandleAccessRequestPayload {
   observation?: string

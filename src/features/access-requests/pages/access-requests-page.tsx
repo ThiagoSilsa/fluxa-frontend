@@ -9,7 +9,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { GoPlus } from 'react-icons/go'
 
 // Mappers
-import { toCreateAccessRequestPayload } from '../mappers/access-request.mapper'
+import {
+  toCreateAccessRequestPayload,
+  toCreateBlockRequestPayload,
+} from '../mappers/access-request.mapper'
 
 // Lib
 import { getAccessRequestTypeLabelKey } from '../lib/access-request.lib'
@@ -30,6 +33,7 @@ import type {
   AccessRequestStatus,
 } from '../types/access-requests.types'
 import type { AccessRequestFormValues } from '../schemas/access-request.schema'
+import type { BlockRequestFormValues } from '../schemas/block-request.schema'
 
 // Shared
 import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
@@ -88,6 +92,10 @@ export function AccessRequestsPage() {
     () => canAccess(user, { permissions: [PermissionCode.CANCEL_ACCESS_REQUEST] }),
     [user],
   )
+  const canRequestBlock = useMemo(
+    () => canAccess(user, { permissions: [PermissionCode.CREATE_BLOCK_REQUEST] }),
+    [user],
+  )
 
   const [status, setStatus] = useState<AccessRequestStatus | 'all'>('all')
   const [plateInput, setPlateInput] = useState('')
@@ -104,9 +112,10 @@ export function AccessRequestsPage() {
     offset,
   })
 
-  const { create, accept, reject, markInContact, cancel } = useAccessRequestMutations()
+  const { create, createBlockRequest, accept, reject, markInContact, cancel } =
+    useAccessRequestMutations()
 
-  if (!canList && !canCreate) {
+  if (!canList && !canCreate && !canRequestBlock) {
     return (
       <PageLayout>
         <PagePlaceholder title={tc('no-access.title')} />
@@ -116,6 +125,7 @@ export function AccessRequestsPage() {
 
   const isAnyPending =
     create.isPending ||
+    createBlockRequest.isPending ||
     accept.isPending ||
     reject.isPending ||
     markInContact.isPending ||
@@ -123,6 +133,12 @@ export function AccessRequestsPage() {
 
   const handleCreate = (values: AccessRequestFormValues) => {
     create.mutate(toCreateAccessRequestPayload(values), {
+      onSuccess: () => setCreateOpen(false),
+    })
+  }
+
+  const handleCreateBlock = (values: BlockRequestFormValues) => {
+    createBlockRequest.mutate(toCreateBlockRequestPayload(values), {
       onSuccess: () => setCreateOpen(false),
     })
   }
@@ -161,7 +177,7 @@ export function AccessRequestsPage() {
   return (
     <PageLayout>
       <Header title={t('title')} subtitle={t('subtitle')}>
-        {canCreate ? (
+        {canCreate || canRequestBlock ? (
           <Button type="button" onClick={() => setCreateOpen(true)}>
             <GoPlus className="mr-2 size-4" />
             {t('toolbar.create')}
@@ -290,8 +306,11 @@ export function AccessRequestsPage() {
       <AccessRequestCreateDialog
         open={createOpen}
         onOpenChange={setCreateOpen}
-        isSubmitting={create.isPending}
+        isSubmitting={create.isPending || createBlockRequest.isPending}
+        canCreateAccess={canCreate}
+        canRequestBlock={canRequestBlock}
         onSubmit={handleCreate}
+        onSubmitBlock={handleCreateBlock}
       />
 
       <AccessRequestDetailDialog

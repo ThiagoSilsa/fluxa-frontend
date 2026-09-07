@@ -31,7 +31,8 @@
     "NEW_USER": "New driver",
     "NEW_VEHICLE": "New vehicle",
     "LINK": "Link",
-    "BOTH": "Driver and vehicle"
+    "BOTH": "Driver and vehicle",
+    "BLOCK": "Block"
   },
   "status": {
     "PENDING": "Pending",
@@ -67,6 +68,14 @@
   "create": {
     "title": "New access request",
     "description": "Select the scenario and fill in the data.",
+    "block": {
+      "title": "Request block",
+      "description": "The gatekeeper requests blocking a vehicle from the administration.",
+      "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+      "reason": { "label": "Reason", "placeholder": "e.g. Suspected theft" },
+      "submit": "Request",
+      "submitting": "Requesting..."
+    },
     "type": { "label": "Scenario" },
     "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
     "vehicle": {
@@ -110,7 +119,9 @@
       "driver-name-required": "Enter the driver name.",
       "driver-email-required": "Enter the driver email.",
       "vehicle-model-required": "Enter the vehicle model.",
-      "contact-required": "Enter the contact phone."
+      "contact-required": "Enter the contact phone.",
+      "reason-required": "Enter the reason.",
+      "reason-max": "Reason must have at most 2000 characters."
     }
   },
   "confirm": {
@@ -123,6 +134,7 @@
   },
   "notifications": {
     "create-success": "Request created.",
+    "create-block-request-success": "Block request created.",
     "accept-success": "Request accepted and entry authorized.",
     "reject-success": "Request rejected.",
     "in-contact-success": "Request marked as in contact.",

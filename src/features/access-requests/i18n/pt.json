@@ -31,7 +31,8 @@
     "NEW_USER": "Novo motorista",
     "NEW_VEHICLE": "Novo veículo",
     "LINK": "Vincular",
-    "BOTH": "Motorista e veículo"
+    "BOTH": "Motorista e veículo",
+    "BLOCK": "Bloqueio"
   },
   "status": {
     "PENDING": "Pendente",
@@ -67,6 +68,14 @@
   "create": {
     "title": "Nova solicitação de acesso",
     "description": "Selecione o cenário e preencha os dados.",
+    "block": {
+      "title": "Solicitar bloqueio",
+      "description": "O porteiro solicita o bloqueio de um veículo à administração.",
+      "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+      "reason": { "label": "Motivo", "placeholder": "Ex.: Furto suspeito" },
+      "submit": "Solicitar",
+      "submitting": "Solicitando..."
+    },
     "type": { "label": "Cenário" },
     "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
     "vehicle": {
@@ -110,7 +119,9 @@
       "driver-name-required": "Informe o nome do motorista.",
       "driver-email-required": "Informe o e-mail do motorista.",
       "vehicle-model-required": "Informe o modelo do veículo.",
-      "contact-required": "Informe o telefone de contato."
+      "contact-required": "Informe o telefone de contato.",
+      "reason-required": "Informe o motivo.",
+      "reason-max": "O motivo deve ter no máximo 2000 caracteres."
     }
   },
   "confirm": {
@@ -123,6 +134,7 @@
   },
   "notifications": {
     "create-success": "Solicitação criada.",
+    "create-block-request-success": "Solicitação de bloqueio criada.",
     "accept-success": "Solicitação aceita e entrada autorizada.",
     "reject-success": "Solicitação rejeitada.",
     "in-contact-success": "Solicitação marcada como em contato.",

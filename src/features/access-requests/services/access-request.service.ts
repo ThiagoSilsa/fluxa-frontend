@@ -10,6 +10,7 @@ import type {
   AccessRequestListParams,
   AccessRequestResponse,
   CreateAccessRequestPayload,
+  CreateBlockRequestPayload,
   HandleAccessRequestPayload,
   ListAccessRequestsResponse,
   UserOption,
@@ -62,6 +63,24 @@ class AccessRequestService {
   async create(payload: CreateAccessRequestPayload): Promise<AccessRequestResponse> {
     return baseController.makeRequest({
       endpoint: '/access-requests',
+      method: 'POST',
+      body: payload,
+    })
+  }
+
+  /**
+   * Cria uma solicitação de bloqueio (porteiro — CREATE_BLOCK_REQUEST).
+   *
+   * O cenário "Bloqueio" da solicitação usa os campos compartilhados e
+   * chama o endpoint `/block-requests` direto deste serviço (sem importar a
+   * feature de bloqueios).
+   *
+   * @param payload Placa + motivo.
+   * @returns Solicitação de bloqueio criada.
+   */
+  async createBlockRequest(payload: CreateBlockRequestPayload): Promise<unknown> {
+    return baseController.makeRequest({
+      endpoint: '/block-requests',
       method: 'POST',
       body: payload,
     })

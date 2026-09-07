@@ -3,6 +3,7 @@ import type {
   AccessRequestListParams,
   AccessRequestPayload,
   CreateAccessRequestPayload,
+  CreateBlockRequestPayload,
 } from '../types/access-requests.types'
 
 // Utils
@@ -10,6 +11,7 @@ import { normalizePlate } from '../utils/plate'
 
 // Schemas
 import type { AccessRequestFormValues } from '../schemas/access-request.schema'
+import type { BlockRequestFormValues } from '../schemas/block-request.schema'
 
 /**
  * Monta os dados do motorista do payload (só quando há algum campo
@@ -94,6 +96,25 @@ export function toCreateAccessRequestPayload(
   }
 
   return payload
+}
+
+/**
+ * Converte o formulário do cenário "Bloqueio" no payload de criação —
+ * `POST /block-requests`.
+ *
+ * Placa normalizada (trim + uppercase + sem hífen/espaço) e motivo com as
+ * bordas limpas.
+ *
+ * @param values Valores validados do formulário de bloqueio.
+ * @returns Payload de criação de solicitação de bloqueio.
+ */
+export function toCreateBlockRequestPayload(
+  values: BlockRequestFormValues,
+): CreateBlockRequestPayload {
+  return {
+    plate: normalizePlate(values.plate),
+    reason: values.reason.trim(),
+  }
 }
 
 /**

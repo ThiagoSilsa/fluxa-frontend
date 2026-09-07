@@ -14,6 +14,7 @@ import { accessRequestService } from '../services/access-request.service'
 import type {
   AcceptAccessRequestPayload,
   CreateAccessRequestPayload,
+  CreateBlockRequestPayload,
 } from '../types/access-requests.types'
 
 // Shared libs
@@ -48,6 +49,18 @@ export function useAccessRequestMutations() {
     onSuccess: () => {
       invalidateRequests()
       toast.success(t('notifications.create-success'))
+    },
+    onError: (error) => {
+      toast.error(tc(getAPIErrorTranslationKey(error)))
+    },
+  })
+
+  /** Mutation para criar uma solicitação de bloqueio (cenário "Bloqueio"). */
+  const createBlockRequest = useMutation({
+    mutationFn: (payload: CreateBlockRequestPayload) =>
+      accessRequestService.createBlockRequest(payload),
+    onSuccess: () => {
+      toast.success(t('notifications.create-block-request-success'))
     },
     onError: (error) => {
       toast.error(tc(getAPIErrorTranslationKey(error)))
@@ -104,5 +117,5 @@ export function useAccessRequestMutations() {
     },
   })
 
-  return { create, accept, reject, markInContact, cancel }
+  return { create, createBlockRequest, accept, reject, markInContact, cancel }
 }

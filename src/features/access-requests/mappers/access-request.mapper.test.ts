@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { buildAccessRequestListQuery, toCreateAccessRequestPayload } from './access-request.mapper'
+import {
+  buildAccessRequestListQuery,
+  toCreateAccessRequestPayload,
+  toCreateBlockRequestPayload,
+} from './access-request.mapper'
+
+describe('toCreateBlockRequestPayload', () => {
+  it('normaliza placa e limpa o motivo', () => {
+    const payload = toCreateBlockRequestPayload({
+      plate: ' abc-1d23 ',
+      reason: '  Furto suspeito  ',
+    })
+
+    expect(payload).toEqual({
+      plate: 'ABC1D23',
+      reason: 'Furto suspeito',
+    })
+  })
+})
 
 describe('toCreateAccessRequestPayload', () => {
   it('normaliza a placa e monta BOTH com payload completo', () => {
