@@ -44,7 +44,8 @@
     "department": {
       "label": "Departamento padrão",
       "placeholder": "Sem departamento",
-      "hint": "Definido como departamento padrão do veículo."
+      "hint": "Definido como departamento padrão do veículo.",
+      "empty": "Nenhum departamento disponível"
     },
     "observation": { "label": "Observação", "placeholder": "Informe uma observação (opcional)" },
     "freePass": {

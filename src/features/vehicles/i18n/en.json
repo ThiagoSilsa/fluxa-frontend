@@ -41,7 +41,8 @@
     "department": {
       "label": "Default department",
       "placeholder": "No department",
-      "hint": "Set as the vehicle's default department."
+      "hint": "Set as the vehicle's default department.",
+      "empty": "No departments available"
     },
     "observation": { "label": "Observation", "placeholder": "Enter an observation (optional)" },
     "freePass": {

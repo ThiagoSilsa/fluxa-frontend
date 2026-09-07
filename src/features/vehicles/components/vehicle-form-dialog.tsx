@@ -219,6 +219,7 @@ export function VehicleFormDialog({
               <Select
                 value={field.value || undefined}
                 onValueChange={(value) => field.onChange(value ?? '')}
+                disabled={departmentOptions.length === 0}
               >
                 <SelectTrigger id="vehicle-department" className="w-full">
                   <SelectValue placeholder={t('form.department.placeholder')} />
@@ -233,7 +234,11 @@ export function VehicleFormDialog({
               </Select>
             )}
           />
-          <p className="text-muted-foreground text-xs">{t('form.department.hint')}</p>
+          {departmentOptions.length === 0 ? (
+            <p className="text-xs text-amber-600">{t('form.department.empty')}</p>
+          ) : (
+            <p className="text-muted-foreground text-xs">{t('form.department.hint')}</p>
+          )}
         </div>
 
         {/* Observação */}
