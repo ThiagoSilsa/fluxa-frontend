@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 // Mappers
 import {
   isPasswordChanged,
+  isUserPromotion,
   normalizeUserFormDefaults,
   toCreateUserPayload,
   toLinkUserPayload,
@@ -149,6 +150,18 @@ export function useUserHandlers({
       } else if (formState?.mode === 'edit' && formState.user) {
         const original = normalizeUserFormDefaults(formState.user)
         const payload = toUpdateUserPayload(values, original)
+        const passwordChanged = isPasswordChanged(values)
+        // Promoção Visitante → Colaborador: o backend valida a promoção com o
+        // hash de senha **já gravado**, então a senha é definida antes do
+        // update (ADR 0013).
+        const promote = isUserPromotion(values, original)
+
+        if (promote && passwordChanged) {
+          await changePassword.mutateAsync({
+            userId: formState.user.id,
+            newPassword: values.password ?? '',
+          })
+        }
 
         if (Object.keys(payload).length > 0) {
           await updateUser.mutateAsync({
@@ -157,10 +170,10 @@ export function useUserHandlers({
           })
         }
 
-        if (isPasswordChanged(values)) {
+        if (!promote && passwordChanged) {
           await changePassword.mutateAsync({
             userId: formState.user.id,
-            newPassword: values.password,
+            newPassword: values.password ?? '',
           })
         }
       }

@@ -83,7 +83,9 @@ export function UserCard({
 
             <div className="min-w-0 flex-1">
               <div className="text-foreground truncate text-base font-semibold">{user.name}</div>
-              <div className="text-muted-foreground truncate text-xs">{user.email}</div>
+              <div className="text-muted-foreground truncate text-xs">
+                {user.email ?? t('card.no-email')}
+              </div>
 
               <div className="mt-2 flex flex-wrap items-center gap-1">
                 <Badge

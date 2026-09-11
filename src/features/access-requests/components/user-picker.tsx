@@ -41,7 +41,7 @@ export function UserPicker({ value, onChange, invalid = false, ariaDescribedBy }
   const options: SearchPickerOption[] = (data ?? []).map((user) => ({
     id: user.id,
     primary: user.name,
-    secondary: user.email,
+    secondary: user.email ?? undefined,
   }))
 
   return (

@@ -18,7 +18,8 @@ export type UserRoleSummary = {
 export type UserEntity = {
   id: string
   name: string
-  email: string
+  /** `null` para Visitante sem e-mail (ADR 0013). */
+  email: string | null
   phone: string | null
   document: string | null
   photoUrl: string | null
@@ -56,7 +57,8 @@ export type UserListResponse = {
 
 /** Payload de criação de usuário (pessoa nova já vinculada com cargo). */
 export type CreateUserPayload = {
-  email: string
+  /** Ausente para Visitante sem e-mail (ADR 0013). */
+  email?: string
   type: UserTypeValue
   name?: string
   password?: string

@@ -246,6 +246,88 @@ describe('useUserHandlers', () => {
       })
       expect(result.current.formState).toBeNull()
     })
+
+    describe('promoção Visitante → Colaborador (ADR 0013)', () => {
+      const visitor = {
+        ...user,
+        id: 'user-2',
+        name: 'Visita',
+        email: null,
+        phone: null,
+        type: 'VISITOR' as const,
+        role: null,
+      }
+
+      const promotedValues = {
+        name: 'Visita',
+        email: 'visita@somar.local',
+        password: 'senha123',
+        phone: '',
+        document: '',
+        type: 'EMPLOYEE' as const,
+        isActive: true,
+        roleId: 'role-1',
+      }
+
+      /** Mocks que registram a ordem das chamadas (update × senha). */
+      function setupOrder() {
+        const calls: string[] = []
+        const updateUser = {
+          mutateAsync: vi.fn(async () => {
+            calls.push('update')
+          }),
+        }
+        const changePassword = {
+          mutateAsync: vi.fn(async () => {
+            calls.push('password')
+          }),
+        }
+
+        return { calls, updateUser, changePassword }
+      }
+
+      it('should set the password before the update', async () => {
+        const { calls, updateUser, changePassword } = setupOrder()
+        const { result } = renderHook(() =>
+          useUserHandlers({ ...defaultParams, updateUser, changePassword }),
+        )
+
+        act(() => result.current.handleOpenEdit(visitor))
+        await act(async () => {
+          await result.current.handleSubmitForm(promotedValues, false)
+        })
+
+        expect(calls).toEqual(['password', 'update'])
+        expect(changePassword.mutateAsync).toHaveBeenCalledWith({
+          userId: 'user-2',
+          newPassword: 'senha123',
+        })
+        expect(updateUser.mutateAsync).toHaveBeenCalledWith({
+          userId: 'user-2',
+          payload: {
+            email: 'visita@somar.local',
+            type: 'EMPLOYEE',
+            roleId: 'role-1',
+          },
+        })
+        expect(result.current.formState).toBeNull()
+      })
+
+      it('should not change the password when the field is blank', async () => {
+        const { calls, updateUser, changePassword } = setupOrder()
+        const { result } = renderHook(() =>
+          useUserHandlers({ ...defaultParams, updateUser, changePassword }),
+        )
+
+        act(() => result.current.handleOpenEdit(visitor))
+        await act(async () => {
+          await result.current.handleSubmitForm({ ...promotedValues, password: '' }, false)
+        })
+
+        expect(calls).toEqual(['update'])
+        expect(changePassword.mutateAsync).not.toHaveBeenCalled()
+      })
+    })
   })
 
   // -----------------------------------------------------------------------

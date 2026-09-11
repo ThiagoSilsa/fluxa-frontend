@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { userCreateFormSchema, userEditFormSchema, userLinkFormSchema } from './user.schema'
+import { buildUserEditFormSchema, userCreateFormSchema, userLinkFormSchema } from './user.schema'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -25,6 +25,18 @@ const MINIMAL_EDIT = {
   type: 'EMPLOYEE',
   isActive: true,
   roleId: '',
+}
+
+/** Verifica a mensagem (chave i18n) de um campo. */
+function hasIssue(
+  result: { success: boolean; error?: { issues: Array<{ path: PropertyKey[]; message: string }> } },
+  path: string,
+  message: string,
+): boolean {
+  if (result.success || !result.error) {
+    return false
+  }
+  return result.error.issues.some((issue) => issue.path[0] === path && issue.message === message)
 }
 
 // ---------------------------------------------------------------------------
@@ -159,6 +171,39 @@ describe('userCreateFormSchema', () => {
       expect(result.success).toBe(false)
     })
   })
+
+  describe('Visitante (ADR 0013)', () => {
+    const VISITOR_CREATE = { name: 'Visitante', type: 'VISITOR' }
+
+    it('should accept a VISITOR without email, password and role', () => {
+      expect(userCreateFormSchema.safeParse(VISITOR_CREATE).success).toBe(true)
+    })
+
+    it('should accept a VISITOR with email', () => {
+      const result = userCreateFormSchema.safeParse({
+        ...VISITOR_CREATE,
+        email: 'visitante@somar.local',
+      })
+
+      expect(result.success).toBe(true)
+    })
+
+    it('should reject an invalid visitor email', () => {
+      const result = userCreateFormSchema.safeParse({ ...VISITOR_CREATE, email: 'nao-e-email' })
+
+      expect(result.success).toBe(false)
+      expect(hasIssue(result, 'email', 'form.errors.email-invalid')).toBe(true)
+    })
+
+    it('should require email, password and role for an EMPLOYEE', () => {
+      const result = userCreateFormSchema.safeParse({ ...VISITOR_CREATE, type: 'EMPLOYEE' })
+
+      expect(result.success).toBe(false)
+      expect(hasIssue(result, 'email', 'form.errors.email-required')).toBe(true)
+      expect(hasIssue(result, 'password', 'form.errors.password-required')).toBe(true)
+      expect(hasIssue(result, 'roleId', 'form.errors.roleId-required')).toBe(true)
+    })
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -191,32 +236,61 @@ describe('userLinkFormSchema', () => {
 
     expect(result.success).toBe(false)
   })
+
+  it('should accept a VISITOR without role (cargo não se aplica)', () => {
+    const result = userLinkFormSchema.safeParse({
+      email: 'visitante@somar.local',
+      type: 'VISITOR',
+    })
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should require the email even for a VISITOR (chave do vínculo)', () => {
+    const result = userLinkFormSchema.safeParse({ email: '', type: 'VISITOR', roleId: '' })
+
+    expect(result.success).toBe(false)
+    expect(hasIssue(result, 'email', 'form.errors.email-required')).toBe(true)
+  })
+
+  it('should require the role for an EMPLOYEE', () => {
+    const result = userLinkFormSchema.safeParse({
+      email: 'colaborador@somar.local',
+      type: 'EMPLOYEE',
+    })
+
+    expect(result.success).toBe(false)
+    expect(hasIssue(result, 'roleId', 'form.errors.roleId-required')).toBe(true)
+  })
 })
 
 // ---------------------------------------------------------------------------
-// userEditFormSchema
+// buildUserEditFormSchema
 // ---------------------------------------------------------------------------
-describe('userEditFormSchema', () => {
+describe('buildUserEditFormSchema', () => {
+  const employeeEditSchema = buildUserEditFormSchema('EMPLOYEE')
+  const visitorEditSchema = buildUserEditFormSchema('VISITOR')
+
   it('should accept a valid edit payload', () => {
-    const result = userEditFormSchema.safeParse(MINIMAL_EDIT)
+    const result = employeeEditSchema.safeParse(MINIMAL_EDIT)
 
     expect(result.success).toBe(true)
   })
 
   it('should accept empty roleId (sem cargo)', () => {
-    const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, roleId: '' })
+    const result = employeeEditSchema.safeParse({ ...MINIMAL_EDIT, roleId: '' })
 
     expect(result.success).toBe(true)
   })
 
   it('should accept empty password (não altera)', () => {
-    const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, password: '' })
+    const result = employeeEditSchema.safeParse({ ...MINIMAL_EDIT, password: '' })
 
     expect(result.success).toBe(true)
   })
 
   it('should accept a password with at least 6 characters', () => {
-    const result = userEditFormSchema.safeParse({
+    const result = employeeEditSchema.safeParse({
       ...MINIMAL_EDIT,
       password: 'senha123',
     })
@@ -225,13 +299,13 @@ describe('userEditFormSchema', () => {
   })
 
   it('should reject a password shorter than 6 characters', () => {
-    const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, password: '12345' })
+    const result = employeeEditSchema.safeParse({ ...MINIMAL_EDIT, password: '12345' })
 
     expect(result.success).toBe(false)
   })
 
   it('should reject a password longer than 128 characters', () => {
-    const result = userEditFormSchema.safeParse({
+    const result = employeeEditSchema.safeParse({
       ...MINIMAL_EDIT,
       password: 'A'.repeat(129),
     })
@@ -240,17 +314,82 @@ describe('userEditFormSchema', () => {
   })
 
   it('should reject empty name', () => {
-    const result = userEditFormSchema.safeParse({ ...MINIMAL_EDIT, name: '' })
+    const result = employeeEditSchema.safeParse({ ...MINIMAL_EDIT, name: '' })
 
     expect(result.success).toBe(false)
   })
 
   it('should accept isActive false', () => {
-    const result = userEditFormSchema.safeParse({
+    const result = employeeEditSchema.safeParse({
       ...MINIMAL_EDIT,
       isActive: false,
     })
 
     expect(result.success).toBe(true)
+  })
+
+  describe('Visitante', () => {
+    it('should accept a VISITOR without email, password and role', () => {
+      const result = visitorEditSchema.safeParse({
+        name: 'Visitante',
+        type: 'VISITOR',
+        isActive: true,
+      })
+
+      expect(result.success).toBe(true)
+    })
+
+    it('should reject an invalid visitor email', () => {
+      const result = visitorEditSchema.safeParse({
+        name: 'Visitante',
+        email: 'nao-e-email',
+        type: 'VISITOR',
+        isActive: true,
+      })
+
+      expect(result.success).toBe(false)
+      expect(hasIssue(result, 'email', 'form.errors.email-invalid')).toBe(true)
+    })
+  })
+
+  describe('promoção Visitante → Colaborador', () => {
+    it('should require email, role and password', () => {
+      const result = visitorEditSchema.safeParse({
+        name: 'Visitante',
+        email: '',
+        type: 'EMPLOYEE',
+        isActive: true,
+        roleId: '',
+        password: '',
+      })
+
+      expect(result.success).toBe(false)
+      expect(hasIssue(result, 'email', 'form.errors.email-required')).toBe(true)
+      expect(hasIssue(result, 'roleId', 'form.errors.roleId-required')).toBe(true)
+      expect(hasIssue(result, 'password', 'form.errors.password-required')).toBe(true)
+    })
+
+    it('should accept a promotion with email, role and password', () => {
+      const result = visitorEditSchema.safeParse({
+        name: 'Visitante',
+        email: 'visitante@somar.local',
+        type: 'EMPLOYEE',
+        isActive: true,
+        roleId: 'role-1',
+        password: 'senha123',
+      })
+
+      expect(result.success).toBe(true)
+    })
+
+    it('should not require the password when an EMPLOYEE stays EMPLOYEE', () => {
+      const result = employeeEditSchema.safeParse({
+        ...MINIMAL_EDIT,
+        password: '',
+        roleId: '',
+      })
+
+      expect(result.success).toBe(true)
+    })
   })
 })

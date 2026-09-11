@@ -35,7 +35,8 @@
     "VISITOR": "Visitor"
   },
   "card": {
-    "no-role": "No role"
+    "no-role": "No role",
+    "no-email": "No e-mail"
   },
   "dialog": {
     "create": {
@@ -67,6 +68,7 @@
       "label": "E-mail",
       "placeholder": "Enter the e-mail",
       "checking": "Checking the address...",
+      "optional-hint": "Optional for visitors.",
       "already-registered": "This e-mail already has an account in the system. The registration becomes a link: the name and password remain the person's own."
     },
     "password": {
@@ -106,6 +108,7 @@
       "inactive": "Inactive"
     },
     "link-action": "Link",
+    "visitor-hint": "A visitor has no system access: no password and no role.",
     "cancel": "Cancel",
     "submitting": "Saving...",
     "errors": {

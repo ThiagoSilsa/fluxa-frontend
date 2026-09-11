@@ -35,7 +35,8 @@
     "VISITOR": "Visitante"
   },
   "card": {
-    "no-role": "Sem cargo"
+    "no-role": "Sem cargo",
+    "no-email": "Sem e-mail"
   },
   "dialog": {
     "create": {
@@ -67,6 +68,7 @@
       "label": "E-mail",
       "placeholder": "Informe o e-mail",
       "checking": "Verificando o endereço...",
+      "optional-hint": "Opcional para visitante.",
       "already-registered": "Este e-mail já tem conta no sistema. O cadastro vira vínculo: o nome e a senha continuam sendo da pessoa."
     },
     "password": {
@@ -106,6 +108,7 @@
       "inactive": "Inativo"
     },
     "link-action": "Vincular",
+    "visitor-hint": "Visitante não acessa o sistema: sem senha e sem cargo.",
     "cancel": "Cancelar",
     "submitting": "Salvando...",
     "errors": {

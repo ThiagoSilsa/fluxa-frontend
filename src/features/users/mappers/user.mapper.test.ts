@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildUserListQuery,
   isPasswordChanged,
+  isUserPromotion,
   normalizeUserFormDefaults,
   toCreateUserPayload,
   toLinkUserPayload,
@@ -113,6 +114,40 @@ describe('toCreateUserPayload', () => {
     expect(result.phone).toBeUndefined()
     expect(result.document).toBeUndefined()
   })
+
+  describe('Visitante (ADR 0013)', () => {
+    const visitorValues = {
+      name: 'Visitante',
+      email: '',
+      password: '',
+      phone: '',
+      document: '',
+      type: 'VISITOR' as const,
+      isActive: true,
+      roleId: '',
+    }
+
+    it('should omit email, password and roleId for a VISITOR', () => {
+      const result = toCreateUserPayload(visitorValues)
+
+      expect(result.type).toBe('VISITOR')
+      expect(result.name).toBe('Visitante')
+      expect(result.email).toBeUndefined()
+      expect(result.password).toBeUndefined()
+      expect(result.roleId).toBeUndefined()
+    })
+
+    it('should keep a visitor email when provided', () => {
+      const result = toCreateUserPayload({
+        ...visitorValues,
+        email: ' visitante@somar.local ',
+      })
+
+      expect(result.email).toBe('visitante@somar.local')
+      expect(result.password).toBeUndefined()
+      expect(result.roleId).toBeUndefined()
+    })
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -136,6 +171,22 @@ describe('toLinkUserPayload', () => {
       type: 'EMPLOYEE',
       roleId: 'role-1',
     })
+  })
+
+  it('should omit roleId for a VISITOR', () => {
+    const result = toLinkUserPayload({
+      name: '',
+      email: 'visitante@somar.local',
+      password: '',
+      phone: '',
+      document: '',
+      type: 'VISITOR',
+      isActive: true,
+      roleId: 'role-1',
+    })
+
+    expect(result).toEqual({ email: 'visitante@somar.local', type: 'VISITOR' })
+    expect(result.roleId).toBeUndefined()
   })
 })
 
@@ -188,6 +239,60 @@ describe('toUpdateUserPayload', () => {
     const result = toUpdateUserPayload({ ...original, isActive: false, type: 'VISITOR' }, original)
 
     expect(result).toEqual({ isActive: false, type: 'VISITOR' })
+  })
+
+  it('should not send an empty email (Visitante sem e-mail — ADR 0013)', () => {
+    const visitor = { ...original, email: '', type: 'VISITOR' as const }
+    const result = toUpdateUserPayload({ ...visitor, name: 'Visitante' }, visitor)
+
+    expect(result).toEqual({ name: 'Visitante' })
+  })
+
+  it('should send the email when promoting a visitor', () => {
+    const visitor = {
+      ...original,
+      email: '',
+      password: '',
+      type: 'VISITOR' as const,
+      roleId: '',
+    }
+    const result = toUpdateUserPayload(
+      { ...visitor, email: 'visitante@somar.local', type: 'EMPLOYEE', roleId: 'role-1' },
+      visitor,
+    )
+
+    expect(result).toEqual({
+      email: 'visitante@somar.local',
+      type: 'EMPLOYEE',
+      roleId: 'role-1',
+    })
+  })
+})
+
+// ---------------------------------------------------------------------------
+// isUserPromotion
+// ---------------------------------------------------------------------------
+describe('isUserPromotion', () => {
+  const visitor = { ...normalizeUserFormDefaults(), type: 'VISITOR' as const }
+
+  it('should be true only for VISITOR → EMPLOYEE', () => {
+    expect(isUserPromotion({ ...visitor, type: 'EMPLOYEE' }, visitor)).toBe(true)
+  })
+
+  it('should be false when nothing changes', () => {
+    expect(isUserPromotion(visitor, visitor)).toBe(false)
+  })
+
+  it('should be false when an EMPLOYEE stays EMPLOYEE', () => {
+    const employee = { ...visitor, type: 'EMPLOYEE' as const }
+
+    expect(isUserPromotion(employee, employee)).toBe(false)
+  })
+
+  it('should be false when demoting EMPLOYEE → VISITOR', () => {
+    const employee = { ...visitor, type: 'EMPLOYEE' as const }
+
+    expect(isUserPromotion(visitor, employee)).toBe(false)
   })
 })
 

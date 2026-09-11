@@ -35,20 +35,24 @@ export function normalizeUserFormDefaults(user?: UserEntity): UserFormValues {
  * Converte os valores do formulário no payload de criação (pessoa nova).
  *
  * Inclui `roleId` — o backend (Fase 0) cria pessoa + vínculo + cargo na mesma
- * transação. Campos vazios de dados da pessoa viram `undefined` (não enviados).
+ * transação. Campos vazios de dados da pessoa viram `undefined` (não
+ * enviados). Colaborador envia e-mail, senha e cargo; **Visitante não envia
+ * senha nem cargo** e o e-mail só vai quando preenchido (ADR 0013).
  *
  * @param values Valores validados do formulário.
  * @returns Payload de criação.
  */
 export function toCreateUserPayload(values: UserFormValues): CreateUserPayload {
+  const isEmployee = values.type === 'EMPLOYEE'
+
   return {
-    email: values.email.trim(),
+    email: values.email?.trim() || undefined,
     type: values.type,
     name: values.name.trim(),
-    password: values.password,
+    password: isEmployee ? values.password : undefined,
     phone: values.phone?.trim() || undefined,
     document: values.document?.trim() || undefined,
-    roleId: values.roleId,
+    roleId: isEmployee ? values.roleId : undefined,
   }
 }
 
@@ -56,16 +60,16 @@ export function toCreateUserPayload(values: UserFormValues): CreateUserPayload {
  * Converte os valores do formulário no payload de vínculo (pessoa já existe).
  *
  * Apenas e-mail, tipo e cargo — o backend rejeita (400) dados da pessoa/senha
- * no vínculo (ADR 0005 §2).
+ * no vínculo (ADR 0005 §2). Visitante não envia cargo (ADR 0013).
  *
  * @param values Valores validados do formulário.
  * @returns Payload de vínculo.
  */
 export function toLinkUserPayload(values: UserFormValues): CreateUserPayload {
   return {
-    email: values.email.trim(),
+    email: values.email?.trim() || undefined,
     type: values.type,
-    roleId: values.roleId,
+    roleId: values.type === 'EMPLOYEE' ? values.roleId : undefined,
   }
 }
 
@@ -73,7 +77,9 @@ export function toLinkUserPayload(values: UserFormValues): CreateUserPayload {
  * Converte os valores do formulário no payload de edição (diff).
  *
  * Só campos alterados são enviados (PATCH parcial). `roleId` vazio ("sem
- * cargo") → `null` (remove o cargo); igual ao atual → não enviado.
+ * cargo") → `null` (remove o cargo); igual ao atual → não enviado. E-mail
+ * vazio não é enviado: o endpoint de update não aceita limpar o e-mail (um
+ * Visitante sem e-mail permanece com o valor atual).
  *
  * @param values Valores validados do formulário.
  * @param original Valores originais (antes da edição).
@@ -89,8 +95,9 @@ export function toUpdateUserPayload(
     payload.name = values.name.trim()
   }
 
-  if (values.email.trim() !== original.email.trim()) {
-    payload.email = values.email.trim()
+  const email = values.email?.trim() ?? ''
+  if (email && email !== (original.email?.trim() ?? '')) {
+    payload.email = email
   }
 
   const phone = values.phone?.trim() || null
@@ -120,6 +127,20 @@ export function toUpdateUserPayload(
   }
 
   return payload
+}
+
+/**
+ * Diz se a edição promove o vínculo Visitante → Colaborador.
+ *
+ * Na promoção a senha precisa ser definida **antes** do update (o backend
+ * valida a promoção com o `passwordHash` já existente — ADR 0013).
+ *
+ * @param values Valores do formulário (após a edição).
+ * @param original Valores originais (antes da edição).
+ * @returns `true` quando é uma promoção.
+ */
+export function isUserPromotion(values: UserFormValues, original: UserFormValues): boolean {
+  return original.type === 'VISITOR' && values.type === 'EMPLOYEE'
 }
 
 /**

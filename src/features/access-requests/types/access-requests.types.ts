@@ -163,7 +163,8 @@ export interface VehicleOption {
 export interface UserOption {
   id: string
   name: string
-  email: string
+  /** `null` para Visitante sem e-mail (ADR 0013). */
+  email: string | null
 }
 
 /** Opção de tipo de veículo (aceite de NEW_VEHICLE/BOTH). */

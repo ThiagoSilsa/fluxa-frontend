@@ -1,5 +1,5 @@
 // React
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 // React Hook Form
 import { useForm, useWatch, Controller } from 'react-hook-form'
@@ -14,8 +14,8 @@ import { Eye, EyeOff, Info } from 'lucide-react'
 
 // Schemas
 import {
+  buildUserEditFormSchema,
   userCreateFormSchema,
-  userEditFormSchema,
   userLinkFormSchema,
 } from '../schemas/user.schema'
 
@@ -24,7 +24,7 @@ import { useEmailStatus } from '../hooks/use-email-status'
 
 // Types
 import type { UserFormValues } from '../schemas/user.schema'
-import type { UserFormProps } from '../types/users.types'
+import type { UserFormProps, UserTypeValue } from '../types/users.types'
 
 // Components
 import {
@@ -45,11 +45,10 @@ const NO_ROLE = '__none__'
 /**
  * Resolvers pré-construídos por schema (modo). O submit seleciona o schema
  * correto conforme o modo e o estado de vínculo (ref) — sem recriar o
- * resolver a cada render.
+ * resolver a cada render (o de edição depende do tipo atual do vínculo).
  */
 const createResolver = zodResolver(userCreateFormSchema) as unknown as Resolver<UserFormValues>
 const linkResolver = zodResolver(userLinkFormSchema) as unknown as Resolver<UserFormValues>
-const editResolver = zodResolver(userEditFormSchema) as unknown as Resolver<UserFormValues>
 
 /**
  * Formulário de usuário (criação/vínculo/edição).
@@ -79,12 +78,22 @@ export function UserForm({
   // momento do submit.
   const isLinkRef = useRef(false)
 
+  // Na edição as regras dependem do tipo atual do vínculo (promoção
+  // Visitante → Colaborador exige e-mail, cargo e senha — ADR 0013).
+  const editResolver = useMemo(
+    () =>
+      zodResolver(
+        buildUserEditFormSchema(defaultValues.type),
+      ) as unknown as Resolver<UserFormValues>,
+    [defaultValues.type],
+  )
+
   const userResolver: Resolver<UserFormValues> = useCallback(
     (values, context, options) => {
       const resolver = isEdit ? editResolver : isLinkRef.current ? linkResolver : createResolver
       return resolver(values, context, options)
     },
-    [isEdit],
+    [isEdit, editResolver],
   )
 
   const {
@@ -92,6 +101,7 @@ export function UserForm({
     handleSubmit,
     control,
     clearErrors,
+    setValue,
     watch,
     formState: { errors, isDirty },
   } = useForm<UserFormValues>({
@@ -100,7 +110,7 @@ export function UserForm({
   })
 
   // --- Email-status → modo vincular (apenas criação) ---
-  const email = useWatch({ control, name: 'email' }) as string | undefined
+  const email = useWatch({ control, name: 'email' })
   const { exists, isChecking } = useEmailStatus(email ?? '', !isEdit && !readOnly)
   const isLink = !isEdit && exists
   isLinkRef.current = isLink
@@ -115,9 +125,35 @@ export function UserForm({
   const roleId = watch('roleId')
   const selectedRole = roleOptions.find((role) => role.id === roleId)
 
+  // Visitante não acessa o sistema: sem senha e sem cargo (ADR 0013).
+  const type = useWatch({ control, name: 'type' }) ?? defaultValues.type
+  const isVisitor = type === 'VISITOR'
+
   // --- Estado visual ---
   const [showPassword, setShowPassword] = useState(false)
   const [showResetPassword, setShowResetPassword] = useState(false)
+
+  /**
+   * Ajusta o formulário ao trocar o tipo do vínculo (ADR 0013).
+   *
+   * - Visitante: limpa senha/cargo (campos escondidos — não se aplicam);
+   * - Visitante → Colaborador (promoção): revela a troca de senha, que passa
+   *   a ser obrigatória no aceite da promoção.
+   *
+   * @param next Novo tipo selecionado.
+   */
+  const handleTypeChange = (next: UserTypeValue) => {
+    if (next === 'VISITOR') {
+      setValue('password', '')
+      setValue('roleId', '')
+      clearErrors(['password', 'roleId'])
+      return
+    }
+
+    if (isEdit && defaultValues.type === 'VISITOR') {
+      setShowResetPassword(true)
+    }
+  }
 
   const effectiveSubmitLabel = isLink ? t('form.link-action') : submitLabel
 
@@ -162,7 +198,7 @@ export function UserForm({
           <div className="space-y-2">
             <Label htmlFor="user-email">
               {t('form.email.label')}
-              <span className="text-destructive"> *</span>
+              {isVisitor && !isLink ? null : <span className="text-destructive"> *</span>}
             </Label>
             <Input
               id="user-email"
@@ -178,11 +214,14 @@ export function UserForm({
             {isLink ? (
               <p className="text-xs text-amber-600">{t('form.email.already-registered')}</p>
             ) : null}
+            {isVisitor && !isLink ? (
+              <p className="text-muted-foreground text-xs">{t('form.email.optional-hint')}</p>
+            ) : null}
             {errorText(errors.email?.message)}
           </div>
 
-          {/* Senha — escondida no modo vincular */}
-          {!isLink && (
+          {/* Senha — escondida no modo vincular e para Visitante */}
+          {!isLink && !isVisitor && (
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <Label htmlFor="user-password">
@@ -243,7 +282,14 @@ export function UserForm({
             render={({ field }) => (
               <div className="space-y-2">
                 <Label>{t('form.type.label')}</Label>
-                <Select value={field.value} onValueChange={field.onChange} disabled={readOnly}>
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value)
+                    handleTypeChange(value as UserTypeValue)
+                  }}
+                  disabled={readOnly}
+                >
                   <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
                     <SelectValue />
                   </SelectTrigger>
@@ -252,6 +298,9 @@ export function UserForm({
                     <SelectItem value="VISITOR">{t('types.VISITOR')}</SelectItem>
                   </SelectContent>
                 </Select>
+                {isVisitor ? (
+                  <p className="text-muted-foreground text-xs">{t('form.visitor-hint')}</p>
+                ) : null}
                 {errorText(errors.type?.message)}
               </div>
             )}
@@ -320,59 +369,63 @@ export function UserForm({
       </section>
 
       {/* ---------------- Seção Cargo ---------------- */}
-      <section className="space-y-4">
-        <div>
-          <h3 className="text-foreground text-sm font-semibold">{t('form.sections.role.title')}</h3>
-          <p className="text-muted-foreground text-xs">{t('form.sections.role.description')}</p>
-        </div>
+      {!isVisitor ? (
+        <section className="space-y-4">
+          <div>
+            <h3 className="text-foreground text-sm font-semibold">
+              {t('form.sections.role.title')}
+            </h3>
+            <p className="text-muted-foreground text-xs">{t('form.sections.role.description')}</p>
+          </div>
 
-        <div className="space-y-2">
-          <Controller
-            control={control}
-            name="roleId"
-            render={({ field }) => {
-              const value = field.value || NO_ROLE
+          <div className="space-y-2">
+            <Controller
+              control={control}
+              name="roleId"
+              render={({ field }) => {
+                const value = field.value || NO_ROLE
 
-              return (
-                <div className="space-y-2">
-                  <Label>
-                    {t('form.role.label')}
-                    <span className="text-destructive"> *</span>
-                  </Label>
-                  <Select
-                    value={value}
-                    onValueChange={(next) => field.onChange(next === NO_ROLE ? '' : next)}
-                    disabled={readOnly}
-                  >
-                    <SelectTrigger className="w-full" aria-invalid={!!errors.roleId}>
-                      <SelectValue placeholder={t('form.role.placeholder')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {isEdit ? (
-                        <SelectItem value={NO_ROLE}>{t('form.role.no-role')}</SelectItem>
-                      ) : null}
-                      {roleOptions.map((role) => (
-                        <SelectItem key={role.id} value={role.id}>
-                          {role.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errorText(errors.roleId?.message)}
-                </div>
-              )
-            }}
-          />
+                return (
+                  <div className="space-y-2">
+                    <Label>
+                      {t('form.role.label')}
+                      <span className="text-destructive"> *</span>
+                    </Label>
+                    <Select
+                      value={value}
+                      onValueChange={(next) => field.onChange(next === NO_ROLE ? '' : next)}
+                      disabled={readOnly}
+                    >
+                      <SelectTrigger className="w-full" aria-invalid={!!errors.roleId}>
+                        <SelectValue placeholder={t('form.role.placeholder')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isEdit ? (
+                          <SelectItem value={NO_ROLE}>{t('form.role.no-role')}</SelectItem>
+                        ) : null}
+                        {roleOptions.map((role) => (
+                          <SelectItem key={role.id} value={role.id}>
+                            {role.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errorText(errors.roleId?.message)}
+                  </div>
+                )
+              }}
+            />
 
-          {selectedRole?.isAdmin ? (
-            <p className="text-xs text-amber-600">{t('form.role.admin-hint')}</p>
-          ) : null}
+            {selectedRole?.isAdmin ? (
+              <p className="text-xs text-amber-600">{t('form.role.admin-hint')}</p>
+            ) : null}
 
-          {canManageAdmin ? (
-            <p className="text-muted-foreground text-xs">{t('form.role.select-hint')}</p>
-          ) : null}
-        </div>
-      </section>
+            {canManageAdmin ? (
+              <p className="text-muted-foreground text-xs">{t('form.role.select-hint')}</p>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       {readOnly ? (
         <p className="text-primary flex items-center gap-1 text-sm">
