@@ -41,6 +41,10 @@
     "BOTH": "Motorista e veículo",
     "BLOCK": "Bloqueio"
   },
+  "userType": {
+    "EMPLOYEE": "Colaborador",
+    "VISITOR": "Visitante"
+  },
   "status": {
     "PENDING": "Pendente",
     "IN_CONTACT": "Em contato",
@@ -57,6 +61,7 @@
   "detail": {
     "title": "Solicitação {{plate}}",
     "driver": "Motorista",
+    "userType": "Tipo de usuário do motorista",
     "vehicle": "Veículo",
     "requestedBy": "Solicitado por",
     "requestedAt": "Solicitado em",
@@ -107,6 +112,11 @@
     "contactPhone": { "label": "Telefone de contato", "placeholder": "Ex.: 11999999999" },
     "driver": {
       "title": "Dados do motorista (será criado)",
+      "userType": {
+        "label": "Tipo de usuário",
+        "employeeHint": "Colaborador tem acesso ao sistema — e-mail obrigatório (cargo e senha são definidos no aceite).",
+        "visitorHint": "Visitante não acessa o sistema — e-mail é opcional."
+      },
       "name": { "label": "Nome", "placeholder": "Nome completo" },
       "email": { "label": "E-mail", "placeholder": "email@empresa.com" },
       "document": { "label": "Documento", "placeholder": "CPF (opcional)" },

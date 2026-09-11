@@ -20,6 +20,7 @@ import { VehiclePicker } from './vehicle-picker'
 import type { AccessRequestFormValues } from '../schemas/access-request.schema'
 import type { BlockRequestFormValues } from '../schemas/block-request.schema'
 import type { AccessRequestType } from '../types/access-requests.types'
+import { ACCESS_REQUEST_USER_TYPES } from '../types/access-requests.types'
 
 // Shared
 import {
@@ -59,6 +60,7 @@ type RequestScenario = AccessRequestType | 'BLOCK'
 
 const DEFAULT_VALUES: AccessRequestFormValues = {
   type: 'NEW_USER',
+  userType: 'VISITOR',
   plate: '',
   vehicleId: '',
   userId: '',
@@ -81,7 +83,8 @@ const DEFAULT_BLOCK_VALUES: BlockRequestFormValues = { plate: '', reason: '' }
  * tipo escolhido — veículo/usuário existentes via seletores de busca
  * (NEW_USER/NEW_VEHICLE/LINK) e dados de motorista/veículo a criar
  * (NEW_USER/NEW_VEHICLE/BOTH), sempre com telefone de contato quando há
- * cadastro a criar.
+ * cadastro a criar. Nos cenários que criam motorista, o tipo de usuário
+ * (Colaborador/Visitante) define se o e-mail é obrigatório (ADR 0013).
  */
 export function AccessRequestCreateDialog({
   open,
@@ -120,6 +123,7 @@ export function AccessRequestCreateDialog({
   })
 
   const type = watch('type')
+  const userType = watch('userType')
 
   // Cenário selecionado no select (4 de acesso + "Bloqueio").
   const [scenario, setScenario] = useState<RequestScenario>(canCreateAccess ? 'NEW_USER' : 'BLOCK')
@@ -158,6 +162,8 @@ export function AccessRequestCreateDialog({
   const showDriverData = type === 'NEW_USER' || type === 'BOTH'
   const showVehicleData = type === 'NEW_VEHICLE' || type === 'BOTH'
   const showContact = type !== 'LINK'
+  // Colaborador acessa o sistema — e-mail obrigatório (ADR 0013).
+  const driverEmailRequired = userType === 'EMPLOYEE'
 
   return (
     <FormDialog
@@ -323,6 +329,33 @@ export function AccessRequestCreateDialog({
           {showDriverData ? (
             <fieldset className="space-y-3 rounded-md border p-3">
               <legend className="px-1 text-sm font-medium">{t('create.driver.title')}</legend>
+              {/* Tipo de usuário (ADR 0013) */}
+              <div className="space-y-2">
+                <Label htmlFor="ar-driver-user-type">{t('create.driver.userType.label')}</Label>
+                <Controller
+                  control={control}
+                  name="userType"
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="ar-driver-user-type">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ACCESS_REQUEST_USER_TYPES.map((value) => (
+                          <SelectItem key={value} value={value}>
+                            {t(`userType.${value}`)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                <p className="text-muted-foreground text-xs">
+                  {driverEmailRequired
+                    ? t('create.driver.userType.employeeHint')
+                    : t('create.driver.userType.visitorHint')}
+                </p>
+              </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="ar-driver-name">
@@ -342,7 +375,7 @@ export function AccessRequestCreateDialog({
                 <div className="space-y-2">
                   <Label htmlFor="ar-driver-email">
                     {t('create.driver.email.label')}
-                    <span className="text-destructive"> *</span>
+                    {driverEmailRequired ? <span className="text-destructive"> *</span> : null}
                   </Label>
                   <Input
                     id="ar-driver-email"

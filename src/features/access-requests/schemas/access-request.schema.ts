@@ -3,6 +3,9 @@ import { z } from 'zod'
 // Utils
 import { isValidBrazilianPlate } from '../utils/plate'
 
+// Types
+import { ACCESS_REQUEST_USER_TYPES } from '../types/access-requests.types'
+
 // Shared
 import { optionalText } from '#/shared/utils/optional-text'
 
@@ -21,10 +24,16 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
  * - `NEW_VEHICLE` — usuário existente + dados do veículo + contato;
  * - `LINK` — veículo + usuário existentes;
  * - `BOTH` — dados do motorista + dados do veículo + contato.
+ *
+ * Nos cenários que criam motorista (`NEW_USER`/`BOTH`), o `userType` decide a
+ * obrigatoriedade do e-mail: **Colaborador** exige e-mail; **Visitante** não
+ * (ADR 0013).
  */
 export const accessRequestFormSchema = z
   .object({
     type: z.enum(['NEW_USER', 'NEW_VEHICLE', 'LINK', 'BOTH']),
+    /** Tipo do motorista a criar (default Visitante no formulário — ADR 0013). */
+    userType: z.enum(ACCESS_REQUEST_USER_TYPES),
     // Placa em campo livre só quando o veículo será criado (NEW_VEHICLE/BOTH);
     // em NEW_USER/LINK ela deriva do veículo escolhido no seletor.
     plate: z.string().max(10, { message: 'form.errors.plate-max' }),
@@ -54,6 +63,9 @@ export const accessRequestFormSchema = z
       ctx.addIssue({ code: 'custom', path, message })
     }
 
+    // Só o Colaborador acessa o sistema — e-mail obrigatório (ADR 0013).
+    const driverEmailRequired = values.userType === 'EMPLOYEE'
+
     if (values.plate && !isValidBrazilianPlate(values.plate)) {
       ctx.addIssue({
         code: 'custom',
@@ -70,7 +82,7 @@ export const accessRequestFormSchema = z
         if (!values.driverName?.trim()) {
           required(['driverName'], 'form.errors.driver-name-required')
         }
-        if (!values.driverEmail?.trim()) {
+        if (driverEmailRequired && !values.driverEmail?.trim()) {
           required(['driverEmail'], 'form.errors.driver-email-required')
         }
         if (!values.contactPhone?.trim()) {
@@ -106,7 +118,7 @@ export const accessRequestFormSchema = z
         if (!values.driverName?.trim()) {
           required(['driverName'], 'form.errors.driver-name-required')
         }
-        if (!values.driverEmail?.trim()) {
+        if (driverEmailRequired && !values.driverEmail?.trim()) {
           required(['driverEmail'], 'form.errors.driver-email-required')
         }
         if (!values.vehicleModel?.trim()) {

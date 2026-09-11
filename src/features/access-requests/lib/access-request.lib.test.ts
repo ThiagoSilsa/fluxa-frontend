@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { getAccessRequestStatusLabelKey, getAccessRequestTypeLabelKey } from './access-request.lib'
+import {
+  accessRequestCreatesDriver,
+  getAccessRequestStatusLabelKey,
+  getAccessRequestTypeLabelKey,
+  getAccessRequestUserTypeLabelKey,
+} from './access-request.lib'
 
 describe('getAccessRequestTypeLabelKey', () => {
   it('mapeia cada cenário para a chave do namespace', () => {
@@ -17,5 +22,21 @@ describe('getAccessRequestStatusLabelKey', () => {
     expect(getAccessRequestStatusLabelKey('REGISTERED')).toBe('status.REGISTERED')
     expect(getAccessRequestStatusLabelKey('REJECTED')).toBe('status.REJECTED')
     expect(getAccessRequestStatusLabelKey('CANCELLED')).toBe('status.CANCELLED')
+  })
+})
+
+describe('getAccessRequestUserTypeLabelKey', () => {
+  it('mapeia cada tipo de usuário para a chave do namespace', () => {
+    expect(getAccessRequestUserTypeLabelKey('EMPLOYEE')).toBe('userType.EMPLOYEE')
+    expect(getAccessRequestUserTypeLabelKey('VISITOR')).toBe('userType.VISITOR')
+  })
+})
+
+describe('accessRequestCreatesDriver', () => {
+  it('é true apenas nos cenários que criam o motorista', () => {
+    expect(accessRequestCreatesDriver('NEW_USER')).toBe(true)
+    expect(accessRequestCreatesDriver('BOTH')).toBe(true)
+    expect(accessRequestCreatesDriver('NEW_VEHICLE')).toBe(false)
+    expect(accessRequestCreatesDriver('LINK')).toBe(false)
   })
 })

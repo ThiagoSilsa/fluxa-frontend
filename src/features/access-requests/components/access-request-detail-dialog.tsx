@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useVehicleTypesOptionsQuery } from '../hooks/use-vehicle-types-options-query'
 
 // Lib
+import { getAccessRequestUserTypeLabelKey } from '../lib/access-request.lib'
 import { formatDateTime } from './detail-format'
 
 // Components
@@ -173,6 +174,10 @@ export function AccessRequestDetailDialog({
             {driver ? (
               <div className="space-y-2">
                 <p className="text-sm font-medium">{t('detail.driver')}</p>
+                <DetailRow
+                  label={t('detail.userType')}
+                  value={t(getAccessRequestUserTypeLabelKey(request.userType))}
+                />
                 {driver.name ? (
                   <DetailRow label={t('create.driver.name.label')} value={driver.name} />
                 ) : null}

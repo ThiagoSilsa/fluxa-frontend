@@ -23,6 +23,7 @@ describe('toCreateAccessRequestPayload', () => {
   it('normaliza a placa e monta BOTH com payload completo', () => {
     const payload = toCreateAccessRequestPayload({
       type: 'BOTH',
+      userType: 'EMPLOYEE',
       plate: ' abc-1d23 ',
       vehicleId: '',
       userId: '',
@@ -39,6 +40,7 @@ describe('toCreateAccessRequestPayload', () => {
     expect(payload).toEqual({
       plate: 'ABC1D23',
       type: 'BOTH',
+      userType: 'EMPLOYEE',
       contactChannel: 'WHATSAPP',
       contactPhone: '11999999999',
       payload: {
@@ -48,9 +50,10 @@ describe('toCreateAccessRequestPayload', () => {
     })
   })
 
-  it('NEW_USER mantém vehicleId e assume WHATSAPP como canal', () => {
+  it('NEW_USER mantém vehicleId, envia userType e assume WHATSAPP como canal', () => {
     const payload = toCreateAccessRequestPayload({
       type: 'NEW_USER',
+      userType: 'VISITOR',
       plate: 'ABC1D23',
       vehicleId: '40000000-0000-0000-0000-000000000010',
       userId: '',
@@ -66,15 +69,38 @@ describe('toCreateAccessRequestPayload', () => {
 
     expect(payload).toMatchObject({
       type: 'NEW_USER',
+      userType: 'VISITOR',
       vehicleId: '40000000-0000-0000-0000-000000000010',
       contactChannel: 'WHATSAPP',
       contactPhone: '11999999999',
     })
   })
 
-  it('LINK não envia payload/contato (só vínculo)', () => {
+  it('NEW_USER de Visitante sem e-mail não envia driver.email', () => {
+    const payload = toCreateAccessRequestPayload({
+      type: 'NEW_USER',
+      userType: 'VISITOR',
+      plate: 'ABC1D23',
+      vehicleId: '40000000-0000-0000-0000-000000000010',
+      userId: '',
+      contactChannel: undefined,
+      contactPhone: '11999999999',
+      driverName: 'Visitante',
+      driverEmail: '',
+      driverDocument: '',
+      driverPhone: '',
+      vehicleModel: '',
+      vehicleColor: '',
+    })
+
+    expect(payload.userType).toBe('VISITOR')
+    expect(payload.payload?.driver).toEqual({ name: 'Visitante' })
+  })
+
+  it('LINK não envia payload/contato/userType (só vínculo)', () => {
     const payload = toCreateAccessRequestPayload({
       type: 'LINK',
+      userType: 'EMPLOYEE',
       plate: 'ABC1234',
       vehicleId: '40000000-0000-0000-0000-000000000010',
       userId: '30000000-0000-0000-0000-000000000005',
@@ -94,6 +120,7 @@ describe('toCreateAccessRequestPayload', () => {
       vehicleId: '40000000-0000-0000-0000-000000000010',
       userId: '30000000-0000-0000-0000-000000000005',
     })
+    expect(payload.userType).toBeUndefined()
   })
 })
 

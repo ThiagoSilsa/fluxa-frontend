@@ -15,7 +15,7 @@ import {
 } from '../mappers/access-request.mapper'
 
 // Lib
-import { getAccessRequestTypeLabelKey } from '../lib/access-request.lib'
+import { accessRequestCreatesDriver, getAccessRequestTypeLabelKey } from '../lib/access-request.lib'
 
 // Hooks
 import { useAccessRequestMutations } from '../hooks/use-access-request-mutations'
@@ -26,6 +26,7 @@ import { useMyBlockRequestsQuery } from '../hooks/use-my-block-requests-query'
 import { AccessRequestCreateDialog } from '../components/access-request-create-dialog'
 import { AccessRequestDetailDialog } from '../components/access-request-detail-dialog'
 import { AccessRequestStatusBadge } from '../components/status-badge'
+import { AccessRequestUserTypeBadge } from '../components/user-type-badge'
 import { BlockRequestStatusBadge } from '../components/block-request-status-badge'
 
 // Types
@@ -285,6 +286,9 @@ export function AccessRequestsPage() {
                     <span className="text-muted-foreground text-sm">
                       {t(getAccessRequestTypeLabelKey(request.type))}
                     </span>
+                    {accessRequestCreatesDriver(request.type) ? (
+                      <AccessRequestUserTypeBadge userType={request.userType} />
+                    ) : null}
                     <AccessRequestStatusBadge status={request.status} />
                   </div>
                   <div className="flex items-center justify-between gap-3 sm:justify-end">

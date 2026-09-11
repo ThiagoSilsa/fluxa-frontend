@@ -10,6 +10,17 @@
 /** Cenários de solicitação de acesso. */
 export type AccessRequestType = 'NEW_USER' | 'NEW_VEHICLE' | 'LINK' | 'BOTH'
 
+/**
+ * Tipos de usuário do motorista a criar (Colaborador/Visitante — ADR 0013).
+ *
+ * Só tem efeito nos cenários que criam motorista (`NEW_USER`/`BOTH`); nos
+ * demais a solicitação permanece `VISITOR`.
+ */
+export const ACCESS_REQUEST_USER_TYPES = ['EMPLOYEE', 'VISITOR'] as const
+
+/** Tipo de usuário do motorista a criar. */
+export type AccessRequestUserType = (typeof ACCESS_REQUEST_USER_TYPES)[number]
+
 /** Situação de uma solicitação. */
 export type AccessRequestStatus = 'PENDING' | 'IN_CONTACT' | 'REGISTERED' | 'REJECTED' | 'CANCELLED'
 
@@ -40,6 +51,8 @@ export interface AccessRequestActorSummary {
 export interface AccessRequestResponse {
   id: string
   type: AccessRequestType
+  /** Tipo de usuário do motorista (`VISITOR` nos cenários sem motorista). */
+  userType: AccessRequestUserType
   plate: string
   vehicleId: string | null
   userId: string | null
@@ -82,6 +95,8 @@ export interface AccessRequestListParams {
 export interface CreateAccessRequestPayload {
   plate: string
   type: AccessRequestType
+  /** Tipo do motorista a criar (só enviado em `NEW_USER`/`BOTH`). */
+  userType?: AccessRequestUserType
   vehicleId?: string
   userId?: string
   contactChannel?: ContactChannel

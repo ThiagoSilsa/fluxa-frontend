@@ -41,6 +41,10 @@
     "BOTH": "Driver and vehicle",
     "BLOCK": "Block"
   },
+  "userType": {
+    "EMPLOYEE": "Employee",
+    "VISITOR": "Visitor"
+  },
   "status": {
     "PENDING": "Pending",
     "IN_CONTACT": "In contact",
@@ -57,6 +61,7 @@
   "detail": {
     "title": "Request {{plate}}",
     "driver": "Driver",
+    "userType": "Driver user type",
     "vehicle": "Vehicle",
     "requestedBy": "Requested by",
     "requestedAt": "Requested at",
@@ -107,6 +112,11 @@
     "contactPhone": { "label": "Contact phone", "placeholder": "e.g. 11999999999" },
     "driver": {
       "title": "Driver data (will be created)",
+      "userType": {
+        "label": "User type",
+        "employeeHint": "An employee has system access — email is required (role and password are set on accept).",
+        "visitorHint": "A visitor has no system access — email is optional."
+      },
       "name": { "label": "Name", "placeholder": "Full name" },
       "email": { "label": "Email", "placeholder": "email@company.com" },
       "document": { "label": "Document", "placeholder": "CPF (optional)" },

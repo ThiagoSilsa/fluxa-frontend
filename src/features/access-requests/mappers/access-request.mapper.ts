@@ -9,6 +9,9 @@ import type {
 // Utils
 import { normalizePlate } from '../utils/plate'
 
+// Lib
+import { accessRequestCreatesDriver } from '../lib/access-request.lib'
+
 // Schemas
 import type { AccessRequestFormValues } from '../schemas/access-request.schema'
 import type { BlockRequestFormValues } from '../schemas/block-request.schema'
@@ -53,7 +56,8 @@ function buildVehiclePayload(values: AccessRequestFormValues) {
  * `POST /access-requests`.
  *
  * Placa normalizada; campos vazios viram `undefined`; o `payload` (jsonb)
- * só é enviado quando há dados do motorista/veículo a criar.
+ * só é enviado quando há dados do motorista/veículo a criar; o `userType` só
+ * é enviado nos cenários que criam o motorista (ADR 0013).
  *
  * @param values Valores validados do formulário.
  * @returns Payload de criação.
@@ -64,6 +68,10 @@ export function toCreateAccessRequestPayload(
   const payload: CreateAccessRequestPayload = {
     plate: normalizePlate(values.plate),
     type: values.type,
+  }
+
+  if (accessRequestCreatesDriver(values.type)) {
+    payload.userType = values.userType
   }
 
   if (values.vehicleId) {
