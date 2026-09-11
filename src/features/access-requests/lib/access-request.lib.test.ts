@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   accessRequestCreatesDriver,
+  accessRequestCreatesVehicle,
+  accessRequestNeedsEmployeeCredentials,
   getAccessRequestStatusLabelKey,
   getAccessRequestTypeLabelKey,
   getAccessRequestUserTypeLabelKey,
@@ -38,5 +40,26 @@ describe('accessRequestCreatesDriver', () => {
     expect(accessRequestCreatesDriver('BOTH')).toBe(true)
     expect(accessRequestCreatesDriver('NEW_VEHICLE')).toBe(false)
     expect(accessRequestCreatesDriver('LINK')).toBe(false)
+  })
+})
+
+describe('accessRequestCreatesVehicle', () => {
+  it('é true apenas nos cenários que criam o veículo', () => {
+    expect(accessRequestCreatesVehicle('NEW_VEHICLE')).toBe(true)
+    expect(accessRequestCreatesVehicle('BOTH')).toBe(true)
+    expect(accessRequestCreatesVehicle('NEW_USER')).toBe(false)
+    expect(accessRequestCreatesVehicle('LINK')).toBe(false)
+  })
+})
+
+describe('accessRequestNeedsEmployeeCredentials', () => {
+  it('exige credenciais só quando o motorista a criar é Colaborador', () => {
+    expect(accessRequestNeedsEmployeeCredentials('NEW_USER', 'EMPLOYEE')).toBe(true)
+    expect(accessRequestNeedsEmployeeCredentials('BOTH', 'EMPLOYEE')).toBe(true)
+    expect(accessRequestNeedsEmployeeCredentials('NEW_USER', 'VISITOR')).toBe(false)
+    expect(accessRequestNeedsEmployeeCredentials('BOTH', 'VISITOR')).toBe(false)
+    // Cenários sem motorista nunca exigem credenciais no aceite.
+    expect(accessRequestNeedsEmployeeCredentials('NEW_VEHICLE', 'EMPLOYEE')).toBe(false)
+    expect(accessRequestNeedsEmployeeCredentials('LINK', 'EMPLOYEE')).toBe(false)
   })
 })

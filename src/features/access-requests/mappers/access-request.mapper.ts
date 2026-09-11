@@ -1,7 +1,9 @@
 // Types
 import type {
+  AcceptAccessRequestPayload,
   AccessRequestListParams,
   AccessRequestPayload,
+  AccessRequestResponse,
   CreateAccessRequestPayload,
   CreateBlockRequestPayload,
 } from '../types/access-requests.types'
@@ -10,10 +12,15 @@ import type {
 import { normalizePlate } from '../utils/plate'
 
 // Lib
-import { accessRequestCreatesDriver } from '../lib/access-request.lib'
+import {
+  accessRequestCreatesDriver,
+  accessRequestCreatesVehicle,
+  accessRequestNeedsEmployeeCredentials,
+} from '../lib/access-request.lib'
 
 // Schemas
 import type { AccessRequestFormValues } from '../schemas/access-request.schema'
+import type { AcceptAccessRequestFormValues } from '../schemas/accept-access-request.schema'
 import type { BlockRequestFormValues } from '../schemas/block-request.schema'
 
 /**
@@ -101,6 +108,39 @@ export function toCreateAccessRequestPayload(
       data.vehicle = vehicle
     }
     payload.payload = data
+  }
+
+  return payload
+}
+
+/**
+ * Converte os valores do aceite no payload de `POST
+ * /access-requests/:id/accept`.
+ *
+ * `can_drive` (true) e `is_primary` (false) seguem os defaults do fluxo; o
+ * tipo do veículo só vai quando o cenário cria o veículo (regra 22) e o
+ * `roleId`/`password` só quando o motorista a criar é Colaborador (ADR 0013).
+ *
+ * @param values Valores validados do formulário de aceite.
+ * @param request Solicitação aceita (cenário + tipo de usuário).
+ * @returns Payload do aceite.
+ */
+export function toAcceptAccessRequestPayload(
+  values: AcceptAccessRequestFormValues,
+  request: Pick<AccessRequestResponse, 'type' | 'userType'>,
+): AcceptAccessRequestPayload {
+  const payload: AcceptAccessRequestPayload = {
+    canDrive: true,
+    isPrimary: false,
+  }
+
+  if (accessRequestCreatesVehicle(request.type)) {
+    payload.vehicleTypeId = values.vehicleTypeId
+  }
+
+  if (accessRequestNeedsEmployeeCredentials(request.type, request.userType)) {
+    payload.roleId = values.roleId
+    payload.password = values.password
   }
 
   return payload

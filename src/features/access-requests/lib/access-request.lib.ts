@@ -38,3 +38,22 @@ export function getAccessRequestUserTypeLabelKey(userType: AccessRequestUserType
 export function accessRequestCreatesDriver(type: AccessRequestType): boolean {
   return type === 'NEW_USER' || type === 'BOTH'
 }
+
+/**
+ * Indica se o cenário cria o veículo da solicitação (regra 22 — o tipo é
+ * escolhido pela administração no aceite).
+ */
+export function accessRequestCreatesVehicle(type: AccessRequestType): boolean {
+  return type === 'NEW_VEHICLE' || type === 'BOTH'
+}
+
+/**
+ * Indica se o aceite exige as credenciais do Colaborador (cargo + senha) —
+ * só quando o motorista a criar é `EMPLOYEE` (ADR 0013).
+ */
+export function accessRequestNeedsEmployeeCredentials(
+  type: AccessRequestType,
+  userType: AccessRequestUserType,
+): boolean {
+  return accessRequestCreatesDriver(type) && userType === 'EMPLOYEE'
+}

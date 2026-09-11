@@ -1,15 +1,35 @@
 // React
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+// React Hook Form
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 // i18n
 import { useTranslation } from 'react-i18next'
 
 // Hooks
+import { useRoleOptionsQuery } from '../hooks/use-role-options-query'
 import { useVehicleTypesOptionsQuery } from '../hooks/use-vehicle-types-options-query'
 
 // Lib
-import { getAccessRequestUserTypeLabelKey } from '../lib/access-request.lib'
+import {
+  accessRequestCreatesVehicle,
+  accessRequestNeedsEmployeeCredentials,
+  getAccessRequestUserTypeLabelKey,
+} from '../lib/access-request.lib'
 import { formatDateTime } from './detail-format'
+
+// Mappers
+import { toAcceptAccessRequestPayload } from '../mappers/access-request.mapper'
+
+// Schemas
+import {
+  ACCEPT_ACCESS_REQUEST_DEFAULT_VALUES,
+  ACCEPT_PASSWORD_MIN_LENGTH,
+  buildAcceptAccessRequestSchema,
+} from '../schemas/accept-access-request.schema'
+import type { AcceptAccessRequestFormValues } from '../schemas/accept-access-request.schema'
 
 // Components
 import { AccessRequestStatusBadge } from './status-badge'
@@ -30,6 +50,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Input,
   Label,
   Select,
   SelectContent,
@@ -77,8 +98,9 @@ function DetailRow({ label, value }: { label: string; value: string }) {
  * Dialog de detalhe de uma solicitação de acesso (administração/porteiro).
  *
  * Exibe os dados da solicitação e as ações conforme permissão e status:
- * aceitar (com seleção do tipo de veículo quando o aceite cria veículo),
- * marcar em contato, rejeitar e cancelar (porteiro — PENDING).
+ * aceitar (com o tipo do veículo quando o aceite cria veículo e com cargo +
+ * senha quando o motorista a criar é Colaborador — ADR 0013), marcar em
+ * contato, rejeitar e cancelar (porteiro — PENDING).
  */
 export function AccessRequestDetailDialog({
   open,
@@ -94,39 +116,60 @@ export function AccessRequestDetailDialog({
 }: AccessRequestDetailDialogProps) {
   const { t } = useTranslation('accessRequests')
 
-  const [vehicleTypeId, setVehicleTypeId] = useState('')
   const [confirmReject, setConfirmReject] = useState(false)
   const [confirmCancel, setConfirmCancel] = useState(false)
 
+  // O que o aceite exige depende do cenário e do tipo de usuário da solicitação.
+  const needsVehicleType = request ? accessRequestCreatesVehicle(request.type) : false
+  const needsEmployeeCredentials = request
+    ? accessRequestNeedsEmployeeCredentials(request.type, request.userType)
+    : false
+
   const { data: vehicleTypes } = useVehicleTypesOptionsQuery()
+  // Cargos só são consultados quando o aceite cria um Colaborador.
+  const { data: roles } = useRoleOptionsQuery(needsEmployeeCredentials)
+
+  const acceptSchema = useMemo(
+    () => buildAcceptAccessRequestSchema({ needsVehicleType, needsEmployeeCredentials }),
+    [needsVehicleType, needsEmployeeCredentials],
+  )
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<AcceptAccessRequestFormValues>({
+    resolver: zodResolver(acceptSchema),
+    defaultValues: ACCEPT_ACCESS_REQUEST_DEFAULT_VALUES,
+    mode: 'onTouched',
+  })
+
+  const acceptValues = watch()
+  // Botão de aceitar bloqueado enquanto o que o cenário exige não foi preenchido.
+  const canAccept =
+    (!needsVehicleType || !!acceptValues.vehicleTypeId) &&
+    (!needsEmployeeCredentials ||
+      (!!acceptValues.roleId && acceptValues.password.trim().length >= ACCEPT_PASSWORD_MIN_LENGTH))
 
   // Reinicia o estado do aceite ao abrir/exibir outra solicitação.
   useEffect(() => {
     if (open) {
-      setVehicleTypeId('')
+      reset(ACCEPT_ACCESS_REQUEST_DEFAULT_VALUES)
     }
-  }, [open, request?.id])
+  }, [open, request?.id, reset])
 
   if (!request) {
     return null
   }
 
-  const needsVehicleType = request.type === 'NEW_VEHICLE' || request.type === 'BOTH'
   const isActionable = request.status === 'PENDING' || request.status === 'IN_CONTACT'
 
-  const handleAccept = () => {
-    const payload: AcceptAccessRequestPayload = {
-      canDrive: true,
-      isPrimary: false,
-    }
-    if (needsVehicleType) {
-      if (!vehicleTypeId) {
-        return
-      }
-      payload.vehicleTypeId = vehicleTypeId
-    }
-    onAccept(payload)
-  }
+  const submitAccept = handleSubmit((values) => {
+    onAccept(toAcceptAccessRequestPayload(values, request))
+  })
 
   const driver = request.payload?.driver
   const vehicle = request.payload?.vehicle
@@ -226,25 +269,89 @@ export function AccessRequestDetailDialog({
               </div>
             ) : null}
 
-            {/* Aceite: tipo do veículo a criar */}
-            {canManage && isActionable && needsVehicleType ? (
-              <div className="space-y-2 rounded-md border p-3">
-                <Label htmlFor="accept-vehicle-type">
-                  {t('detail.vehicleType.label')}
-                  <span className="text-destructive"> *</span>
-                </Label>
-                <Select value={vehicleTypeId} onValueChange={setVehicleTypeId}>
-                  <SelectTrigger id="accept-vehicle-type">
-                    <SelectValue placeholder={t('detail.vehicleType.placeholder')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(vehicleTypes ?? []).map((type) => (
-                      <SelectItem key={type.id} value={type.id}>
-                        {type.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            {/* Aceite: o que o cenário exige (tipo do veículo — regra 22;
+                cargo + senha do Colaborador — ADR 0013) */}
+            {canManage && isActionable && (needsVehicleType || needsEmployeeCredentials) ? (
+              <div className="space-y-4 rounded-md border p-3">
+                {needsVehicleType ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="accept-vehicle-type">
+                      {t('detail.vehicleType.label')}
+                      <span className="text-destructive"> *</span>
+                    </Label>
+                    <Controller
+                      control={control}
+                      name="vehicleTypeId"
+                      render={({ field }) => (
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id="accept-vehicle-type">
+                            <SelectValue placeholder={t('detail.vehicleType.placeholder')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {(vehicleTypes ?? []).map((type) => (
+                              <SelectItem key={type.id} value={type.id}>
+                                {type.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {errors.vehicleTypeId?.message ? (
+                      <p className="text-destructive text-xs">{t(errors.vehicleTypeId.message)}</p>
+                    ) : null}
+                  </div>
+                ) : null}
+
+                {needsEmployeeCredentials ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="accept-role">
+                        {t('detail.role.label')}
+                        <span className="text-destructive"> *</span>
+                      </Label>
+                      <Controller
+                        control={control}
+                        name="roleId"
+                        render={({ field }) => (
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger id="accept-role">
+                              <SelectValue placeholder={t('detail.role.placeholder')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {(roles ?? []).map((role) => (
+                                <SelectItem key={role.id} value={role.id}>
+                                  {role.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                      {errors.roleId?.message ? (
+                        <p className="text-destructive text-xs">{t(errors.roleId.message)}</p>
+                      ) : null}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="accept-password">
+                        {t('detail.password.label')}
+                        <span className="text-destructive"> *</span>
+                      </Label>
+                      <Input
+                        id="accept-password"
+                        type="password"
+                        autoComplete="new-password"
+                        {...register('password')}
+                        aria-invalid={!!errors.password}
+                        placeholder={t('detail.password.placeholder')}
+                      />
+                      {errors.password?.message ? (
+                        <p className="text-destructive text-xs">{t(errors.password.message)}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+
                 <p className="text-muted-foreground text-xs">{t('detail.acceptHint')}</p>
               </div>
             ) : null}
@@ -256,8 +363,8 @@ export function AccessRequestDetailDialog({
                 <Button
                   type="button"
                   variant="outline"
-                  disabled={isPending || (needsVehicleType && !vehicleTypeId)}
-                  onClick={handleAccept}
+                  disabled={isPending || !canAccept}
+                  onClick={submitAccept}
                 >
                   {t('actions.accept')}
                 </Button>

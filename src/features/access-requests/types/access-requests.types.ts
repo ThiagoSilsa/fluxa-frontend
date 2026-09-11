@@ -143,6 +143,10 @@ export interface AcceptAccessRequestPayload {
   canDrive?: boolean
   isPrimary?: boolean
   observation?: string
+  /** Cargo do Colaborador (`userType = EMPLOYEE`) — ADR 0013. */
+  roleId?: string
+  /** Senha do Colaborador (`userType = EMPLOYEE`) — ADR 0013. */
+  password?: string
 }
 
 /**
@@ -166,5 +170,13 @@ export interface UserOption {
 export interface VehicleTypeOption {
   id: string
   code: string
+  name: string
+}
+
+/**
+ * Opção de cargo (aceite de Colaborador) — `GET /roles/options` (ADR 0011).
+ */
+export interface RoleOption {
+  id: string
   name: string
 }

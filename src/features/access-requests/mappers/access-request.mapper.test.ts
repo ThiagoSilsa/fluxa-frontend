@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildAccessRequestListQuery,
+  toAcceptAccessRequestPayload,
   toCreateAccessRequestPayload,
   toCreateBlockRequestPayload,
 } from './access-request.mapper'
@@ -121,6 +122,61 @@ describe('toCreateAccessRequestPayload', () => {
       userId: '30000000-0000-0000-0000-000000000005',
     })
     expect(payload.userType).toBeUndefined()
+  })
+})
+
+describe('toAcceptAccessRequestPayload', () => {
+  const EMPTY = { vehicleTypeId: '', roleId: '', password: '' }
+  const FILLED = { vehicleTypeId: 'vt-1', roleId: 'role-1', password: 'senha123' }
+
+  it('LINK de Visitante envia apenas os defaults do fluxo', () => {
+    const payload = toAcceptAccessRequestPayload(EMPTY, { type: 'LINK', userType: 'VISITOR' })
+
+    expect(payload).toEqual({ canDrive: true, isPrimary: false })
+  })
+
+  it('NEW_VEHICLE inclui o tipo do veículo a criar (regra 22)', () => {
+    const payload = toAcceptAccessRequestPayload(FILLED, {
+      type: 'NEW_VEHICLE',
+      userType: 'VISITOR',
+    })
+
+    expect(payload).toEqual({ canDrive: true, isPrimary: false, vehicleTypeId: 'vt-1' })
+  })
+
+  it('BOTH de Colaborador inclui tipo, cargo e senha (ADR 0013)', () => {
+    const payload = toAcceptAccessRequestPayload(FILLED, { type: 'BOTH', userType: 'EMPLOYEE' })
+
+    expect(payload).toEqual({
+      canDrive: true,
+      isPrimary: false,
+      vehicleTypeId: 'vt-1',
+      roleId: 'role-1',
+      password: 'senha123',
+    })
+  })
+
+  it('NEW_USER de Colaborador inclui cargo e senha, sem tipo de veículo', () => {
+    const payload = toAcceptAccessRequestPayload(FILLED, {
+      type: 'NEW_USER',
+      userType: 'EMPLOYEE',
+    })
+
+    expect(payload).toEqual({
+      canDrive: true,
+      isPrimary: false,
+      roleId: 'role-1',
+      password: 'senha123',
+    })
+    expect(payload.vehicleTypeId).toBeUndefined()
+  })
+
+  it('BOTH de Visitante não inclui cargo/senha', () => {
+    const payload = toAcceptAccessRequestPayload(FILLED, { type: 'BOTH', userType: 'VISITOR' })
+
+    expect(payload).toEqual({ canDrive: true, isPrimary: false, vehicleTypeId: 'vt-1' })
+    expect(payload.roleId).toBeUndefined()
+    expect(payload.password).toBeUndefined()
   })
 })
 

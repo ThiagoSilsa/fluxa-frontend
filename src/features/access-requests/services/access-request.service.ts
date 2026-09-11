@@ -14,6 +14,7 @@ import type {
   HandleAccessRequestPayload,
   ListAccessRequestsResponse,
   ListBlockRequestsResponse,
+  RoleOption,
   UserOption,
   VehicleOption,
   VehicleTypeOption,
@@ -222,6 +223,20 @@ class AccessRequestService {
       endpoint: '/vehicle-types?isActive=true&limit=100&offset=0',
       method: 'GET',
     })) as { data: VehicleTypeOption[] }
+    return response.data
+  }
+
+  /**
+   * Lista os cargos ativos para o aceite de Colaborador — `GET /roles/options`
+   * (baixo privilégio para quem gerencia solicitações — ADR 0011/0013).
+   *
+   * @returns Cargos ativos `{ id, name }`.
+   */
+  async listRoles(): Promise<RoleOption[]> {
+    const response = (await baseController.makeRequest({
+      endpoint: '/roles/options?limit=100&offset=0',
+      method: 'GET',
+    })) as { data: RoleOption[] }
     return response.data
   }
 }
