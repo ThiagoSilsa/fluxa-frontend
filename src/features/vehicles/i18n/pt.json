@@ -216,6 +216,10 @@
     "reason-required": "Informe o motivo do bloqueio.",
     "confirm": "Confirmar bloqueio",
     "unblock-title": "Desbloquear veículo",
-    "unblock-description": "Confirma o desbloqueio do veículo {{plate}}?"
+    "unblock-description": "Informe o motivo do desbloqueio de {{plate}}.",
+    "unblock-reason-label": "Motivo do desbloqueio",
+    "unblock-reason-placeholder": "Ex.: bloqueio indevido",
+    "unblock-reason-required": "Informe o motivo do desbloqueio.",
+    "unblock-confirm": "Confirmar desbloqueio"
   }
 }

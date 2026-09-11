@@ -378,7 +378,7 @@ export function VehiclesPage() {
           canGrantFreePass={canGrantFreePass}
           canManageBlocks={canManageBlocks}
           onBlock={(plate, reason) => blockVehicle.mutateAsync({ plate, reason })}
-          onUnblock={(plate) => unblockVehicle.mutateAsync(plate)}
+          onUnblock={(plate, reason) => unblockVehicle.mutateAsync({ plate, reason })}
           onCurrentDepartmentChange={handleCurrentDepartmentChange}
           onSubmit={handleSubmitForm}
         />

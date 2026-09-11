@@ -1,5 +1,5 @@
 // Mapper
-import { buildVehicleListQuery } from '../mappers/vehicle.mapper'
+import { buildVehicleListQuery, toRevokeVehicleBlockPayload } from '../mappers/vehicle.mapper'
 
 // Types
 import type {
@@ -285,11 +285,12 @@ class VehiclesService {
    * Desbloqueia um veículo revogando o bloqueio ATIVO da placa.
    *
    * Localiza o bloqueio ativo via listagem (status=ACTIVE + busca por placa)
-   * e chama o revoke. Sem bloqueio ativo, lança `NO_ACTIVE_BLOCK`.
+   * e chama o revoke com o **motivo obrigatório** (`reason` — o backend exige
+   * o campo). Sem bloqueio ativo, lança `NO_ACTIVE_BLOCK`.
    *
-   * @param plate Placa normalizada.
+   * @param data Placa normalizada + motivo do desbloqueio.
    */
-  async unblockVehicle(plate: string): Promise<void> {
+  async unblockVehicle({ plate, reason }: { plate: string; reason: string }): Promise<void> {
     const list = (await baseController.makeRequest({
       endpoint: `/blocks?status=ACTIVE&search=${encodeURIComponent(plate)}&limit=10&offset=0`,
       method: 'GET',
@@ -301,7 +302,7 @@ class VehiclesService {
     await baseController.makeRequest({
       endpoint: `/blocks/${active.id}/revoke`,
       method: 'POST',
-      body: {},
+      body: toRevokeVehicleBlockPayload(reason),
     })
   }
 }

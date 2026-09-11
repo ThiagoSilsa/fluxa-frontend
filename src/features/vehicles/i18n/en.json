@@ -216,6 +216,10 @@
     "reason-required": "Inform the blocking reason.",
     "confirm": "Confirm block",
     "unblock-title": "Unblock vehicle",
-    "unblock-description": "Confirm unblocking vehicle {{plate}}?"
+    "unblock-description": "Inform the reason for unblocking {{plate}}.",
+    "unblock-reason-label": "Unblock reason",
+    "unblock-reason-placeholder": "e.g. mistaken block",
+    "unblock-reason-required": "Inform the unblocking reason.",
+    "unblock-confirm": "Confirm unblock"
   }
 }

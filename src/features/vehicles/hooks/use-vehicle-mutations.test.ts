@@ -41,6 +41,7 @@ const service = {
   addDriver: vi.fn(),
   updateDriver: vi.fn(),
   removeDriver: vi.fn(),
+  unblockVehicle: vi.fn(),
 }
 vi.mock('../services/vehicle.service', () => ({
   vehiclesService: {
@@ -52,6 +53,7 @@ vi.mock('../services/vehicle.service', () => ({
     addDriver: (...args: unknown[]) => service.addDriver(...args),
     updateDriver: (...args: unknown[]) => service.updateDriver(...args),
     removeDriver: (...args: unknown[]) => service.removeDriver(...args),
+    unblockVehicle: (...args: unknown[]) => service.unblockVehicle(...args),
   },
 }))
 
@@ -172,5 +174,26 @@ describe('useVehicleMutations', () => {
       await result.current.removeDriver.mutateAsync({ vehicleId: 'v-1', userId: 'u-1' })
     })
     expect(service.removeDriver).toHaveBeenCalledWith('v-1', 'u-1')
+  })
+
+  it('should forward plate and reason when unblocking a vehicle', async () => {
+    service.unblockVehicle.mockResolvedValue(undefined)
+
+    const { result } = renderHook(() => useVehicleMutations(), {
+      wrapper: createQueryWrapper(),
+    })
+
+    await act(async () => {
+      await result.current.unblockVehicle.mutateAsync({
+        plate: 'ABC1D23',
+        reason: 'Equívoco',
+      })
+    })
+
+    expect(service.unblockVehicle).toHaveBeenCalledWith({
+      plate: 'ABC1D23',
+      reason: 'Equívoco',
+    })
+    expect(mockToastSuccess).toHaveBeenCalledWith('vehicles:notifications.unblock-success')
   })
 })

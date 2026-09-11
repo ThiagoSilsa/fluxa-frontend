@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { vehicleFormSchema } from './vehicle.schema'
+import { buildReasonSchema, vehicleFormSchema } from './vehicle.schema'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -123,5 +123,32 @@ describe('vehicleFormSchema', () => {
       })
       expect(result.success).toBe(false)
     })
+  })
+})
+
+// ---------------------------------------------------------------------------
+// buildReasonSchema (bloqueio/desbloqueio)
+// ---------------------------------------------------------------------------
+describe('buildReasonSchema', () => {
+  const schema = buildReasonSchema('block.unblock-reason-required')
+
+  it('should accept a filled reason', () => {
+    const result = schema.safeParse({ reason: 'Bloqueio indevido' })
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject an empty reason with the informed message', () => {
+    const result = schema.safeParse({ reason: '' })
+
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0]?.message).toBe('block.unblock-reason-required')
+  })
+
+  it('should reject a reason with only whitespace', () => {
+    const result = schema.safeParse({ reason: '   ' })
+
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0]?.message).toBe('block.unblock-reason-required')
   })
 })

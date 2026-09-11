@@ -168,7 +168,8 @@ export function useVehicleMutations() {
 
   /** Mutation para desbloquear um veículo (revoga o bloqueio ativo da placa). */
   const unblockVehicle = useMutation({
-    mutationFn: (plate: string) => vehiclesService.unblockVehicle(plate),
+    mutationFn: ({ plate, reason }: { plate: string; reason: string }) =>
+      vehiclesService.unblockVehicle({ plate, reason }),
     onSuccess: () => {
       invalidateVehicles()
       toast.success(t('notifications.unblock-success'))

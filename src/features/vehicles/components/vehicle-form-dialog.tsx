@@ -8,11 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // i18n
 import { useTranslation } from 'react-i18next'
 
-// Zod
-import { z } from 'zod'
-
 // Schemas
-import { vehicleFormSchema } from '../schemas/vehicle.schema'
+import { buildReasonSchema, vehicleFormSchema } from '../schemas/vehicle.schema'
 
 // Mappers
 import { normalizeVehicleFormDefaults } from '../mappers/vehicle.mapper'
@@ -22,12 +19,11 @@ import { useVehicleDetailQuery } from '../hooks/use-vehicle-detail-query'
 
 // Types
 import type { VehicleEntity, VehicleParameterOption } from '../types/vehicles.types'
-import type { VehicleFormValues } from '../schemas/vehicle.schema'
+import type { ReasonFormValues, VehicleFormValues } from '../schemas/vehicle.schema'
 
 // Components
 import {
   Button,
-  ConfirmDialog,
   FormDialog,
   Input,
   Label,
@@ -64,23 +60,19 @@ export type VehicleFormDialogProps = {
   canManageBlocks?: boolean
   /** Bloqueia o veículo (placa + motivo) — modo edição. */
   onBlock?: (plate: string, reason: string) => Promise<void>
-  /** Desbloqueia o veículo (revoga o bloqueio ativo da placa). */
-  onUnblock?: (plate: string) => Promise<void>
+  /** Desbloqueia o veículo (placa + motivo da revogação) — modo edição. */
+  onUnblock?: (plate: string, reason: string) => Promise<void>
   /** Reporta o departamento atual do veículo (carregado no modo edição). */
   onCurrentDepartmentChange?: (departmentId: string) => void
   /** Callback de submit com os valores validados. */
   onSubmit: (values: VehicleFormValues) => void
 }
 
-/** Schema do motivo do bloqueio (ticket 06 — reutiliza o PlateReasonFields). */
-const blockReasonSchema = z.object({
-  reason: z
-    .string({ message: 'block.reason-required' })
-    .min(1, { message: 'block.reason-required' }),
-})
+/** Schema do motivo do bloqueio (reutiliza o `PlateReasonFields`). */
+const blockReasonSchema = buildReasonSchema('block.reason-required')
 
-/** Valores do formulário de motivo do bloqueio. */
-type BlockReasonValues = z.infer<typeof blockReasonSchema>
+/** Schema do motivo do desbloqueio (o backend exige `reason` — ticket 05). */
+const unblockReasonSchema = buildReasonSchema('block.unblock-reason-required')
 
 /**
  * Dialog de formulário de veículo (criação/edição).
@@ -137,7 +129,7 @@ export function VehicleFormDialog({
   // --- Bloqueio/desbloqueio (modo edição, MANAGE_BLOCKS — ticket 06) ---
   const [blocked, setBlocked] = useState(vehicle?.isBlocked ?? false)
   const [blockDialogOpen, setBlockDialogOpen] = useState(false)
-  const [unblockConfirmOpen, setUnblockConfirmOpen] = useState(false)
+  const [unblockDialogOpen, setUnblockDialogOpen] = useState(false)
   const [blocking, setBlocking] = useState(false)
 
   // Reflete o estado de bloqueio do veículo ao abrir/editar outro.
@@ -169,15 +161,17 @@ export function VehicleFormDialog({
   }
 
   /**
-   * Desbloqueia o veículo (revoga o bloqueio ativo da placa).
+   * Desbloqueia o veículo com o motivo informado (revoga o bloqueio ativo).
+   *
+   * @param reason Motivo do desbloqueio (backend exige `reason`).
    */
-  const handleUnblock = async () => {
+  const handleUnblock = async (reason: string) => {
     if (!vehicle) return
     setBlocking(true)
     try {
-      await onUnblock?.(vehicle.plate)
+      await onUnblock?.(vehicle.plate, reason)
       setBlocked(false)
-      setUnblockConfirmOpen(false)
+      setUnblockDialogOpen(false)
     } catch {
       // Erro já tratado no onError da mutation (toast).
     } finally {
@@ -413,7 +407,7 @@ export function VehicleFormDialog({
                   type="button"
                   variant="outline"
                   disabled={blocking}
-                  onClick={() => setUnblockConfirmOpen(true)}
+                  onClick={() => setUnblockDialogOpen(true)}
                 >
                   {t('block.unblock')}
                 </Button>
@@ -447,45 +441,66 @@ export function VehicleFormDialog({
       </FormDialog>
 
       {/* Diálogo do motivo do bloqueio */}
-      <BlockReasonDialog
+      <ReasonDialog
         open={blockDialogOpen}
         onOpenChange={setBlockDialogOpen}
-        plate={vehicle?.plate ?? ''}
+        title={t('block.title')}
+        description={t('block.description', { plate: vehicle?.plate ?? '' })}
+        reasonLabel={t('block.reason-label')}
+        reasonPlaceholder={t('block.reason-placeholder')}
+        confirmLabel={t('block.confirm')}
+        idPrefix="vehicle-block"
+        schema={blockReasonSchema}
         isSubmitting={blocking}
         onSubmit={handleBlock}
       />
 
-      {/* Confirmação do desbloqueio */}
-      <ConfirmDialog
-        open={unblockConfirmOpen}
-        onOpenChange={setUnblockConfirmOpen}
+      {/* Diálogo do motivo do desbloqueio (o backend exige `reason`) */}
+      <ReasonDialog
+        open={unblockDialogOpen}
+        onOpenChange={setUnblockDialogOpen}
         title={t('block.unblock-title')}
         description={t('block.unblock-description', { plate: vehicle?.plate ?? '' })}
-        confirmLabel={t('block.unblock')}
-        cancelLabel={t('form.cancel')}
-        onConfirm={handleUnblock}
-        isPending={blocking}
+        reasonLabel={t('block.unblock-reason-label')}
+        reasonPlaceholder={t('block.unblock-reason-placeholder')}
+        confirmLabel={t('block.unblock-confirm')}
+        idPrefix="vehicle-unblock"
+        schema={unblockReasonSchema}
+        isSubmitting={blocking}
+        onSubmit={handleUnblock}
       />
     </>
   )
 }
 
 /**
- * Diálogo do motivo do bloqueio (ticket 06).
+ * Diálogo de motivo (bloqueio/desbloqueio do veículo).
  *
  * Reusa o `PlateReasonFields` compartilhado com apenas o motivo; a placa é
  * exibida na descrição. O envio é delegado ao `VehicleFormDialog`.
  */
-function BlockReasonDialog({
+function ReasonDialog({
   open,
   onOpenChange,
-  plate,
+  title,
+  description,
+  reasonLabel,
+  reasonPlaceholder,
+  confirmLabel,
+  idPrefix,
+  schema,
   isSubmitting,
   onSubmit,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
-  plate: string
+  title: string
+  description: string
+  reasonLabel: string
+  reasonPlaceholder: string
+  confirmLabel: string
+  idPrefix: string
+  schema: ReturnType<typeof buildReasonSchema>
   isSubmitting: boolean
   onSubmit: (reason: string) => void
 }) {
@@ -496,8 +511,8 @@ function BlockReasonDialog({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<BlockReasonValues>({
-    resolver: zodResolver(blockReasonSchema),
+  } = useForm<ReasonFormValues>({
+    resolver: zodResolver(schema),
     defaultValues: { reason: '' },
   })
 
@@ -512,8 +527,8 @@ function BlockReasonDialog({
     <FormDialog
       open={open}
       onOpenChange={onOpenChange}
-      title={t('block.title')}
-      description={t('block.description', { plate })}
+      title={title}
+      description={description}
       size="lg"
     >
       <form
@@ -522,18 +537,15 @@ function BlockReasonDialog({
         noValidate
       >
         <PlateReasonFields
-          idPrefix="vehicle-block"
+          idPrefix={idPrefix}
           register={register}
           errors={errors}
           showPlate={false}
           translateError={(key) => (key ? t(key) : '')}
-          texts={{
-            reasonLabel: t('block.reason-label'),
-            reasonPlaceholder: t('block.reason-placeholder'),
-          }}
+          texts={{ reasonLabel, reasonPlaceholder }}
         />
         <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? t('form.submitting') : t('block.confirm')}
+          {isSubmitting ? t('form.submitting') : confirmLabel}
         </Button>
       </form>
     </FormDialog>

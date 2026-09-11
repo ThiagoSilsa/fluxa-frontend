@@ -3,6 +3,7 @@ import {
   buildVehicleListQuery,
   normalizeVehicleFormDefaults,
   toCreateVehiclePayload,
+  toRevokeVehicleBlockPayload,
   toUpdateVehiclePayload,
 } from './vehicle.mapper'
 
@@ -200,5 +201,23 @@ describe('buildVehicleListQuery', () => {
     expect(result).toContain('sortOrder=DESC')
     expect(result).toContain('limit=20')
     expect(result).toContain('offset=40')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// toRevokeVehicleBlockPayload
+// ---------------------------------------------------------------------------
+describe('toRevokeVehicleBlockPayload', () => {
+  it('should trim the reason', () => {
+    const payload = toRevokeVehicleBlockPayload('  Bloqueio indevido  ')
+
+    expect(payload).toEqual({ reason: 'Bloqueio indevido' })
+  })
+
+  it('should never return an empty body (backend exige reason)', () => {
+    const payload = toRevokeVehicleBlockPayload('  Motivo  ')
+
+    expect(Object.keys(payload)).toEqual(['reason'])
+    expect(payload.reason.length).toBeGreaterThan(0)
   })
 })

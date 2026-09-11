@@ -41,6 +41,19 @@ export function toCreateVehiclePayload(values: VehicleFormValues): CreateVehicle
   }
 }
 
+/**
+ * Monta o payload da revogação de bloqueio — `POST /blocks/:id/revoke`.
+ *
+ * O backend exige `reason`; o motivo vai com as bordas limpas e nunca vazio
+ * (corpo vazio era o erro corrigido — ticket 05).
+ *
+ * @param reason Motivo informado no diálogo de desbloqueio.
+ * @returns Payload com o motivo (trim).
+ */
+export function toRevokeVehicleBlockPayload(reason: string): { reason: string } {
+  return { reason: reason.trim() }
+}
+
 /** Converte os valores do formulário no payload de atualização (diff). */
 export function toUpdateVehiclePayload(
   values: VehicleFormValues,

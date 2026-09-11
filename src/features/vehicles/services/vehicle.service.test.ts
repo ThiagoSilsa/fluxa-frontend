@@ -276,4 +276,37 @@ describe('VehiclesService', () => {
       })
     })
   })
+
+  describe('unblockVehicle', () => {
+    it('busca o bloqueio ativo da placa e revoga com o motivo (trim)', async () => {
+      mockedMakeRequest
+        .mockResolvedValueOnce({ data: [{ id: 'block-1' }] })
+        .mockResolvedValueOnce(undefined)
+
+      await vehiclesService.unblockVehicle({ plate: 'ABC1D23', reason: ' Equívoco ' })
+
+      expect(mockedMakeRequest).toHaveBeenNthCalledWith(1, {
+        endpoint: expect.stringContaining('/blocks?status=ACTIVE'),
+        method: 'GET',
+      })
+      expect(mockedMakeRequest).toHaveBeenNthCalledWith(2, {
+        endpoint: '/blocks/block-1/revoke',
+        method: 'POST',
+        body: { reason: 'Equívoco' },
+      })
+      // Nunca envia corpo vazio (o backend exige `reason`).
+      const revokeArgs = mockedMakeRequest.mock.calls[1][0] as { body: Record<string, unknown> }
+      expect(Object.keys(revokeArgs.body)).toEqual(['reason'])
+      expect(revokeArgs.body.reason).toBeTruthy()
+    })
+
+    it('lança NO_ACTIVE_BLOCK quando não há bloqueio ativo da placa', async () => {
+      mockedMakeRequest.mockResolvedValueOnce({ data: [] })
+
+      await expect(
+        vehiclesService.unblockVehicle({ plate: 'ABC1D23', reason: 'Equívoco' }),
+      ).rejects.toThrow('NO_ACTIVE_BLOCK')
+      expect(mockedMakeRequest).toHaveBeenCalledTimes(1)
+    })
+  })
 })

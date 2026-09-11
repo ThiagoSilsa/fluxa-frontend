@@ -36,3 +36,22 @@ export const vehicleFormSchema = z
 
 /** Tipo inferido do schema de formulário de veículo. */
 export type VehicleFormValues = z.infer<typeof vehicleFormSchema>
+
+/**
+ * Schema do motivo (bloqueio/desbloqueio do veículo).
+ *
+ * O backend exige `reason` no `POST /blocks` e no
+ * `POST /blocks/:id/revoke`; motivo só com espaços é inválido.
+ *
+ * @param requiredMessage Chave i18n da mensagem de motivo obrigatório.
+ */
+export function buildReasonSchema(requiredMessage: string) {
+  return z.object({
+    reason: z
+      .string({ message: requiredMessage })
+      .refine((value) => value.trim().length > 0, { message: requiredMessage }),
+  })
+}
+
+/** Tipo inferido do formulário de motivo (bloqueio/desbloqueio). */
+export type ReasonFormValues = z.infer<ReturnType<typeof buildReasonSchema>>
