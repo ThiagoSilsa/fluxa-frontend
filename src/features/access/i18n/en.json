@@ -1,6 +1,6 @@
 {
   "title": "Portaria",
-  "subtitle": "Register vehicle entry and exit.",
+  "subtitle": "What went through the gate: entries, exits and denials.",
   "tabs": {
     "entry": "Entry",
     "exit": "Exit"
@@ -15,7 +15,10 @@
     "entry": {
       "title": "Register entry",
       "description": "Enter the vehicle plate (or read the QR) and confirm the entry.",
-      "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+      "plate": {
+        "label": "Plate",
+        "placeholder": "e.g. ABC1D23"
+      },
       "accessRequestId": {
         "label": "Authorized request (ID)",
         "placeholder": "Request UUID (optional)"
@@ -40,7 +43,10 @@
     "exit": {
       "title": "Register exit",
       "description": "Enter the plate, check who is inside and register the exit.",
-      "plate": { "label": "Plate", "placeholder": "e.g. ABC1D23" },
+      "plate": {
+        "label": "Plate",
+        "placeholder": "e.g. ABC1D23"
+      },
       "temporaryDriverName": {
         "label": "Passenger",
         "placeholder": "Passenger name (required if there is no entry)"
@@ -59,7 +65,10 @@
   "qr": {
     "title": "Read QR code",
     "description": "Paste the vehicle code (QR token) to fill the plate automatically.",
-    "code": { "label": "QR code", "placeholder": "Vehicle permanent token" },
+    "code": {
+      "label": "QR code",
+      "placeholder": "Vehicle permanent token"
+    },
     "resolve": "Resolve",
     "resolving": "Resolving...",
     "cancel": "Cancel",
@@ -76,8 +85,14 @@
   },
   "result": {
     "entry": {
-      "granted": { "title": "Entry released", "message": "Access registered successfully." },
-      "denied": { "title": "Entry blocked", "message": "Access was denied." },
+      "granted": {
+        "title": "Entry released",
+        "message": "Access registered successfully."
+      },
+      "denied": {
+        "title": "Entry blocked",
+        "message": "Access was denied."
+      },
       "plate": "Plate",
       "driver": "Driver",
       "entryAt": "Entry",
@@ -102,12 +117,15 @@
       "BLOCKED": "Blocked vehicle",
       "UNREGISTERED": "Unregistered vehicle",
       "UNAUTHORIZED_DRIVER": "Unauthorized driver",
+      "OVERDUE": "Expired request",
       "OTHER": "Other reason"
     }
   },
   "notifications": {
     "entry-success": "Entry registered.",
     "exit-success": "Exit registered.",
+    "denial-success": "Denial registered.",
+    "block-request-success": "Block request sent.",
     "over-capacity-title": "Full capacity",
     "over-capacity-description": "Capacity is exhausted. Confirm releasing beyond capacity?",
     "over-capacity-confirm": "Release anyway",
@@ -118,9 +136,18 @@
     "subtitle": "Vehicles inside the company in real time.",
     "refresh": "Updates automatically every 3 seconds.",
     "cards": {
-      "total": { "label": "Vehicles inside", "value": "{{count}}" },
-      "free": { "label": "Free slots", "value": "{{count}}" },
-      "capacity": { "label": "Capacity", "value": "{{count}}" }
+      "total": {
+        "label": "Vehicles inside",
+        "value": "{{count}}"
+      },
+      "free": {
+        "label": "Free slots",
+        "value": "{{count}}"
+      },
+      "capacity": {
+        "label": "Capacity",
+        "value": "{{count}}"
+      }
     },
     "totalRate": "Overall occupancy",
     "byDepartment": {
@@ -136,5 +163,250 @@
     "noCapacity": "No capacity",
     "loading": "Loading occupancy...",
     "error": "Could not load occupancy."
+  },
+  "records": {
+    "register": "Register",
+    "columns": {
+      "kind": "Type",
+      "plate": "Plate",
+      "driver": "Driver",
+      "vehicle": "Vehicle / Department",
+      "entrance": "Gate",
+      "doorman": "Attendant",
+      "reason": "Reason",
+      "occurredAt": "Occurred at"
+    },
+    "kind": {
+      "ENTRY": "Entry",
+      "EXIT": "Exit",
+      "DENIAL": "Denial"
+    },
+    "filters": {
+      "plate": {
+        "placeholder": "Search plate"
+      },
+      "kind": {
+        "label": "Type",
+        "all": "All"
+      },
+      "period": {
+        "label": "Period",
+        "from": "Start date",
+        "to": "End date"
+      },
+      "entrance": {
+        "label": "Gate",
+        "all": "All"
+      }
+    },
+    "observation": {
+      "label": "Observation",
+      "empty": "No observation."
+    },
+    "expand": {
+      "expand": "Show observation",
+      "collapse": "Hide observation"
+    },
+    "aria": {
+      "row": "Record for plate {{plate}}"
+    },
+    "empty": {
+      "title": "No records",
+      "description": "Adjust the filters or wait for new gate activity."
+    }
+  },
+  "deviceEntrance": {
+    "label": "This device's gate",
+    "none": "No gate"
+  },
+  "verdict": {
+    "labels": {
+      "ALLOW": "Entry allowed",
+      "ALLOW_WITH_REQUEST": "Entry with request",
+      "ALLOW_OVER_CAPACITY": "No free space in department",
+      "ALLOW_FORCED_REENTRY": "Vehicle is already inside",
+      "DENY_BLOCKED": "VEHICLE NOT ALLOWED TO ENTER",
+      "DENY_OVERDUE": "Request expired",
+      "DENY_INACTIVE": "Vehicle inactive"
+    },
+    "reasons": {
+      "ALLOW": {
+        "FREE_PASS": "Free pass: no driver required",
+        "DRIVER_ALLOWED": "Driver allowed to drive this vehicle"
+      },
+      "ALLOW_WITH_REQUEST": {
+        "REQUEST_OPEN": "Request for this plate is under review",
+        "REQUEST_PRE_AUTHORIZED": "Entry pre-authorized by the administration",
+        "DRIVER_NOT_ALLOWED": "Linked driver without permission to drive",
+        "UNREGISTERED_VEHICLE": "Vehicle not registered",
+        "UNREGISTERED_DRIVER": "Driver not linked to this vehicle"
+      },
+      "ALLOW_OVER_CAPACITY": {
+        "CAPACITY_FULL": "All spaces in the department are taken"
+      },
+      "ALLOW_FORCED_REENTRY": {
+        "REENTRY": "There is an open entry for this plate"
+      },
+      "DENY_BLOCKED": {
+        "BLOCKED": "Blocked vehicle"
+      },
+      "DENY_OVERDUE": {
+        "REQUEST_OVERDUE": "The request is past its deadline"
+      },
+      "DENY_INACTIVE": {
+        "INACTIVE": "Vehicle deactivated"
+      }
+    },
+    "reasonNames": {
+      "BLOCKED": "Blocked",
+      "INACTIVE": "Inactive",
+      "FREE_PASS": "Free pass",
+      "DRIVER_ALLOWED": "Driver allowed",
+      "REENTRY": "Re-entry",
+      "REQUEST_OPEN": "Request under review",
+      "REQUEST_OVERDUE": "Request expired",
+      "REQUEST_PRE_AUTHORIZED": "Pre-authorized",
+      "UNREGISTERED_VEHICLE": "Vehicle not registered",
+      "UNREGISTERED_DRIVER": "Driver not identified",
+      "DRIVER_NOT_ALLOWED": "No permission to drive",
+      "CAPACITY_FULL": "Full capacity"
+    },
+    "vehicle": {
+      "label": "Vehicle",
+      "unregistered": "Vehicle not registered",
+      "freePass": "Free pass",
+      "inactive": "Inactive",
+      "noModel": "No model"
+    },
+    "block": {
+      "label": "Active block",
+      "since": "Since {{date}}"
+    },
+    "department": {
+      "label": "Department",
+      "free": "No department set",
+      "places": "{{occupied}} of {{capacity}} spaces"
+    },
+    "drivers": {
+      "label": "Linked drivers",
+      "empty": "No linked driver",
+      "primary": "Primary",
+      "noPermission": "No permission to drive",
+      "notLinked": "Not linked"
+    },
+    "requests": {
+      "label": "Plate request",
+      "days": "{{count}} days ago",
+      "preAuthorized": "Pre-authorized",
+      "status": {
+        "PENDING": "Under review",
+        "IN_CONTACT": "In contact",
+        "REGISTERED": "Registered",
+        "REJECTED": "Rejected",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "open": {
+      "label": "Inside since {{date}}"
+    }
+  },
+  "register": {
+    "title": "Register at the gate",
+    "description": "Enter the plate (or read the QR), check the record and confirm the action.",
+    "plate": {
+      "label": "Plate",
+      "placeholder": "e.g. ABC1D23",
+      "invalid": "Invalid plate format (use ABC1234 or ABC1D23).",
+      "search": "Search",
+      "change": "Change plate"
+    },
+    "qr": {
+      "label": "Read QR"
+    },
+    "type": {
+      "label": "Record",
+      "ENTRY": "Entry",
+      "EXIT": "Exit",
+      "DENIAL": "Denial",
+      "inferred": "Suggested by the record"
+    },
+    "loading": "Checking plate...",
+    "error": "Could not check the plate.",
+    "driver": {
+      "label": "Who will drive",
+      "placeholder": "Select the driver",
+      "empty": "No driver linked to this vehicle.",
+      "required": "Select the driver."
+    },
+    "request": {
+      "reuse": "The entry will use the open request for this plate.",
+      "create": "The entry will create the driver's request along with it (exception recorded at the gate).",
+      "blocked": "Select the driver to register the exception."
+    },
+    "exit": {
+      "open": "Open since {{date}}",
+      "driver": "Driver",
+      "department": "Department",
+      "noExit": "There is no registered entry for this plate.",
+      "passenger": {
+        "label": "Passenger",
+        "placeholder": "Name of who is leaving",
+        "required": "Inform the passenger (exit without a registered entry)."
+      },
+      "passengerFreePass": "Free pass: the passenger is optional."
+    },
+    "actions": {
+      "release": "Release entry",
+      "exit": "Register exit",
+      "denial": "Register denial",
+      "back": "Back",
+      "close": "Close",
+      "another": "Register another",
+      "submitting": "Registering..."
+    },
+    "confirm": {
+      "overCapacity": {
+        "title": "No free space",
+        "description": "The department spaces are taken. Release the entry anyway?",
+        "confirm": "Release anyway"
+      },
+      "reentry": {
+        "title": "Vehicle is already inside",
+        "description": "There is already an open entry for plate {{plate}}. The previous entry will be closed.",
+        "confirm": "Close and release"
+      }
+    },
+    "denial": {
+      "title": "Register denial",
+      "reason": {
+        "label": "Reason"
+      },
+      "observation": {
+        "label": "Observation",
+        "placeholder": "Describe what happened",
+        "required": "Inform the observation."
+      }
+    },
+    "result": {
+      "entry": {
+        "granted": "Entry registered",
+        "denied": "Entry denied"
+      },
+      "exit": {
+        "title": "Exit registered",
+        "none": "Exit registered without an entry"
+      },
+      "denial": {
+        "title": "Denial registered"
+      },
+      "plate": "Plate",
+      "driver": "Driver",
+      "department": "Department",
+      "entryAt": "Entry",
+      "exitAt": "Exit",
+      "reason": "Reason",
+      "previousClosed": "Previous entry closed",
+      "blockRequest": "Block request sent."
+    }
   }
 }

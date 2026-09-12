@@ -13,6 +13,8 @@ import { accessService } from '../services/access.service'
 // Types
 import type {
   AccessEntryResponse,
+  RegisterDenialPayload,
+  RegisterDenialResponse,
   RegisterEntryPayload,
   RegisterExitPayload,
 } from '../types/access.types'
@@ -20,15 +22,18 @@ import type {
 // Shared libs
 import { getAPIErrorTranslationKey, isApiError } from '#/shared/lib/api-error'
 
-/** Queries afetadas por mutations de acesso (conferência na saída). */
-const ACCESS_QUERY_KEYS = ['access-open']
+/**
+ * Queries afetadas por mutations de acesso: o feed da portaria, a conferência
+ * de saída e a ficha da placa (registrar muda veredito, ocupação e reentrada).
+ */
+const ACCESS_QUERY_KEYS = ['access-records', 'access-open', 'access-context']
 
 /**
- * Mutations da portaria: registrar entrada e registrar saída.
+ * Mutations da portaria: registrar entrada, saída e impedimento.
  *
- * Em caso de **409 (vaga cheia)**, o toast é suprimido — a página oferece a
- * confirmação `overCapacity` ao porteiro. Os demais erros (400/403/404)
- * viram toast traduzido.
+ * Em caso de **409 (vaga cheia)**, o toast é suprimido — a ficha oferece a
+ * confirmação `overCapacity` ao porteiro. Os demais erros (400/403/404) viram
+ * toast traduzido.
  *
  * @returns Objeto com as mutations.
  */
@@ -48,12 +53,13 @@ export function useAccessMutations() {
     mutationFn: (payload: RegisterEntryPayload) => accessService.registerEntry(payload),
     onSuccess: (data: AccessEntryResponse) => {
       if (data.granted) {
-        toast.success(t('notifications.entry-success'))
+        // A mensagem do servidor distingue a exceção ("...com solicitação").
+        toast.success(data.message || t('notifications.entry-success'))
       }
       invalidateAccess()
     },
     onError: (error) => {
-      // 409 (vaga cheia) é tratado pela página (confirmação overCapacity).
+      // 409 (vaga cheia) é tratado pela ficha (confirmação overCapacity).
       if (isApiError(error) && error.statusCode === 409) {
         return
       }
@@ -73,5 +79,24 @@ export function useAccessMutations() {
     },
   })
 
-  return { registerEntry, registerExit }
+  /** Mutation para registrar o impedimento (com pedido de bloqueio opcional). */
+  const registerDenial = useMutation({
+    mutationFn: (payload: RegisterDenialPayload) => accessService.registerDenial(payload),
+    onSuccess: (data: RegisterDenialResponse) => {
+      toast.success(t('notifications.denial-success'))
+      // O impedimento é sucesso mesmo quando o bloqueio não pôde ser pedido: o
+      // aviso vem à parte (`blockRequestError`), sem contaminar o registro.
+      if (data.blockRequestError) {
+        toast.warning(data.blockRequestError)
+      } else if (data.blockRequest) {
+        toast.success(t('notifications.block-request-success'))
+      }
+      invalidateAccess()
+    },
+    onError: (error) => {
+      toast.error(tc(getAPIErrorTranslationKey(error)))
+    },
+  })
+
+  return { registerEntry, registerExit, registerDenial }
 }

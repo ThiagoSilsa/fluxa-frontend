@@ -26,6 +26,27 @@ export interface SearchPickerOption {
   uppercasePrimary?: boolean
 }
 
+/**
+ * Grupo rotulado de opções (ex.: "Vinculados" e "Sugestões" na ficha da
+ * portaria). O rótulo é apenas visual (`role="presentation"`).
+ */
+export interface SearchPickerGroup {
+  /** Rótulo do grupo (não focável). */
+  label: string
+  /** Opções do grupo (cada grupo corta em `maxOptions`). */
+  options: SearchPickerOption[]
+}
+
+/**
+ * Linha renderizada na lista: rótulo de grupo ou opção.
+ *
+ * O `index` da opção é a posição na **ordem visual** (atravessa grupos) — é o
+ * índice usado pelo teclado e pelo `aria-activedescendant`.
+ */
+type SearchPickerRow =
+  | { kind: 'label'; key: string; label: string }
+  | { kind: 'option'; key: string; domId: string; index: number; option: SearchPickerOption }
+
 export type SearchPickerProps = {
   /** Rótulo do campo de busca. */
   label: string
@@ -45,8 +66,20 @@ export type SearchPickerProps = {
   search: string
   /** Atualiza o termo de busca (o consumidor aplica debounce + fetch). */
   onSearchChange: (search: string) => void
-  /** Opções filtradas pelo termo. */
-  options: SearchPickerOption[]
+  /**
+   * Opções filtradas pelo termo (lista plana).
+   *
+   * Ignorada quando `groups` é informado — nesse caso a lista plana é a
+   * concatenação dos grupos.
+   */
+  options?: SearchPickerOption[]
+  /**
+   * Grupos rotulados de opções (ex.: "Vinculados" e "Sugestões").
+   *
+   * Quando informado, o popover renderiza um rótulo por grupo e **cada grupo**
+   * corta em `maxOptions`. Grupos sem opções não renderizam rótulo.
+   */
+  groups?: SearchPickerGroup[]
   /** Se a busca está carregando. */
   isPending: boolean
   /** Exibe o input em maiúsculas (ex.: placa). */
@@ -59,6 +92,8 @@ export type SearchPickerProps = {
   onSelectOption?: (option: SearchPickerOption) => void
   /**
    * Máximo de opções renderizadas de uma vez (a lista tem scroll interno).
+   *
+   * Com `groups`, o limite é aplicado **por grupo**.
    * @default SEARCH_PICKER_MAX_OPTIONS
    */
   maxOptions?: number
@@ -75,6 +110,11 @@ export type SearchPickerProps = {
  * Os resultados aparecem **sobrepostos** (Popover ancorado ao input, em portal)
  * — não reservam espaço no fluxo, então não empurram o restante do formulário
  * e não são recortados pelo `overflow` de um modal.
+ *
+ * A lista aceita `groups` (rótulos + opções, cada grupo cortado em
+ * `maxOptions`) para a ficha da portaria distinguir "vinculados" de
+ * "sugestões" — o teclado percorre a lista na ordem visual, atravessando os
+ * grupos.
  */
 export function SearchPicker({
   label,
@@ -87,6 +127,7 @@ export function SearchPicker({
   search,
   onSearchChange,
   options,
+  groups,
   isPending,
   uppercase = false,
   invalid = false,
@@ -100,7 +141,63 @@ export function SearchPicker({
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
   const listboxId = `${id}-listbox`
-  const visibleOptions = useMemo(() => options.slice(0, maxOptions), [options, maxOptions])
+
+  /**
+   * Monta as linhas da lista (rótulos + opções) na **ordem visual**.
+   *
+   * Sem `groups` o comportamento é o de antes (`options` cortado em
+   * `maxOptions`); com `groups`, cada grupo corta em `maxOptions` e o `id` do
+   * item inclui o índice do grupo — uma mesma pessoa em dois grupos (vinculado
+   * e sugestão) não gera `id` duplicado no `aria-activedescendant`.
+   */
+  const { rows, visibleOptions, visibleDomIds } = useMemo(() => {
+    const nextRows: SearchPickerRow[] = []
+    const nextOptions: SearchPickerOption[] = []
+    const nextDomIds: string[] = []
+
+    if (groups) {
+      groups.forEach((group, groupIndex) => {
+        const visible = group.options.slice(0, maxOptions)
+        if (visible.length === 0) {
+          return
+        }
+
+        nextRows.push({ kind: 'label', key: `group-${groupIndex}`, label: group.label })
+        visible.forEach((option) => {
+          const domId = `${id}-group-${groupIndex}-option-${option.id}`
+          nextRows.push({ kind: 'option', key: domId, domId, index: nextOptions.length, option })
+          nextOptions.push(option)
+          nextDomIds.push(domId)
+        })
+      })
+    } else {
+      ;(options ?? []).slice(0, maxOptions).forEach((option, index) => {
+        const domId = `${id}-option-${option.id}`
+        nextRows.push({ kind: 'option', key: domId, domId, index, option })
+        nextOptions.push(option)
+        nextDomIds.push(domId)
+      })
+    }
+
+    return { rows: nextRows, visibleOptions: nextOptions, visibleDomIds: nextDomIds }
+  }, [groups, id, maxOptions, options])
+
+  /**
+   * Assinatura do **conteúdo** dos resultados.
+   *
+   * A identidade dos arrays muda a cada render nos consumidores (listas
+   * montadas inline) — reiniciar o destaque por identidade quebraria a
+   * navegação por teclado.
+   */
+  const resultsKey = useMemo(
+    () =>
+      groups
+        ? groups
+            .map((group) => `${group.label}#${group.options.map((option) => option.id).join(',')}`)
+            .join('|')
+        : (options ?? []).map((option) => option.id).join(','),
+    [groups, options],
+  )
 
   // Sincroniza o chip com o valor do formulário (resets ao fechar/reabrir).
   useEffect(() => {
@@ -112,7 +209,7 @@ export function SearchPicker({
   // Reinicia o destaque quando o termo ou os resultados mudam.
   useEffect(() => {
     setHighlightedIndex(-1)
-  }, [search, options])
+  }, [search, resultsKey])
 
   const close = () => {
     setOpen(false)
@@ -157,10 +254,7 @@ export function SearchPicker({
 
   const empty = visibleOptions.length === 0
   const showNoResults = isPending || empty
-  const activeOptionId =
-    highlightedIndex >= 0 && visibleOptions[highlightedIndex]
-      ? `${id}-option-${visibleOptions[highlightedIndex].id}`
-      : undefined
+  const activeOptionId = highlightedIndex >= 0 ? visibleDomIds[highlightedIndex] : undefined
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowDown') {
@@ -248,31 +342,43 @@ export function SearchPicker({
               aria-label={label}
               className="max-h-56 overflow-auto p-1"
             >
-              {visibleOptions.map((option, index) => (
-                <li
-                  key={option.id}
-                  id={`${id}-option-${option.id}`}
-                  role="option"
-                  aria-selected={index === highlightedIndex}
-                  className={cn(
-                    'cursor-pointer rounded-sm px-2 py-1.5 text-sm',
-                    index === highlightedIndex && 'bg-muted',
-                  )}
-                  onMouseEnter={() => setHighlightedIndex(index)}
-                  // Evita o blur do input antes do clique (o foco permanece nele).
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => handleSelect(option)}
-                >
-                  <span
-                    className={option.uppercasePrimary ? 'font-medium uppercase' : 'font-medium'}
+              {rows.map((row) =>
+                row.kind === 'label' ? (
+                  <li
+                    key={row.key}
+                    role="presentation"
+                    className="text-muted-foreground px-2 pt-2 pb-1 text-xs font-medium"
                   >
-                    {option.primary}
-                  </span>
-                  {option.secondary ? (
-                    <span className="text-muted-foreground"> · {option.secondary}</span>
-                  ) : null}
-                </li>
-              ))}
+                    {row.label}
+                  </li>
+                ) : (
+                  <li
+                    key={row.key}
+                    id={row.domId}
+                    role="option"
+                    aria-selected={row.index === highlightedIndex}
+                    className={cn(
+                      'cursor-pointer rounded-sm px-2 py-1.5 text-sm',
+                      row.index === highlightedIndex && 'bg-muted',
+                    )}
+                    onMouseEnter={() => setHighlightedIndex(row.index)}
+                    // Evita o blur do input antes do clique (o foco permanece nele).
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => handleSelect(row.option)}
+                  >
+                    <span
+                      className={
+                        row.option.uppercasePrimary ? 'font-medium uppercase' : 'font-medium'
+                      }
+                    >
+                      {row.option.primary}
+                    </span>
+                    {row.option.secondary ? (
+                      <span className="text-muted-foreground"> · {row.option.secondary}</span>
+                    ) : null}
+                  </li>
+                ),
+              )}
             </ul>
           )}
         </PopoverContent>

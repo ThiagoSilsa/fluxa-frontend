@@ -1,12 +1,21 @@
 // Controller
 import baseController from '#/shared/controller/base.controller'
 
+// Mappers
+import { buildAccessContextQuery, buildAccessRecordsQuery } from '../mappers/access.mapper'
+
 // Types
 import type {
+  AccessContextParams,
+  AccessContextResponse,
   AccessEntryResponse,
   AccessExitResponse,
+  AccessRecordsParams,
+  AccessRecordsResponse,
   OccupancyResponse,
   OpenAccessResponse,
+  RegisterDenialPayload,
+  RegisterDenialResponse,
   RegisterEntryPayload,
   RegisterExitPayload,
   ResolvedVehicleQr,
@@ -48,7 +57,56 @@ class AccessService {
   }
 
   /**
+   * Contexto + veredito da placa (`GET /access/context`) — a ficha da portaria.
+   *
+   * O veredito reflete o motorista escolhido (`driverUserId`), quando enviado;
+   * sem ele, reflete o melhor cenário entre os vinculados.
+   *
+   * @param params Placa + busca/setor/motorista escolhido.
+   * @returns Ficha completa com o veredito.
+   */
+  async getContext(params: AccessContextParams): Promise<AccessContextResponse> {
+    return baseController.makeRequest({
+      endpoint: `/access/context?${buildAccessContextQuery(params)}`,
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Feed da portaria (`GET /access/records`) — entradas, saídas e impedimentos
+   * em uma única linha do tempo (ADR 0015).
+   *
+   * @param params Filtros + paginação.
+   * @returns Página de registros (já ordenada pelo servidor).
+   */
+  async listRecords(params: AccessRecordsParams): Promise<AccessRecordsResponse> {
+    return baseController.makeRequest({
+      endpoint: `/access/records?${buildAccessRecordsQuery(params)}`,
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Registra o impedimento de entrada (`POST /entry-denials`).
+   *
+   * Responde **201** mesmo quando o pedido de bloqueio falha: o impedimento é
+   * gravado e o problema do bloqueio vem em `blockRequestError`.
+   *
+   * @param payload Placa, motivo, observação e (opcional) pedido de bloqueio.
+   * @returns Impedimento gravado + resultado do pedido de bloqueio.
+   */
+  async registerDenial(payload: RegisterDenialPayload): Promise<RegisterDenialResponse> {
+    return baseController.makeRequest({
+      endpoint: '/entry-denials',
+      method: 'POST',
+      body: payload,
+    })
+  }
+
+  /**
    * Conferência na saída: quem entrou com o veículo (acessos INSIDE abertos).
+   *
+   * Cada item traz a ficha de quem entrou (condutor, setor e veículo).
    *
    * @param plate Placa normalizada.
    * @returns Acessos abertos do veículo.

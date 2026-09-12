@@ -1,6 +1,6 @@
 {
   "title": "Portaria",
-  "subtitle": "Registre a entrada e a saída de veículos.",
+  "subtitle": "O que passou pela portaria: entradas, saídas e impedimentos.",
   "tabs": {
     "entry": "Entrada",
     "exit": "Saída"
@@ -15,7 +15,10 @@
     "entry": {
       "title": "Registrar entrada",
       "description": "Informe a placa do veículo (ou leia o QR) e confirme a entrada.",
-      "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+      "plate": {
+        "label": "Placa",
+        "placeholder": "Ex.: ABC1D23"
+      },
       "accessRequestId": {
         "label": "Solicitação autorizada (ID)",
         "placeholder": "UUID da solicitação (opcional)"
@@ -40,7 +43,10 @@
     "exit": {
       "title": "Registrar saída",
       "description": "Informe a placa, confira quem está dentro e registre a saída.",
-      "plate": { "label": "Placa", "placeholder": "Ex.: ABC1D23" },
+      "plate": {
+        "label": "Placa",
+        "placeholder": "Ex.: ABC1D23"
+      },
       "temporaryDriverName": {
         "label": "Passageiro",
         "placeholder": "Nome do passageiro (obrigatório se não houver entrada)"
@@ -59,7 +65,10 @@
   "qr": {
     "title": "Ler QR code",
     "description": "Cole o código do veículo (token do QR) para preencher a placa automaticamente.",
-    "code": { "label": "Código do QR", "placeholder": "Token permanente do veículo" },
+    "code": {
+      "label": "Código do QR",
+      "placeholder": "Token permanente do veículo"
+    },
     "resolve": "Resolver",
     "resolving": "Resolvendo...",
     "cancel": "Cancelar",
@@ -76,8 +85,14 @@
   },
   "result": {
     "entry": {
-      "granted": { "title": "Entrada liberada", "message": "Acesso registrado com sucesso." },
-      "denied": { "title": "Entrada impedida", "message": "O acesso foi negado." },
+      "granted": {
+        "title": "Entrada liberada",
+        "message": "Acesso registrado com sucesso."
+      },
+      "denied": {
+        "title": "Entrada impedida",
+        "message": "O acesso foi negado."
+      },
       "plate": "Placa",
       "driver": "Condutor",
       "entryAt": "Entrada",
@@ -102,12 +117,15 @@
       "BLOCKED": "Veículo bloqueado",
       "UNREGISTERED": "Veículo não cadastrado",
       "UNAUTHORIZED_DRIVER": "Condutor não autorizado",
+      "OVERDUE": "Solicitação vencida",
       "OTHER": "Outro motivo"
     }
   },
   "notifications": {
     "entry-success": "Entrada registrada.",
     "exit-success": "Saída registrada.",
+    "denial-success": "Impedimento registrado.",
+    "block-request-success": "Solicitação de bloqueio enviada.",
     "over-capacity-title": "Vaga cheia",
     "over-capacity-description": "A capacidade está esgotada. Confirma a liberação excedendo a capacidade?",
     "over-capacity-confirm": "Liberar mesmo assim",
@@ -118,9 +136,18 @@
     "subtitle": "Veículos dentro da empresa em tempo real.",
     "refresh": "Atualiza automaticamente a cada 3 segundos.",
     "cards": {
-      "total": { "label": "Veículos dentro", "value": "{{count}}" },
-      "free": { "label": "Vagas livres", "value": "{{count}}" },
-      "capacity": { "label": "Capacidade", "value": "{{count}}" }
+      "total": {
+        "label": "Veículos dentro",
+        "value": "{{count}}"
+      },
+      "free": {
+        "label": "Vagas livres",
+        "value": "{{count}}"
+      },
+      "capacity": {
+        "label": "Capacidade",
+        "value": "{{count}}"
+      }
     },
     "totalRate": "Ocupação global",
     "byDepartment": {
@@ -136,5 +163,250 @@
     "noCapacity": "Sem capacidade",
     "loading": "Carregando ocupação...",
     "error": "Não foi possível carregar a ocupação."
+  },
+  "records": {
+    "register": "Registrar",
+    "columns": {
+      "kind": "Tipo",
+      "plate": "Placa",
+      "driver": "Condutor",
+      "vehicle": "Veículo / Setor",
+      "entrance": "Portaria",
+      "doorman": "Porteiro",
+      "reason": "Motivo",
+      "occurredAt": "Ocorrido em"
+    },
+    "kind": {
+      "ENTRY": "Entrada",
+      "EXIT": "Saída",
+      "DENIAL": "Impedimento"
+    },
+    "filters": {
+      "plate": {
+        "placeholder": "Buscar placa"
+      },
+      "kind": {
+        "label": "Tipo",
+        "all": "Todos"
+      },
+      "period": {
+        "label": "Período",
+        "from": "Data inicial",
+        "to": "Data final"
+      },
+      "entrance": {
+        "label": "Portaria",
+        "all": "Todas"
+      }
+    },
+    "observation": {
+      "label": "Observação",
+      "empty": "Sem observação."
+    },
+    "expand": {
+      "expand": "Ver observação",
+      "collapse": "Ocultar observação"
+    },
+    "aria": {
+      "row": "Registro da placa {{plate}}"
+    },
+    "empty": {
+      "title": "Nenhum registro",
+      "description": "Ajuste os filtros ou aguarde um novo movimento na portaria."
+    }
+  },
+  "deviceEntrance": {
+    "label": "Portaria deste dispositivo",
+    "none": "Sem portaria"
+  },
+  "verdict": {
+    "labels": {
+      "ALLOW": "Entrada liberada",
+      "ALLOW_WITH_REQUEST": "Entrada com solicitação",
+      "ALLOW_OVER_CAPACITY": "Sem vaga no setor",
+      "ALLOW_FORCED_REENTRY": "Veículo já está dentro",
+      "DENY_BLOCKED": "VEÍCULO PROIBIDO DE ENTRAR",
+      "DENY_OVERDUE": "Solicitação vencida",
+      "DENY_INACTIVE": "Veículo inativo"
+    },
+    "reasons": {
+      "ALLOW": {
+        "FREE_PASS": "Passe livre: entra sem informar o condutor",
+        "DRIVER_ALLOWED": "Condutor autorizado a dirigir este veículo"
+      },
+      "ALLOW_WITH_REQUEST": {
+        "REQUEST_OPEN": "Solicitação da placa em análise",
+        "REQUEST_PRE_AUTHORIZED": "Entrada pré-autorizada pela administração",
+        "DRIVER_NOT_ALLOWED": "Condutor vinculado, mas sem permissão de dirigir",
+        "UNREGISTERED_VEHICLE": "Veículo não cadastrado",
+        "UNREGISTERED_DRIVER": "Condutor sem vínculo com este veículo"
+      },
+      "ALLOW_OVER_CAPACITY": {
+        "CAPACITY_FULL": "Todas as vagas do setor estão ocupadas"
+      },
+      "ALLOW_FORCED_REENTRY": {
+        "REENTRY": "Existe uma entrada aberta para esta placa"
+      },
+      "DENY_BLOCKED": {
+        "BLOCKED": "Veículo bloqueado"
+      },
+      "DENY_OVERDUE": {
+        "REQUEST_OVERDUE": "A solicitação passou do prazo"
+      },
+      "DENY_INACTIVE": {
+        "INACTIVE": "Veículo desativado"
+      }
+    },
+    "reasonNames": {
+      "BLOCKED": "Bloqueado",
+      "INACTIVE": "Inativo",
+      "FREE_PASS": "Passe livre",
+      "DRIVER_ALLOWED": "Condutor autorizado",
+      "REENTRY": "Reentrada",
+      "REQUEST_OPEN": "Solicitação em análise",
+      "REQUEST_OVERDUE": "Solicitação vencida",
+      "REQUEST_PRE_AUTHORIZED": "Pré-autorizada",
+      "UNREGISTERED_VEHICLE": "Veículo não cadastrado",
+      "UNREGISTERED_DRIVER": "Condutor não identificado",
+      "DRIVER_NOT_ALLOWED": "Sem permissão de dirigir",
+      "CAPACITY_FULL": "Vaga cheia"
+    },
+    "vehicle": {
+      "label": "Veículo",
+      "unregistered": "Veículo não cadastrado",
+      "freePass": "Passe livre",
+      "inactive": "Inativo",
+      "noModel": "Sem modelo"
+    },
+    "block": {
+      "label": "Bloqueio ativo",
+      "since": "Desde {{date}}"
+    },
+    "department": {
+      "label": "Setor",
+      "free": "Sem setor definido",
+      "places": "{{occupied}} de {{capacity}} vagas"
+    },
+    "drivers": {
+      "label": "Condutores vinculados",
+      "empty": "Nenhum condutor vinculado",
+      "primary": "Principal",
+      "noPermission": "Sem permissão de dirigir",
+      "notLinked": "Sem vínculo"
+    },
+    "requests": {
+      "label": "Solicitação da placa",
+      "days": "há {{count}} dias",
+      "preAuthorized": "Pré-autorizada",
+      "status": {
+        "PENDING": "Em análise",
+        "IN_CONTACT": "Em contato",
+        "REGISTERED": "Registrada",
+        "REJECTED": "Rejeitada",
+        "CANCELLED": "Cancelada"
+      }
+    },
+    "open": {
+      "label": "Já dentro desde {{date}}"
+    }
+  },
+  "register": {
+    "title": "Registrar na portaria",
+    "description": "Informe a placa (ou leia o QR), confira a ficha e confirme a ação.",
+    "plate": {
+      "label": "Placa",
+      "placeholder": "Ex.: ABC1D23",
+      "invalid": "Placa em formato inválido (use ABC1234 ou ABC1D23).",
+      "search": "Buscar",
+      "change": "Trocar placa"
+    },
+    "qr": {
+      "label": "Ler QR"
+    },
+    "type": {
+      "label": "Registro",
+      "ENTRY": "Entrada",
+      "EXIT": "Saída",
+      "DENIAL": "Impedimento",
+      "inferred": "Sugerido pela ficha"
+    },
+    "loading": "Consultando a placa...",
+    "error": "Não foi possível consultar a placa.",
+    "driver": {
+      "label": "Quem vai dirigir",
+      "placeholder": "Selecione o condutor",
+      "empty": "Nenhum condutor vinculado a este veículo.",
+      "required": "Selecione o condutor."
+    },
+    "request": {
+      "reuse": "A entrada vai usar a solicitação aberta desta placa.",
+      "create": "A entrada vai criar a solicitação do condutor junto (exceção registrada na portaria).",
+      "blocked": "Falta escolher o condutor para registrar a exceção."
+    },
+    "exit": {
+      "open": "Aberto desde {{date}}",
+      "driver": "Condutor",
+      "department": "Setor",
+      "noExit": "Não há entrada registrada para esta placa.",
+      "passenger": {
+        "label": "Passageiro",
+        "placeholder": "Nome de quem está saindo",
+        "required": "Informe o passageiro (saída sem entrada registrada)."
+      },
+      "passengerFreePass": "Passe livre: o passageiro é opcional."
+    },
+    "actions": {
+      "release": "Liberar entrada",
+      "exit": "Registrar saída",
+      "denial": "Registrar impedimento",
+      "back": "Voltar",
+      "close": "Fechar",
+      "another": "Registrar outro",
+      "submitting": "Registrando..."
+    },
+    "confirm": {
+      "overCapacity": {
+        "title": "Sem vaga no setor",
+        "description": "As vagas do setor estão ocupadas. Liberar a entrada mesmo assim?",
+        "confirm": "Liberar mesmo assim"
+      },
+      "reentry": {
+        "title": "Veículo já está dentro",
+        "description": "Já existe uma entrada aberta para a placa {{plate}}. A entrada anterior será encerrada.",
+        "confirm": "Encerrar e liberar"
+      }
+    },
+    "denial": {
+      "title": "Registrar impedimento",
+      "reason": {
+        "label": "Motivo"
+      },
+      "observation": {
+        "label": "Observação",
+        "placeholder": "Descreva o ocorrido",
+        "required": "Informe a observação."
+      }
+    },
+    "result": {
+      "entry": {
+        "granted": "Entrada registrada",
+        "denied": "Entrada impedida"
+      },
+      "exit": {
+        "title": "Saída registrada",
+        "none": "Saída registrada sem entrada"
+      },
+      "denial": {
+        "title": "Impedimento registrado"
+      },
+      "plate": "Placa",
+      "driver": "Condutor",
+      "department": "Setor",
+      "entryAt": "Entrada",
+      "exitAt": "Saída",
+      "reason": "Motivo",
+      "previousClosed": "Entrada anterior encerrada",
+      "blockRequest": "Solicitação de bloqueio enviada."
+    }
   }
 }

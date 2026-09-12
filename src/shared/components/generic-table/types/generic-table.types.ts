@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 // TanStack Table
-import type { ColumnDef, OnChangeFn, RowData, SortingState } from '@tanstack/react-table'
+import type { ColumnDef, OnChangeFn, RowData, SortingState, Table } from '@tanstack/react-table'
 
 // ─── Module augmentation: add className to ColumnMeta ───────────────────────
 declare module '@tanstack/react-table' {
@@ -62,6 +62,28 @@ export type GenericTableProps<TData> = {
   /** Função para obter o aria-label da linha (acessibilidade). */
   getRowAriaLabel?: (row: TData) => string
 
+  /**
+   * Sub-conteúdo de uma linha expandida (opt-in) — quando informado, a tabela
+   * ganha uma coluna com o botão de expandir/recolher.
+   *
+   * Sem `onRowClick`, clicar na linha também alterna a expansão (alvo grande
+   * para o balcão); com `onRowClick`, só o botão alterna (o clique na linha
+   * continua sendo a ação da tela). O `role="row"` é preservado nos dois
+   * casos.
+   */
+  renderExpandedRow?: (row: TData) => ReactNode
+
+  /**
+   * Chave **estável** da linha (default: índice).
+   *
+   * É o que mantém a linha expandida correta quando a lista se reordena ou
+   * ganha um item no topo entre dois refetches.
+   */
+  getRowKey?: (row: TData) => string
+
+  /** Rótulos acessíveis do botão de expandir/recolher (i18n do consumidor). */
+  expandLabels?: { expand: string; collapse: string }
+
   /** Classes extras para o container da tabela (ex: overflow-x-auto). */
   tableContainerClassName?: string
 
@@ -94,6 +116,21 @@ export type UseGenericTableSearchReturn<TSearch extends Record<string, unknown>>
 export type TableToolbarProps = {
   filters?: ReactNode
   toolbar?: ReactNode
+}
+
+/** Props do corpo da tabela (inclui a expansão opt-in de linha). */
+export type TableBodyProps<TData> = {
+  table: Table<TData>
+  onRowClick?: (row: TData) => void
+  getRowAriaLabel?: (row: TData) => string
+  /** Sub-conteúdo da linha expandida (quando a tabela é expansível). */
+  renderExpandedRow?: (row: TData) => ReactNode
+  /** Chave estável da linha (default: índice). */
+  getRowKey: (row: TData, index: number) => string
+  /** Chaves das linhas expandidas. */
+  expandedKeys: string[]
+  /** Alterna a expansão de uma linha. */
+  onToggleRow: (key: string) => void
 }
 
 export type TablePaginationLabels = {

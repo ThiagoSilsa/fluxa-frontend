@@ -1,5 +1,14 @@
 // Types
-import type { EntryDenialReason } from '../types/access.types'
+import type {
+  AccessRecordEntranceOption,
+  AccessRecordListParameter,
+  AccessVerdict,
+  AccessVerdictReason,
+  EntryDenialReason,
+} from '../types/access.types'
+
+// Shared
+import { PermissionCode } from '#/shared/enum/permission-code'
 
 /**
  * Mapeia o motivo do impedimento para a chave de tradução do namespace
@@ -8,9 +17,185 @@ import type { EntryDenialReason } from '../types/access.types'
  * @param reason Motivo devolvido pelo backend.
  * @returns Chave i18n.
  */
-export function getEntryDenialReasonKey(reason: EntryDenialReason): string {
+export function getDenialReasonLabelKey(reason: EntryDenialReason): string {
   return `denial.reasons.${reason}`
 }
+
+/**
+ * Combinações veredito × motivo que têm texto **próprio** na ficha (ex.:
+ * `ALLOW` por passe livre não é o mesmo "liberado" de `ALLOW` por motorista
+ * autorizado). As demais combinações usam o rótulo genérico do veredito.
+ */
+const VERDICT_REASON_LABEL_KEYS: Partial<Record<AccessVerdict, AccessVerdictReason[]>> = {
+  ALLOW: ['FREE_PASS', 'DRIVER_ALLOWED'],
+  ALLOW_WITH_REQUEST: [
+    'REQUEST_OPEN',
+    'REQUEST_PRE_AUTHORIZED',
+    'DRIVER_NOT_ALLOWED',
+    'UNREGISTERED_VEHICLE',
+    'UNREGISTERED_DRIVER',
+  ],
+  ALLOW_OVER_CAPACITY: ['CAPACITY_FULL'],
+  ALLOW_FORCED_REENTRY: ['REENTRY'],
+  DENY_BLOCKED: ['BLOCKED'],
+  DENY_OVERDUE: ['REQUEST_OVERDUE'],
+  DENY_INACTIVE: ['INACTIVE'],
+}
+
+/**
+ * Chave i18n do rótulo do veredito na ficha.
+ *
+ * Com um motivo que refine o veredito (ex.: `ALLOW` + `FREE_PASS`), devolve a
+ * chave específica (`verdict.reasons.ALLOW.FREE_PASS`); sem motivo — ou com um
+ * motivo que não muda o texto —, a chave genérica (`verdict.labels.ALLOW`).
+ *
+ * @param verdict Veredito devolvido pelo servidor.
+ * @param reason Motivo (primeiro) do veredito, quando houver.
+ * @returns Chave i18n do namespace `access`.
+ */
+export function getVerdictLabelKey(
+  verdict: AccessVerdict,
+  reason?: AccessVerdictReason | null,
+): string {
+  if (reason && VERDICT_REASON_LABEL_KEYS[verdict]?.includes(reason)) {
+    return `verdict.reasons.${verdict}.${reason}`
+  }
+  return `verdict.labels.${verdict}`
+}
+
+/**
+ * Chave i18n do **nome genérico** de um motivo do veredito (as chips da ficha).
+ *
+ * Diferente de `getVerdictLabelKey`, que devolve o rótulo **refinado** do par
+ * veredito × motivo: aqui o motivo é exibido solto (ex.: "Vaga cheia" junto do
+ * rótulo "Sem vaga no setor").
+ *
+ * @param reason Motivo devolvido pelo servidor.
+ * @returns Chave i18n do namespace `access`.
+ */
+export function getVerdictReasonNameKey(reason: AccessVerdictReason): string {
+  return `verdict.reasonNames.${reason}`
+}
+
+/** Tom visual do veredito (`success` libera, `warning` pede atenção, `destructive` nega). */
+export type VerdictTone = 'success' | 'warning' | 'destructive'
+
+/**
+ * Tom do card do veredito.
+ *
+ * `ALLOW` é sucesso; `ALLOW_WITH_REQUEST`, `ALLOW_OVER_CAPACITY` e
+ * `ALLOW_FORCED_REENTRY` liberam mas exigem ação/atenção do porteiro (âmbar);
+ * os `DENY_*` são impedimentos (vermelho).
+ *
+ * @param verdict Veredito devolvido pelo servidor.
+ * @returns Tom visual.
+ */
+export function verdictTone(verdict: AccessVerdict): VerdictTone {
+  if (verdict.startsWith('DENY')) {
+    return 'destructive'
+  }
+  return verdict === 'ALLOW' ? 'success' : 'warning'
+}
+
+/**
+ * O veredito libera a entrada?
+ *
+ * Atenção: `true` **não** significa "registrar direto" — as flags do contexto
+ * (`requiresOverCapacity`, `isReentry`) e a exceção (`requiresRequest`) podem
+ * exigir confirmação/dados extras antes de enviar.
+ *
+ * @param verdict Veredito devolvido pelo servidor.
+ * @returns `true` para os vereditos `ALLOW_*`.
+ */
+export function isVerdictAllow(verdict: AccessVerdict): boolean {
+  return verdict.startsWith('ALLOW')
+}
+
+/**
+ * O usuário tem uma permissão do catálogo?
+ *
+ * @param permissions Permissões da sessão ("permissionCodes").
+ * @param permission Permissão exigida.
+ * @returns `true` quando a permissão está presente.
+ */
+function hasPermission(permissions: string[] | undefined, permission: PermissionCode): boolean {
+  return permissions?.includes(permission) ?? false
+}
+
+/**
+ * Pode registrar entrada? (menu/ação da portaria — `REGISTER_ENTRY`)
+ *
+ * @param permissions Permissões da sessão.
+ * @returns `true` quando autorizado.
+ */
+export function canRegisterEntry(permissions: string[] | undefined): boolean {
+  return hasPermission(permissions, PermissionCode.REGISTER_ENTRY)
+}
+
+/**
+ * Pode registrar saída? (`REGISTER_EXIT`)
+ *
+ * @param permissions Permissões da sessão.
+ * @returns `true` quando autorizado.
+ */
+export function canRegisterExit(permissions: string[] | undefined): boolean {
+  return hasPermission(permissions, PermissionCode.REGISTER_EXIT)
+}
+
+/**
+ * Pode registrar impedimento? (`REGISTER_DENIAL`)
+ *
+ * @param permissions Permissões da sessão.
+ * @returns `true` quando autorizado.
+ */
+export function canRegisterDenial(permissions: string[] | undefined): boolean {
+  return hasPermission(permissions, PermissionCode.REGISTER_DENIAL)
+}
+
+/** Chave do metadado de portarias na listagem (`parameters`). */
+export const ENTRANCE_PARAMETER_KEY = 'entrance_id'
+
+/**
+ * Extrai as portarias **ativas** dos metadados da listagem.
+ *
+ * O backend devolve as portarias em `parameters` justamente para o balcão não
+ * precisar de `MANAGE_ENTRANCES` (o porteiro não tem essa permissão).
+ *
+ * @param parameters `parameters` do envelope de listagem.
+ * @returns Portarias ativas (vazio quando o metadado não vem).
+ */
+export function getRecordEntranceOptions(
+  parameters: AccessRecordListParameter[] | undefined,
+): AccessRecordEntranceOption[] {
+  return (
+    parameters?.find((parameter) => parameter.key === ENTRANCE_PARAMETER_KEY)?.allowed_values ?? []
+  )
+}
+
+/**
+ * Resolve qual portaria o feed deve filtrar.
+ *
+ * Precedência: a escolha explícita do filtro na URL > a portaria do
+ * dispositivo > nenhuma (todas as portarias). Na URL, `all` é o sentinela de
+ * "todas" — e ele **vence** a portaria do dispositivo, senão o porteiro não
+ * conseguiria ver o movimento das outras portarias.
+ *
+ * @param searchValue Valor de `entranceId` na URL (`id`, `all` ou vazio).
+ * @param deviceEntranceId Portaria gravada no dispositivo.
+ * @returns Id da portaria a filtrar, ou `undefined` (sem filtro).
+ */
+export function resolveEntranceFilter(
+  searchValue: string | undefined,
+  deviceEntranceId: string | null,
+): string | undefined {
+  if (searchValue === ALL_ENTRANCES_FILTER) {
+    return undefined
+  }
+  return searchValue ?? deviceEntranceId ?? undefined
+}
+
+/** Sentinela de "todas as portarias" no filtro do feed (aparece na URL). */
+export const ALL_ENTRANCES_FILTER = 'all'
 
 /**
  * Tom da barra de ocupação conforme o percentual.

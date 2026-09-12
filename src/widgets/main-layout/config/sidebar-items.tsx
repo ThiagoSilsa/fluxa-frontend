@@ -43,7 +43,11 @@ export const sidebarItems: SidebarItem[] = [
     label: 'sidebar.items.portaria',
     icon: Warehouse,
     path: '/portaria',
-    permissions: [PermissionCode.REGISTER_ENTRY, PermissionCode.REGISTER_EXIT],
+    permissions: [
+      PermissionCode.REGISTER_ENTRY,
+      PermissionCode.REGISTER_EXIT,
+      PermissionCode.REGISTER_DENIAL,
+    ],
   },
   {
     label: 'sidebar.items.ocupacao',

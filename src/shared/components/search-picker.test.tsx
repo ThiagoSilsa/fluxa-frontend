@@ -186,6 +186,168 @@ describe('SearchPicker', () => {
     expect(input.getAttribute('aria-describedby')).toBe('picker-error')
   })
 
+  describe('com grupos rotulados', () => {
+    const linked: SearchPickerOption[] = Array.from({ length: 3 }, (_, index) => ({
+      id: `linked-${index + 1}`,
+      primary: `Vinculado ${index + 1}`,
+    }))
+    const suggestions: SearchPickerOption[] = Array.from({ length: 7 }, (_, index) => ({
+      id: `sugg-${index + 1}`,
+      primary: `Sugestão ${index + 1}`,
+      secondary: 'sem vínculo',
+    }))
+
+    /** Grupos montados **inline** (nova identidade a cada render — caso real). */
+    const renderGrouped = (overrides: Partial<SearchPickerProps> = {}) =>
+      renderPicker({
+        options: undefined,
+        groups: [
+          { label: 'Vinculados', options: linked },
+          { label: 'Sugestões', options: suggestions },
+        ],
+        ...overrides,
+      })
+
+    it('renderiza os rótulos dos grupos seguidos das opções', () => {
+      renderGrouped()
+      fireEvent.focus(screen.getByLabelText('Veículo'))
+
+      const listbox = screen.getByRole('listbox')
+      const labels = Array.from(listbox.querySelectorAll('[role="presentation"]'))
+      expect(labels.map((label) => label.textContent)).toEqual(['Vinculados', 'Sugestões'])
+      // Rótulo é apenas visual: não recebe foco nem conta como opção.
+      labels.forEach((label) => expect(label.getAttribute('tabindex')).toBeNull())
+      expect(screen.getAllByRole('option')).toHaveLength(3 + SEARCH_PICKER_MAX_OPTIONS)
+      // As opções vêm depois do rótulo do próprio grupo.
+      expect(labels[0].nextElementSibling?.textContent).toContain('Vinculado 1')
+      expect(labels[1].nextElementSibling?.textContent).toContain('Sugestão 1')
+    })
+
+    it('aplica maxOptions por grupo (cada grupo corta no limite)', () => {
+      renderGrouped({ maxOptions: 2 })
+      fireEvent.focus(screen.getByLabelText('Veículo'))
+
+      const renderedOptions = screen.getAllByRole('option')
+      expect(renderedOptions).toHaveLength(4)
+      expect(renderedOptions.map((option) => option.textContent)).toEqual([
+        expect.stringContaining('Vinculado 1'),
+        expect.stringContaining('Vinculado 2'),
+        expect.stringContaining('Sugestão 1'),
+        expect.stringContaining('Sugestão 2'),
+      ])
+    })
+
+    it('navega com o teclado atravessando os grupos (ida e volta)', () => {
+      renderGrouped()
+      const input = screen.getByLabelText('Veículo')
+
+      fireEvent.focus(input)
+
+      // Do último item de "Vinculados" para o primeiro de "Sugestões".
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      expect(input.getAttribute('aria-activedescendant')).toBe('picker-group-1-option-sugg-1')
+      expect(screen.getAllByRole('option')[3].getAttribute('aria-selected')).toBe('true')
+
+      // Do primeiro de "Sugestões" de volta para o último de "Vinculados".
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+      expect(input.getAttribute('aria-activedescendant')).toBe('picker-group-0-option-linked-3')
+    })
+
+    it('dá a volta do último item visível para o primeiro com ArrowDown', () => {
+      renderGrouped()
+      const input = screen.getByLabelText('Veículo')
+
+      fireEvent.focus(input)
+      // O 1º ArrowDown destaca o 1º item; o último dá a volta.
+      const total = 3 + SEARCH_PICKER_MAX_OPTIONS
+      for (let step = 0; step < total + 1; step += 1) {
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+      }
+
+      expect(input.getAttribute('aria-activedescendant')).toBe('picker-group-0-option-linked-1')
+    })
+
+    it('mantém o destaque ao re-renderizar com grupos recriados inline', () => {
+      const { rerender } = render(
+        <SearchPicker
+          id="picker"
+          label="Motorista"
+          searchPlaceholder="Buscar"
+          noResultsLabel="Nada encontrado"
+          selectedLabel="Selecionado"
+          value=""
+          onChange={vi.fn()}
+          search=""
+          onSearchChange={vi.fn()}
+          groups={[
+            { label: 'Vinculados', options: linked },
+            { label: 'Sugestões', options: suggestions },
+          ]}
+          isPending={false}
+        />,
+      )
+
+      const input = screen.getByLabelText('Motorista')
+      fireEvent.focus(input)
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+
+      // O consumidor recria os arrays a cada render: o destaque não pode voltar
+      // para o primeiro item.
+      rerender(
+        <SearchPicker
+          id="picker"
+          label="Motorista"
+          searchPlaceholder="Buscar"
+          noResultsLabel="Nada encontrado"
+          selectedLabel="Selecionado"
+          value=""
+          onChange={vi.fn()}
+          search=""
+          onSearchChange={vi.fn()}
+          groups={[
+            { label: 'Vinculados', options: [...linked] },
+            { label: 'Sugestões', options: [...suggestions] },
+          ]}
+          isPending={false}
+        />,
+      )
+
+      expect(input.getAttribute('aria-activedescendant')).toBe('picker-group-0-option-linked-2')
+    })
+
+    it('seleciona uma opção de qualquer grupo com Enter', () => {
+      const { onChange, onSelectOption } = renderGrouped()
+      const input = screen.getByLabelText('Veículo')
+
+      fireEvent.focus(input)
+      for (let step = 0; step < 4; step += 1) {
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+      }
+      fireEvent.keyDown(input, { key: 'Enter' })
+
+      expect(onChange).toHaveBeenCalledWith('sugg-1')
+      expect(onSelectOption).toHaveBeenCalledWith(suggestions[0])
+    })
+
+    it('não renderiza rótulo de grupo vazio e cai em "sem resultado"', () => {
+      renderGrouped({
+        groups: [
+          { label: 'Vinculados', options: [] },
+          { label: 'Sugestões', options: [] },
+        ],
+      })
+
+      fireEvent.focus(screen.getByLabelText('Veículo'))
+
+      expect(screen.getByText('Nada encontrado')).toBeTruthy()
+      expect(screen.queryByRole('listbox')).toBeNull()
+    })
+  })
+
   it('não é recortado pelo overflow do FormDialog (Popover em portal)', () => {
     const onChange = vi.fn()
 
