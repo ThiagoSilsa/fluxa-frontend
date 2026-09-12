@@ -20,6 +20,9 @@ export type AccessRequestStatus = 'PENDING' | 'IN_CONTACT' | 'REGISTERED' | 'REJ
 /** Tipo do motorista a criar na solicitação (Colaborador/Visitante). */
 export type AccessRequestUserType = 'EMPLOYEE' | 'VISITOR'
 
+/** Tipos de usuário aceitos no bloco `request` (para validação do formulário). */
+export const ACCESS_REQUEST_USER_TYPES = ['EMPLOYEE', 'VISITOR'] as const
+
 /** Dados do motorista/veículo enviados no `payload` (jsonb). */
 export interface AccessRequestPayload {
   driver?: {

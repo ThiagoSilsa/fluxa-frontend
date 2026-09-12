@@ -8,6 +8,7 @@ import {
   toRegisterDenialPayload,
   toRegisterEntryPayload,
   toRegisterExitPayload,
+  toRegisterRequestBlock,
 } from './access.mapper'
 
 describe('getOccupancyRate', () => {
@@ -219,6 +220,90 @@ describe('toRegisterDenialPayload', () => {
     expect(payload).toEqual({ plate: 'ABC1D23', reason: 'BLOCKED' })
     expect(payload.requestBlock).toBeUndefined()
     expect(payload.blockReason).toBeUndefined()
+  })
+})
+
+describe('toRegisterRequestBlock', () => {
+  const values = {
+    userType: 'VISITOR' as const,
+    driverName: 'Marina',
+    driverEmail: 'marina@teste.local',
+    driverDocument: '123',
+    driverPhone: '11999999999',
+    contactPhone: '11888888888',
+    vehicleModel: 'Onix',
+    vehicleColor: 'Prata',
+  }
+
+  it('LINK: sem dados de condutor/veículo e sem telefone (regra 43)', () => {
+    const block = toRegisterRequestBlock(
+      { ...values, userType: 'VISITOR' },
+      { type: 'LINK', departmentId: 'department-1' },
+    )
+
+    expect(block).toEqual({
+      type: 'LINK',
+      payload: {},
+      departmentId: 'department-1',
+    })
+    expect(block.contactPhone).toBeUndefined()
+  })
+
+  it('NEW_USER: condutor novo + contato (sem veículo)', () => {
+    const block = toRegisterRequestBlock(values, { type: 'NEW_USER' })
+
+    expect(block).toEqual({
+      type: 'NEW_USER',
+      userType: 'VISITOR',
+      payload: {
+        driver: {
+          name: 'Marina',
+          email: 'marina@teste.local',
+          document: '123',
+          phone: '11999999999',
+        },
+      },
+      contactPhone: '11888888888',
+    })
+    expect(block.payload?.vehicle).toBeUndefined()
+  })
+
+  it('NEW_VEHICLE: veículo novo + contato (sem condutor)', () => {
+    const block = toRegisterRequestBlock(values, { type: 'NEW_VEHICLE' })
+
+    expect(block).toEqual({
+      type: 'NEW_VEHICLE',
+      payload: { vehicle: { model: 'Onix', color: 'Prata' } },
+      contactPhone: '11888888888',
+    })
+    expect(block.userType).toBeUndefined()
+  })
+
+  it('BOTH: condutor + veículo + tipo de usuário + contato', () => {
+    const block = toRegisterRequestBlock(
+      { ...values, userType: 'EMPLOYEE' },
+      { type: 'BOTH', departmentId: 'department-2' },
+    )
+
+    expect(block).toMatchObject({
+      type: 'BOTH',
+      userType: 'EMPLOYEE',
+      departmentId: 'department-2',
+      contactPhone: '11888888888',
+    })
+    expect(block.payload?.driver?.name).toBe('Marina')
+    expect(block.payload?.vehicle?.model).toBe('Onix')
+  })
+
+  it('omite os campos de texto vazios (form não preenchido por completo)', () => {
+    const block = toRegisterRequestBlock(
+      { ...values, driverEmail: '', driverDocument: '', driverPhone: '', vehicleColor: '' },
+      { type: 'BOTH' },
+    )
+
+    expect(block.payload?.driver).toEqual({ name: 'Marina', document: null, phone: null })
+    expect(block.payload?.driver?.email).toBeUndefined()
+    expect(block.payload?.vehicle).toEqual({ model: 'Onix', color: undefined })
   })
 })
 

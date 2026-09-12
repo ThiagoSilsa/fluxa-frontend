@@ -1,12 +1,25 @@
 // React
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+// React Hook Form
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 // i18n
 import { useTranslation } from 'react-i18next'
 
+// Schemas
+import {
+  DEFAULT_REGISTRATION_VALUES,
+  createAccessRegistrationSchema,
+} from '../schemas/access-registration.schema'
+
 // Components
 import { AccessDenialForm } from './access-denial-form'
-import { AccessDriverSelect } from './access-driver-select'
+import type { AccessDenialFormValues } from './access-denial-form'
+import { AccessDepartmentSelect } from './access-department-select'
+import { AccessDriverPicker } from './access-driver-picker'
+import { AccessRegistrationFields } from './access-registration-fields'
 import { AccessResultCard } from './access-result-card'
 import { AccessPlateSummary, AccessVerdictCard } from './access-verdict-card'
 import { QrResolveDialog } from './qr-resolve-dialog'
@@ -14,6 +27,7 @@ import { QrResolveDialog } from './qr-resolve-dialog'
 // Hooks
 import { useAccessContextQuery } from '../hooks/use-access-context-query'
 import { useAccessMutations } from '../hooks/use-access-mutations'
+import { useDepartmentOptionsQuery } from '../hooks/use-department-options-query'
 import { useOpenAccessQuery } from '../hooks/use-open-access-query'
 
 // Lib
@@ -21,6 +35,8 @@ import {
   canRegisterDenial,
   canRegisterEntry,
   canRegisterExit,
+  canRequestBlock,
+  deriveRegistrationScenario,
   getVerdictLabelKey,
 } from '../lib/access.lib'
 
@@ -29,9 +45,11 @@ import {
   toRegisterDenialPayload,
   toRegisterEntryPayload,
   toRegisterExitPayload,
+  toRegisterRequestBlock,
 } from '../mappers/access.mapper'
 
 // Types
+import type { AccessRegistrationFormValues } from '../schemas/access-registration.schema'
 import type {
   AccessContextResponse,
   AccessEntryResponse,
@@ -45,6 +63,9 @@ import type {
 
 // Utils
 import { isValidBrazilianPlate, normalizePlate } from '../utils/plate'
+
+// Shared hooks
+import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
 
 // Shared
 import { Button, ConfirmDialog, FormDialog, Input, Label } from '#/shared/components'
@@ -94,12 +115,21 @@ export function AccessRegisterDialog({
   const [source, setSource] = useState<MovementSource | undefined>(undefined)
   const [explicitType, setExplicitType] = useState<RegisterType | null>(null)
   const [driverUserId, setDriverUserId] = useState('')
+  const [driverSearch, setDriverSearch] = useState('')
+  const [isNewDriver, setIsNewDriver] = useState(false)
+  const [departmentId, setDepartmentId] = useState<string | null>(null)
   const [passenger, setPassenger] = useState('')
   const [passengerInvalid, setPassengerInvalid] = useState(false)
   const [denialReason, setDenialReason] = useState<EntryDenialReason | undefined>(undefined)
   const [denialObservation, setDenialObservation] = useState('')
   const [confirm, setConfirm] = useState<'overCapacity' | 'reentry' | null>(null)
   const [qrOpen, setQrOpen] = useState(false)
+
+  /**
+   * Bloco `request` já validado, aguardando a confirmação de vaga
+   * cheia/reentrada (o confirmar não revalida o formulário).
+   */
+  const pendingRelease = useRef<{ request?: RegisterEntryRequestPayload } | null>(null)
 
   // --- Resultados ---
   const [entryResult, setEntryResult] = useState<AccessEntryResponse | null>(null)
@@ -123,11 +153,27 @@ export function AccessRegisterDialog({
     return types
   }, [permissions])
 
+  // --- Busca de condutor (debounce antes de ir para a query) ---
+  const debouncedSearch = useDebouncedValue(driverSearch, 400)
+
   // --- Ficha da placa (contexto + veredito) ---
+  // O `search` traz as sugestões de condutor e o `driverUserId` faz o veredito
+  // refletir quem o porteiro escolheu (ticket 01); o `departmentId` traz a
+  // ocupação do setor confirmado (regra 27).
   const contextQuery = useAccessContextQuery(
-    open && searchedPlate ? { plate: searchedPlate } : null,
+    open && searchedPlate
+      ? {
+          plate: searchedPlate,
+          search: debouncedSearch.trim() || undefined,
+          departmentId: departmentId ?? undefined,
+          driverUserId: driverUserId || undefined,
+        }
+      : null,
   )
   const context: AccessContextResponse | null = contextQuery.data ?? null
+
+  // --- Setores ativos (troca do setor na ficha) ---
+  const departmentOptionsQuery = useDepartmentOptionsQuery(open && step === 'context')
 
   // --- Inferência do tipo (a escolha explícita sempre vence) ---
   const inferredType: RegisterType = context?.openAccesses.length ? 'EXIT' : 'ENTRY'
@@ -141,9 +187,27 @@ export function AccessRegisterDialog({
     open && step === 'context' && type === 'EXIT' && canExit ? searchedPlate : null,
   )
 
+  /**
+   * Cenário da solicitação que a entrada vai criar (regra 41).
+   *
+   * Derivado do contexto: veículo pela placa × condutor escolhido (novo ou já
+   * cadastrado). É o `type` do bloco `request`.
+   */
+  const scenario: AccessRequestType = deriveRegistrationScenario({
+    hasVehicle: !!context?.vehicle,
+    isNewDriver,
+  })
+
+  // --- Formulário da exceção (schema depende do cenário derivado) ---
+  const registrationSchema = useMemo(() => createAccessRegistrationSchema(scenario), [scenario])
+  const registrationForm = useForm<AccessRegistrationFormValues>({
+    resolver: zodResolver(registrationSchema),
+    defaultValues: DEFAULT_REGISTRATION_VALUES,
+  })
+
   // --- Pré-seleção do condutor sugerido pela ficha ---
   useEffect(() => {
-    if (!context || type !== 'ENTRY' || driverUserId) {
+    if (!context || type !== 'ENTRY' || driverUserId || isNewDriver) {
       return
     }
     const suggested =
@@ -153,7 +217,18 @@ export function AccessRegisterDialog({
     if (suggested) {
       setDriverUserId(suggested.id)
     }
-  }, [context, type, driverUserId])
+  }, [context, type, driverUserId, isNewDriver])
+
+  // --- Setor pré-selecionado com o padrão do veículo ---
+  useEffect(() => {
+    if (departmentId || !context) {
+      return
+    }
+    const defaultId = context.department.defaultId ?? context.department.id
+    if (defaultId) {
+      setDepartmentId(defaultId)
+    }
+  }, [context, departmentId])
 
   const reset = useCallback(() => {
     setStep('plate')
@@ -163,6 +238,9 @@ export function AccessRegisterDialog({
     setSource(undefined)
     setExplicitType(null)
     setDriverUserId('')
+    setDriverSearch('')
+    setIsNewDriver(false)
+    setDepartmentId(null)
     setPassenger('')
     setPassengerInvalid(false)
     setDenialReason(undefined)
@@ -172,7 +250,8 @@ export function AccessRegisterDialog({
     setEntryResult(null)
     setExitResult(null)
     setDenialResult(null)
-  }, [])
+    registrationForm.reset(DEFAULT_REGISTRATION_VALUES)
+  }, [registrationForm])
 
   // Reset ao fechar (o `FormDialog` congela o conteúdo durante a animação).
   useEffect(() => {
@@ -213,7 +292,7 @@ export function AccessRegisterDialog({
     )
   }
 
-  const handleEntry = (overCapacity: boolean) => {
+  const handleEntry = (overCapacity: boolean, requestBlock?: RegisterEntryRequestPayload) => {
     if (!context || !searchedPlate) {
       return
     }
@@ -222,10 +301,10 @@ export function AccessRegisterDialog({
       toRegisterEntryPayload(
         { plate: searchedPlate },
         {
-          accessRequestId: context.reusableRequestId ?? undefined,
-          request: buildRequestBlock(context),
-          driverUserId: driverUserId || undefined,
-          departmentId: context.department.id ?? undefined,
+          accessRequestId: requestBlock ? undefined : (context.reusableRequestId ?? undefined),
+          request: requestBlock,
+          driverUserId: isNewDriver ? undefined : driverUserId || undefined,
+          departmentId: departmentId ?? undefined,
           entranceId: entranceId ?? undefined,
           overCapacity,
           source,
@@ -240,23 +319,66 @@ export function AccessRegisterDialog({
     )
   }
 
-  const handleRelease = () => {
+  /**
+   * Bloco `request` da entrada, quando a exceção é necessária.
+   *
+   * @param values Valores validados do formulário da exceção.
+   * @returns Bloco `request` ou `undefined` (entrada sem solicitação nova).
+   */
+  const buildRequestBlock = (
+    values: AccessRegistrationFormValues,
+  ): RegisterEntryRequestPayload | undefined => {
+    if (!needsRequestBlock) {
+      return undefined
+    }
+    return toRegisterRequestBlock(values, { type: scenario, departmentId })
+  }
+
+  /**
+   * Libera a entrada — validando os dados da exceção antes de enviar.
+   *
+   * O `handleSubmit` do RHF só bloqueia quando o cenário exige algo (ex.:
+   * `NEW_USER` sem nome do condutor); em `LINK`/entrada normal o formulário não
+   * tem campo obrigatório e segue direto.
+   */
+  const handleRelease = registrationForm.handleSubmit((values) => {
     if (!context) {
       return
     }
     // Exceção sem solicitação reaproveitável precisa do condutor escolhido.
-    if (needsRequestBlock(context) && !driverUserId) {
+    const needsDriverChoice = needsRequestBlock && !isNewDriver && !driverUserId
+    if (needsDriverChoice) {
       return
     }
+
+    const requestBlock = buildRequestBlock(values)
+
     if (context.requiresOverCapacity) {
+      pendingRelease.current = { request: requestBlock }
       setConfirm('overCapacity')
       return
     }
     if (context.isReentry) {
+      pendingRelease.current = { request: requestBlock }
       setConfirm('reentry')
       return
     }
-    handleEntry(false)
+    handleEntry(false, requestBlock)
+  })
+
+  /**
+   * Confirma a liberação pendente (vaga cheia ou reentrada).
+   *
+   * @param overCapacity Envia a confirmação de capacidade excedida.
+   */
+  const confirmRelease = (overCapacity: boolean) => {
+    const pending = pendingRelease.current
+    pendingRelease.current = null
+    setConfirm(null)
+    if (!pending) {
+      return
+    }
+    handleEntry(overCapacity, pending.request)
   }
 
   const handleExit = () => {
@@ -284,7 +406,7 @@ export function AccessRegisterDialog({
     )
   }
 
-  const handleDenial = (values: { reason: EntryDenialReason; observation: string }) => {
+  const handleDenial = (values: AccessDenialFormValues) => {
     if (!searchedPlate) {
       return
     }
@@ -295,6 +417,8 @@ export function AccessRegisterDialog({
           plate: searchedPlate,
           reason: values.reason,
           observation: values.observation || undefined,
+          requestBlock: values.requestBlock,
+          blockReason: values.blockReason || undefined,
         },
         {
           vehicleId: context?.vehicle?.id ?? null,
@@ -315,7 +439,21 @@ export function AccessRegisterDialog({
   const openAccesses = openAccessQuery.data?.data ?? []
   const isNoExit = !context?.openAccesses.length
   const passengerRequired = isNoExit && !context?.vehicle?.freePass
-  const needsDriver = !!context && needsRequestBlock(context) && !driverUserId
+  /**
+   * A entrada precisa criar a solicitação junto (bloco `request`)?
+   *
+   * Sim quando o porteiro está **cadastrando** o condutor/veículo (exceção
+   * pedida por ele) ou quando o veredito exige solicitação e não há uma aberta
+   * para reaproveitar.
+   */
+  const needsRequestBlock =
+    isNewDriver || (!!context?.requiresRequest && !context.reusableRequestId)
+  const needsDriver = needsRequestBlock && !isNewDriver && !driverUserId
+  /**
+   * Pedir bloqueio exige `CREATE_BLOCK_REQUEST` (403 sem ela): o checkbox do
+   * impedimento só aparece para quem pode pedir.
+   */
+  const canRequestBlockPermission = canRequestBlock(permissions)
 
   return (
     <>
@@ -424,31 +562,77 @@ export function AccessRegisterDialog({
                 <div className="space-y-4">
                   <AccessVerdictCard context={context} />
 
-                  {/* Exceção: quem vai dirigir */}
+                  {/* Setor confirmado (trocar refaz o contexto — regra 27) */}
+                  <AccessDepartmentSelect
+                    departments={departmentOptionsQuery.data ?? []}
+                    value={departmentId}
+                    onChange={setDepartmentId}
+                    defaultDepartmentId={context.department.defaultId}
+                    defaultDepartmentName={context.department.defaultName}
+                    disabled={isPending}
+                  />
+
+                  {/* Quem vai dirigir: vinculados, sugestões (busca) ou novo */}
                   {context.vehicle?.freePass ? (
                     <p className="text-muted-foreground text-xs">
                       {t('verdict.reasons.ALLOW.FREE_PASS')}
                     </p>
-                  ) : context.drivers.linked.length === 0 &&
-                    context.drivers.suggestions.length === 0 ? (
-                    <p className="text-muted-foreground text-xs">{t('register.driver.empty')}</p>
-                  ) : (
-                    <div className="space-y-1">
-                      <AccessDriverSelect
-                        drivers={[...context.drivers.linked, ...context.drivers.suggestions]}
-                        value={driverUserId}
-                        onChange={setDriverUserId}
+                  ) : isNewDriver ? (
+                    <div className="space-y-2">
+                      <button
+                        type="button"
+                        className="text-primary text-xs font-medium underline-offset-2 hover:underline"
+                        onClick={() => setIsNewDriver(false)}
+                        disabled={isPending}
+                      >
+                        {t('register.driver.back')}
+                      </button>
+                      <AccessRegistrationFields
+                        type={scenario}
+                        register={registrationForm.register}
+                        control={registrationForm.control}
+                        errors={registrationForm.formState.errors}
+                        requests={context.requests}
+                        onPrefillFromRequest={(values) => {
+                          if (values.driverName !== undefined) {
+                            registrationForm.setValue('driverName', values.driverName)
+                          }
+                          if (values.driverEmail !== undefined) {
+                            registrationForm.setValue('driverEmail', values.driverEmail)
+                          }
+                          if (values.driverDocument !== undefined) {
+                            registrationForm.setValue('driverDocument', values.driverDocument)
+                          }
+                          if (values.driverPhone !== undefined) {
+                            registrationForm.setValue('driverPhone', values.driverPhone)
+                          }
+                          if (values.contactPhone !== undefined) {
+                            registrationForm.setValue('contactPhone', values.contactPhone)
+                          }
+                        }}
                         disabled={isPending}
                       />
-                      {context.requiresRequest ? (
-                        <p className="text-muted-foreground text-xs">
-                          {context.reusableRequestId
-                            ? t('register.request.reuse')
-                            : t('register.request.create')}
-                        </p>
-                      ) : null}
                     </div>
+                  ) : (
+                    <AccessDriverPicker
+                      linked={context.drivers.linked}
+                      suggestions={context.drivers.suggestions}
+                      value={driverUserId}
+                      onChange={setDriverUserId}
+                      search={driverSearch}
+                      onSearchChange={setDriverSearch}
+                      isPending={contextQuery.isFetching}
+                      onNewDriver={() => setIsNewDriver(true)}
+                    />
                   )}
+
+                  {/* O que a entrada vai criar/registrar */}
+                  {context.requiresRequest && !context.reusableRequestId ? (
+                    <p className="text-muted-foreground text-xs">{t('register.request.create')}</p>
+                  ) : null}
+                  {context.reusableRequestId && !isNewDriver ? (
+                    <p className="text-muted-foreground text-xs">{t('register.request.reuse')}</p>
+                  ) : null}
 
                   <div className="flex flex-wrap items-center gap-2">
                     <Button
@@ -473,6 +657,17 @@ export function AccessRegisterDialog({
                       <span className="text-xs text-amber-600">
                         {t('register.request.blocked')}
                       </span>
+                    ) : null}
+                    {/* Exceção: o porteiro também pode simplesmente não permitir */}
+                    {allowedTypes.includes('DENIAL') && context.requiresRequest ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleStartDenial('UNAUTHORIZED_DRIVER')}
+                        disabled={isPending}
+                      >
+                        {t('register.actions.refuse')}
+                      </Button>
                     ) : null}
                   </div>
                 </div>
@@ -556,6 +751,7 @@ export function AccessRegisterDialog({
                     key={denialReason ?? 'default'}
                     initialReason={denialReason}
                     initialObservation={denialObservation}
+                    canRequestBlock={canRequestBlockPermission}
                     onSubmit={handleDenial}
                     isPending={isPending}
                   />
@@ -596,10 +792,7 @@ export function AccessRegisterDialog({
         description={t('register.confirm.overCapacity.description')}
         confirmLabel={t('register.confirm.overCapacity.confirm')}
         cancelLabel={t('notifications.over-capacity-cancel')}
-        onConfirm={() => {
-          setConfirm(null)
-          handleEntry(true)
-        }}
+        onConfirm={() => confirmRelease(true)}
         isPending={registerEntry.isPending}
         variant="default"
       />
@@ -612,10 +805,7 @@ export function AccessRegisterDialog({
         description={t('register.confirm.reentry.description', { plate: searchedPlate ?? '' })}
         confirmLabel={t('register.confirm.reentry.confirm')}
         cancelLabel={t('register.actions.close')}
-        onConfirm={() => {
-          setConfirm(null)
-          handleEntry(false)
-        }}
+        onConfirm={() => confirmRelease(false)}
         isPending={registerEntry.isPending}
         variant="default"
       />
@@ -631,42 +821,6 @@ export function AccessRegisterDialog({
  */
 function isAllow(verdict: AccessContextResponse['verdict']): boolean {
   return verdict.startsWith('ALLOW')
-}
-
-/**
- * A entrada precisa criar a solicitação junto (exceção sem solicitação aberta)?
- *
- * @param context Ficha da placa.
- * @returns `true` quando o payload precisa do bloco `request`.
- */
-function needsRequestBlock(context: AccessContextResponse | null): boolean {
-  return !!context?.requiresRequest && !context.reusableRequestId
-}
-
-/**
- * Bloco `request` da exceção registrada na portaria.
- *
- * O cenário é derivado do que existe: veículo cadastrado + condutor escolhido
- * sem vínculo é o `LINK` (a regra 41 manda o porteiro liberar na hora). Os
- * cenários que exigem **cadastrar** alguém (motorista novo, veículo novo,
- * ambos) entram com o sub-formulário do ticket 04 — que também assume a
- * derivação completa do tipo.
- *
- * @param context Ficha da placa.
- * @returns Bloco `request` ou `undefined` quando não é exceção.
- */
-function buildRequestBlock(
-  context: AccessContextResponse | null,
-): RegisterEntryRequestPayload | undefined {
-  if (!context || !needsRequestBlock(context)) {
-    return undefined
-  }
-
-  const type: AccessRequestType = context.vehicle ? 'LINK' : 'NEW_VEHICLE'
-  return {
-    type,
-    departmentId: context.department.id ?? undefined,
-  }
 }
 
 /**

@@ -4,6 +4,8 @@ import {
   canRegisterDenial,
   canRegisterEntry,
   canRegisterExit,
+  canRequestBlock,
+  deriveRegistrationScenario,
   formatDateTime,
   getDenialReasonLabelKey,
   getOccupancyTone,
@@ -136,6 +138,14 @@ describe('canRegisterEntry/Exit/Denial', () => {
     expect(canRegisterEntry(undefined)).toBe(false)
     expect(canRegisterExit(undefined)).toBe(false)
     expect(canRegisterDenial(undefined)).toBe(false)
+    expect(canRequestBlock(undefined)).toBe(false)
+  })
+
+  it('pedir bloqueio exige CREATE_BLOCK_REQUEST (impedir não basta)', () => {
+    expect(canRequestBlock([PermissionCode.REGISTER_DENIAL])).toBe(false)
+    expect(
+      canRequestBlock([PermissionCode.REGISTER_DENIAL, PermissionCode.CREATE_BLOCK_REQUEST]),
+    ).toBe(true)
   })
 })
 
@@ -195,6 +205,20 @@ describe('resolveEntranceFilter', () => {
 
   it('sem filtro e sem portaria no dispositivo não filtra nada', () => {
     expect(resolveEntranceFilter(undefined, null)).toBeUndefined()
+  })
+})
+
+describe('deriveRegistrationScenario', () => {
+  it('veículo cadastrado: LINK com condutor existente, NEW_USER com condutor novo', () => {
+    expect(deriveRegistrationScenario({ hasVehicle: true, isNewDriver: false })).toBe('LINK')
+    expect(deriveRegistrationScenario({ hasVehicle: true, isNewDriver: true })).toBe('NEW_USER')
+  })
+
+  it('veículo novo: NEW_VEHICLE com condutor existente, BOTH com condutor novo', () => {
+    expect(deriveRegistrationScenario({ hasVehicle: false, isNewDriver: false })).toBe(
+      'NEW_VEHICLE',
+    )
+    expect(deriveRegistrationScenario({ hasVehicle: false, isNewDriver: true })).toBe('BOTH')
   })
 })
 

@@ -348,6 +348,22 @@ describe('SearchPicker', () => {
     })
   })
 
+  it('mostra a etiqueta (badge) da opção quando informada', () => {
+    renderPicker({
+      options: [
+        {
+          id: 'driver-1',
+          primary: 'Marina',
+          badge: 'Sem permissão de dirigir',
+          badgeTone: 'warning',
+        },
+      ],
+    })
+    fireEvent.focus(screen.getByLabelText('Veículo'))
+
+    expect(screen.getByText('Sem permissão de dirigir')).toBeTruthy()
+  })
+
   it('não é recortado pelo overflow do FormDialog (Popover em portal)', () => {
     const onChange = vi.fn()
 

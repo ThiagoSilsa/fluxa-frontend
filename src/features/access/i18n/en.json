@@ -334,9 +334,50 @@
     "error": "Could not check the plate.",
     "driver": {
       "label": "Who will drive",
-      "placeholder": "Select the driver",
+      "placeholder": "Search by name, phone or document",
       "empty": "No driver linked to this vehicle.",
-      "required": "Select the driver."
+      "required": "Select the driver.",
+      "selected": "Selected driver",
+      "linked": "Linked",
+      "suggestions": "Suggestions",
+      "noResults": "No driver found",
+      "new": "Register new driver",
+      "back": "Back to driver search"
+    },
+    "department": {
+      "label": "Department",
+      "none": "No department (free spaces)"
+    },
+    "newDriver": {
+      "driverTitle": "Driver details",
+      "vehicleTitle": "Vehicle details",
+      "userType": {
+        "label": "Type",
+        "VISITOR": "Visitor",
+        "EMPLOYEE": "Employee"
+      },
+      "name": { "label": "Name", "placeholder": "Full name" },
+      "email": { "label": "E-mail", "placeholder": "email@company.com" },
+      "document": { "label": "Document", "placeholder": "ID number" },
+      "phone": { "label": "Phone", "placeholder": "(11) 99999-0000" },
+      "contactPhone": {
+        "label": "Contact phone",
+        "placeholder": "(11) 99999-0000"
+      },
+      "model": { "label": "Model", "placeholder": "e.g. Onix" },
+      "color": { "label": "Color", "placeholder": "e.g. Silver" },
+      "fromRequest": {
+        "label": "Fill from a request for this plate",
+        "placeholder": "Choose a request",
+        "unknown": "Request without a name"
+      },
+      "errors": {
+        "name-required": "Inform the driver name.",
+        "email-required": "Inform the employee e-mail.",
+        "email-invalid": "Invalid e-mail.",
+        "contact-required": "Inform the contact phone.",
+        "model-required": "Inform the vehicle model."
+      }
     },
     "request": {
       "reuse": "The entry will use the open request for this plate.",
@@ -359,6 +400,7 @@
       "release": "Release entry",
       "exit": "Register exit",
       "denial": "Register denial",
+      "refuse": "Do not allow",
       "back": "Back",
       "close": "Close",
       "another": "Register another",
@@ -385,6 +427,13 @@
         "label": "Observation",
         "placeholder": "Describe what happened",
         "required": "Inform the observation."
+      },
+      "requestBlock": {
+        "label": "Request vehicle block",
+        "hint": "The administration reviews the request. The denial is registered either way.",
+        "reasonLabel": "Block reason",
+        "reasonPlaceholder": "e.g. repeated unauthorized access",
+        "reasonHint": "If left blank, we use the observation above."
       }
     },
     "result": {
@@ -406,7 +455,7 @@
       "exitAt": "Exit",
       "reason": "Reason",
       "previousClosed": "Previous entry closed",
-      "blockRequest": "Block request sent."
+      "blockRequest": "Block request sent — awaiting the administration."
     }
   }
 }

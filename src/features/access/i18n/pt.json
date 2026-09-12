@@ -334,9 +334,50 @@
     "error": "Não foi possível consultar a placa.",
     "driver": {
       "label": "Quem vai dirigir",
-      "placeholder": "Selecione o condutor",
+      "placeholder": "Buscar por nome, telefone ou documento",
       "empty": "Nenhum condutor vinculado a este veículo.",
-      "required": "Selecione o condutor."
+      "required": "Selecione o condutor.",
+      "selected": "Condutor selecionado",
+      "linked": "Vinculados",
+      "suggestions": "Sugestões",
+      "noResults": "Nenhum condutor encontrado",
+      "new": "Cadastrar novo condutor",
+      "back": "Voltar a buscar condutor"
+    },
+    "department": {
+      "label": "Setor",
+      "none": "Sem setor (vagas livres)"
+    },
+    "newDriver": {
+      "driverTitle": "Dados do condutor",
+      "vehicleTitle": "Dados do veículo",
+      "userType": {
+        "label": "Tipo",
+        "VISITOR": "Visitante",
+        "EMPLOYEE": "Colaborador"
+      },
+      "name": { "label": "Nome", "placeholder": "Nome completo" },
+      "email": { "label": "E-mail", "placeholder": "email@empresa.com" },
+      "document": { "label": "Documento", "placeholder": "CPF ou RG" },
+      "phone": { "label": "Telefone", "placeholder": "(11) 99999-0000" },
+      "contactPhone": {
+        "label": "Telefone de contato",
+        "placeholder": "(11) 99999-0000"
+      },
+      "model": { "label": "Modelo", "placeholder": "Ex.: Onix" },
+      "color": { "label": "Cor", "placeholder": "Ex.: Prata" },
+      "fromRequest": {
+        "label": "Preencher a partir de uma solicitação da placa",
+        "placeholder": "Escolher solicitação",
+        "unknown": "Solicitação sem nome"
+      },
+      "errors": {
+        "name-required": "Informe o nome do condutor.",
+        "email-required": "Informe o e-mail do colaborador.",
+        "email-invalid": "E-mail inválido.",
+        "contact-required": "Informe o telefone de contato.",
+        "model-required": "Informe o modelo do veículo."
+      }
     },
     "request": {
       "reuse": "A entrada vai usar a solicitação aberta desta placa.",
@@ -359,6 +400,7 @@
       "release": "Liberar entrada",
       "exit": "Registrar saída",
       "denial": "Registrar impedimento",
+      "refuse": "Não permitir",
       "back": "Voltar",
       "close": "Fechar",
       "another": "Registrar outro",
@@ -385,6 +427,13 @@
         "label": "Observação",
         "placeholder": "Descreva o ocorrido",
         "required": "Informe a observação."
+      },
+      "requestBlock": {
+        "label": "Solicitar bloqueio do veículo",
+        "hint": "A administração analisa o pedido. O impedimento já fica registrado de qualquer forma.",
+        "reasonLabel": "Motivo do bloqueio",
+        "reasonPlaceholder": "Ex.: reincidência de acesso indevido",
+        "reasonHint": "Em branco, usamos a observação acima."
       }
     },
     "result": {
@@ -406,7 +455,7 @@
       "exitAt": "Saída",
       "reason": "Motivo",
       "previousClosed": "Entrada anterior encerrada",
-      "blockRequest": "Solicitação de bloqueio enviada."
+      "blockRequest": "Solicitação de bloqueio enviada — aguardando a administração."
     }
   }
 }

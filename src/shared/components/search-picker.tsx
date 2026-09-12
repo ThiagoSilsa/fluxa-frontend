@@ -22,6 +22,10 @@ export interface SearchPickerOption {
   primary: string
   /** Texto secundário opcional (ex.: modelo ou e-mail). */
   secondary?: string
+  /** Etiqueta curta ao lado do texto (ex.: "Vinculado"/"Não vinculado"). */
+  badge?: string
+  /** Tom da etiqueta (`muted` neutro, `warning` chama atenção). */
+  badgeTone?: 'muted' | 'warning'
   /** Se o texto principal deve ser exibido em maiúsculas. */
   uppercasePrimary?: boolean
 }
@@ -373,6 +377,18 @@ export function SearchPicker({
                     >
                       {row.option.primary}
                     </span>
+                    {row.option.badge ? (
+                      <span
+                        className={cn(
+                          'ml-2 text-xs font-medium',
+                          row.option.badgeTone === 'warning'
+                            ? 'text-amber-600'
+                            : 'text-muted-foreground',
+                        )}
+                      >
+                        {row.option.badge}
+                      </span>
+                    ) : null}
                     {row.option.secondary ? (
                       <span className="text-muted-foreground"> · {row.option.secondary}</span>
                     ) : null}

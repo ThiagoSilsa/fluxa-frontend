@@ -2,6 +2,8 @@
 import type {
   AccessContextParams,
   AccessRecordsParams,
+  AccessRequestPayload,
+  AccessRequestType,
   EntryDenialReason,
   MovementSource,
   OccupancyResponse,
@@ -17,6 +19,7 @@ import { normalizePlate } from '../utils/plate'
 
 // Schemas
 import type { EntryFormValues, ExitFormValues } from '../schemas/portaria.schema'
+import type { AccessRegistrationFormValues } from '../schemas/access-registration.schema'
 
 /**
  * Percentual de ocupação (0–100), `null` quando não há capacidade
@@ -217,6 +220,66 @@ export function toRegisterDenialPayload(
   }
 
   return payload
+}
+
+/**
+ * Converte o formulário da exceção no bloco `request` do `POST /access/entry`.
+ *
+ * O `type` já vem **derivado** do contexto (`deriveRegistrationScenario`), e o
+ * bloco só leva o que o cenário cria:
+ *
+ * - condutor novo (`NEW_USER`/`BOTH`): `payload.driver` com nome/e-mail/
+ *   documento/telefone + `userType` (o aceite cria a pessoa — ADR 0013);
+ * - condutor existente: nada de motorista (o `driverUserId` vai no payload da
+ *   entrada, que é quem o servidor usa para achar a pessoa);
+ * - veículo novo (`NEW_VEHICLE`/`BOTH`): `payload.vehicle` com modelo/cor;
+ * - `contactPhone` em todos os cenários **menos** `LINK` (regra 43).
+ *
+ * @param values Valores validados do formulário.
+ * @param params Cenário derivado e setor confirmado na ficha.
+ * @returns Bloco `request` do registro de entrada.
+ */
+export function toRegisterRequestBlock(
+  values: AccessRegistrationFormValues,
+  params: { type: AccessRequestType; departmentId?: string | null },
+): RegisterEntryRequestPayload {
+  const createsDriver = params.type === 'NEW_USER' || params.type === 'BOTH'
+  const createsVehicle = params.type === 'NEW_VEHICLE' || params.type === 'BOTH'
+
+  const payload: AccessRequestPayload = {}
+
+  if (createsDriver) {
+    payload.driver = {
+      name: values.driverName?.trim() || undefined,
+      email: values.driverEmail?.trim() || undefined,
+      document: values.driverDocument?.trim() || null,
+      phone: values.driverPhone?.trim() || null,
+    }
+  }
+
+  if (createsVehicle) {
+    payload.vehicle = {
+      model: values.vehicleModel?.trim() || undefined,
+      color: values.vehicleColor?.trim() || undefined,
+    }
+  }
+
+  const block: RegisterEntryRequestPayload = {
+    type: params.type,
+    payload,
+  }
+
+  if (createsDriver) {
+    block.userType = values.userType
+  }
+  if (params.type !== 'LINK') {
+    block.contactPhone = values.contactPhone?.trim() || undefined
+  }
+  if (params.departmentId) {
+    block.departmentId = params.departmentId
+  }
+
+  return block
 }
 
 /**

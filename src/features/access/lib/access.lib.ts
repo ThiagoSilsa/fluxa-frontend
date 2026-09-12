@@ -2,6 +2,7 @@
 import type {
   AccessRecordEntranceOption,
   AccessRecordListParameter,
+  AccessRequestType,
   AccessVerdict,
   AccessVerdictReason,
   EntryDenialReason,
@@ -152,6 +153,20 @@ export function canRegisterDenial(permissions: string[] | undefined): boolean {
   return hasPermission(permissions, PermissionCode.REGISTER_DENIAL)
 }
 
+/**
+ * Pode **pedir o bloqueio** de um veículo? (`CREATE_BLOCK_REQUEST`)
+ *
+ * O impedimento não exige essa permissão: quem impede pode não poder pedir o
+ * bloqueio — o pedido dentro do impedimento exige `CREATE_BLOCK_REQUEST`
+ * (403 no backend), então o checkbox só aparece com ela.
+ *
+ * @param permissions Permissões da sessão.
+ * @returns `true` quando autorizado.
+ */
+export function canRequestBlock(permissions: string[] | undefined): boolean {
+  return hasPermission(permissions, PermissionCode.CREATE_BLOCK_REQUEST)
+}
+
 /** Chave do metadado de portarias na listagem (`parameters`). */
 export const ENTRANCE_PARAMETER_KEY = 'entrance_id'
 
@@ -196,6 +211,32 @@ export function resolveEntranceFilter(
 
 /** Sentinela de "todas as portarias" no filtro do feed (aparece na URL). */
 export const ALL_ENTRANCES_FILTER = 'all'
+
+/**
+ * Cenário da solicitação que o registro da portaria vai criar (regra 41).
+ *
+ * Derivado do que **existe** — nunca escolhido pelo porteiro:
+ *
+ * - veículo cadastrado + condutor já cadastrado → `LINK` (só falta o vínculo);
+ * - veículo cadastrado + condutor novo → `NEW_USER`;
+ * - veículo novo + condutor já cadastrado → `NEW_VEHICLE`;
+ * - os dois novos → `BOTH`.
+ *
+ * @param params Existência do veículo (pela placa) e do condutor.
+ * @returns Cenário da solicitação.
+ */
+export function deriveRegistrationScenario({
+  hasVehicle,
+  isNewDriver,
+}: {
+  hasVehicle: boolean
+  isNewDriver: boolean
+}): AccessRequestType {
+  if (hasVehicle) {
+    return isNewDriver ? 'NEW_USER' : 'LINK'
+  }
+  return isNewDriver ? 'BOTH' : 'NEW_VEHICLE'
+}
 
 /**
  * Tom da barra de ocupação conforme o percentual.

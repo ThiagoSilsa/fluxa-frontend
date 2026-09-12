@@ -18,6 +18,7 @@ import type {
 
 const contextQuery = vi.fn()
 const openAccessQuery = vi.fn()
+const departmentOptionsQuery = vi.fn()
 const registerEntry = { mutate: vi.fn(), isPending: false }
 const registerExit = { mutate: vi.fn(), isPending: false }
 const registerDenial = { mutate: vi.fn(), isPending: false }
@@ -32,6 +33,10 @@ vi.mock('../hooks/use-access-context-query', () => ({
 
 vi.mock('../hooks/use-open-access-query', () => ({
   useOpenAccessQuery: (plate: unknown) => openAccessQuery(plate),
+}))
+
+vi.mock('../hooks/use-department-options-query', () => ({
+  useDepartmentOptionsQuery: (enabled: unknown) => departmentOptionsQuery(enabled),
 }))
 
 vi.mock('../hooks/use-access-mutations', () => ({
@@ -153,9 +158,11 @@ function renderDialog(
 
 beforeEach(() => {
   vi.clearAllMocks()
-  // Defaults: ficha ainda não consultada e nenhum acesso aberto.
+  // Defaults: ficha ainda não consultada, nenhum acesso aberto e nenhum setor
+  // extra (o padrão do veículo vem do contexto).
   contextQuery.mockReturnValue({ data: undefined, isPending: false, isError: false })
   openAccessQuery.mockReturnValue({ data: { data: [] }, isPending: false })
+  departmentOptionsQuery.mockReturnValue({ data: [], isPending: false })
 })
 
 // ---------------------------------------------------------------------------
@@ -250,8 +257,8 @@ describe('AccessRegisterDialog', () => {
 
     fireEvent.click(screen.getByText('register.actions.release'))
 
-    // Confirmação antes de exceder a capacidade.
-    expect(screen.getByText('register.confirm.overCapacity.title')).toBeTruthy()
+    // Confirmação antes de exceder a capacidade (o submit do RHF é assíncrono).
+    expect(await screen.findByText('register.confirm.overCapacity.title')).toBeTruthy()
     fireEvent.click(screen.getByText('register.confirm.overCapacity.confirm'))
 
     await waitFor(() => {
@@ -267,7 +274,7 @@ describe('AccessRegisterDialog', () => {
     })
   })
 
-  it('pede confirmação de reentrada antes de liberar', () => {
+  it('pede confirmação de reentrada antes de liberar', async () => {
     const context = buildContext({ isReentry: true, verdict: 'ALLOW_FORCED_REENTRY' })
     renderDialog({ ...context, openAccesses: [{ ...openAccess }] })
 
@@ -275,14 +282,16 @@ describe('AccessRegisterDialog', () => {
     fireEvent.click(screen.getByText('register.type.ENTRY'))
     fireEvent.click(screen.getByText('register.actions.release'))
 
-    expect(screen.getByText('register.confirm.reentry.title')).toBeTruthy()
+    expect(await screen.findByText('register.confirm.reentry.title')).toBeTruthy()
     fireEvent.click(screen.getByText('register.confirm.reentry.confirm'))
 
-    expect(registerEntry.mutate).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(registerEntry.mutate).toHaveBeenCalled()
+    })
     expect(registerEntry.mutate.mock.calls[0][0].overCapacity).toBeUndefined()
   })
 
-  it('libera entrada com solicitação reaproveitável usando accessRequestId', () => {
+  it('libera entrada com solicitação reaproveitável usando accessRequestId', async () => {
     renderDialog(
       buildContext({
         verdict: 'ALLOW_WITH_REQUEST',
@@ -294,6 +303,9 @@ describe('AccessRegisterDialog', () => {
 
     fireEvent.click(screen.getByText('register.actions.release'))
 
+    await waitFor(() => {
+      expect(registerEntry.mutate).toHaveBeenCalled()
+    })
     const payload = registerEntry.mutate.mock.calls[0][0]
     expect(payload.accessRequestId).toBe('request-1')
     expect(payload.request).toBeUndefined()
@@ -353,5 +365,146 @@ describe('AccessRegisterDialog', () => {
     expect(screen.queryByText('register.type.EXIT')).toBeNull()
     expect(screen.queryByText('register.type.DENIAL')).toBeNull()
     expect(screen.getByText('register.actions.release')).toBeTruthy()
+  })
+
+  it('manda o setor padrão do veículo na consulta da ficha (regra 27)', async () => {
+    renderDialog(buildContext())
+
+    await waitFor(() => {
+      const lastCall = contextQuery.mock.calls.at(-1)?.[0]
+      expect(lastCall).toMatchObject({ plate: 'ABC1D23', departmentId: 'department-1' })
+    })
+  })
+
+  it('busca o condutor no servidor (nome/telefone/documento) com debounce', async () => {
+    renderDialog(buildContext({ requiresRequest: true, verdict: 'ALLOW_WITH_REQUEST' }))
+
+    fireEvent.change(screen.getByLabelText('register.driver.label'), {
+      target: { value: '988887777' },
+    })
+
+    await waitFor(
+      () => {
+        const searched = contextQuery.mock.calls.map(([params]) => params?.search)
+        expect(searched).toContain('988887777')
+      },
+      { timeout: 2000 },
+    )
+  })
+
+  it('cadastra o condutor novo e libera com o bloco request (NEW_USER)', async () => {
+    registerEntry.mutate.mockImplementation((_payload, options) => {
+      options?.onSuccess?.({ granted: true, message: 'Entrada registrada com solicitação.' })
+    })
+
+    renderDialog(
+      buildContext({
+        verdict: 'ALLOW_WITH_REQUEST',
+        reasons: ['UNREGISTERED_DRIVER'],
+        requiresRequest: true,
+        drivers: { linked: [], suggestions: [], search: null },
+      }),
+    )
+
+    fireEvent.click(screen.getByText('register.driver.new'))
+
+    // Sem os dados do condutor o envio não passa (schema por cenário).
+    fireEvent.click(screen.getByText('register.actions.release'))
+    await waitFor(() => {
+      expect(screen.getByText('register.newDriver.errors.name-required')).toBeTruthy()
+    })
+    expect(registerEntry.mutate).not.toHaveBeenCalled()
+
+    fireEvent.change(screen.getByLabelText('register.newDriver.name.label'), {
+      target: { value: 'Marina Nova' },
+    })
+    fireEvent.change(screen.getByLabelText('register.newDriver.contactPhone.label'), {
+      target: { value: '11999999999' },
+    })
+    fireEvent.click(screen.getByText('register.actions.release'))
+
+    await waitFor(() => {
+      expect(registerEntry.mutate).toHaveBeenCalled()
+    })
+    const payload = registerEntry.mutate.mock.calls[0][0]
+    expect(payload.request).toEqual({
+      type: 'NEW_USER',
+      userType: 'VISITOR',
+      payload: { driver: { name: 'Marina Nova', document: null, phone: null } },
+      contactPhone: '11999999999',
+      departmentId: 'department-1',
+    })
+    // Quem está sendo cadastrado não manda `driverUserId` (o servidor cria).
+    expect(payload.driverUserId).toBeUndefined()
+  })
+
+  it('leva a exceção ao impedimento pela ação "Não permitir"', () => {
+    renderDialog(
+      buildContext({
+        verdict: 'ALLOW_WITH_REQUEST',
+        reasons: ['UNREGISTERED_DRIVER'],
+        requiresRequest: true,
+      }),
+    )
+
+    fireEvent.click(screen.getByText('register.actions.refuse'))
+
+    expect(screen.getByText('register.denial.title')).toBeTruthy()
+    // Motivo sugerido para condutor sem vínculo.
+    expect(screen.getByLabelText('register.denial.reason.label')).toBeTruthy()
+  })
+
+  it('só mostra o checkbox de bloqueio com CREATE_BLOCK_REQUEST', () => {
+    renderDialog(buildContext(), { permissions: ['REGISTER_DENIAL'] })
+
+    fireEvent.click(screen.getAllByText('register.actions.denial')[0])
+    expect(screen.queryByRole('checkbox')).toBeNull()
+  })
+
+  it('envia requestBlock + blockReason quando o porteiro pede o bloqueio', () => {
+    registerDenial.mutate.mockImplementation((_payload, options) => {
+      options?.onSuccess?.({
+        id: 'denial-1',
+        plateSnapshot: 'ABC1D23',
+        reason: 'UNAUTHORIZED_DRIVER',
+        observation: 'Motorista sem vínculo',
+        blockRequest: null,
+        blockRequestError: 'Já existe solicitação de bloqueio pendente para esta placa.',
+      })
+    })
+
+    renderDialog(buildContext({ verdict: 'DENY_BLOCKED', reasons: ['BLOCKED'] }), {
+      permissions: ['REGISTER_ENTRY', 'REGISTER_DENIAL', 'CREATE_BLOCK_REQUEST'],
+    })
+
+    fireEvent.click(screen.getAllByText('register.actions.denial')[0])
+    fireEvent.change(screen.getByLabelText('register.denial.observation.label'), {
+      target: { value: 'Motorista sem vínculo' },
+    })
+    fireEvent.click(screen.getByRole('checkbox'))
+
+    const blockReason = screen.getByLabelText<HTMLInputElement>(
+      'register.denial.requestBlock.reasonLabel',
+    )
+    expect(blockReason.value).toBe('Motorista sem vínculo')
+
+    fireEvent.click(screen.getByText('register.actions.denial'))
+
+    const payload = registerDenial.mutate.mock.calls[0][0]
+    expect(payload).toMatchObject({
+      plate: 'ABC1D23',
+      reason: 'BLOCKED',
+      observation: 'Motorista sem vínculo',
+      requestBlock: true,
+      blockReason: 'Motorista sem vínculo',
+      entranceId: 'entrance-1',
+    })
+
+    // O aviso de bloqueio pendente aparece à parte — o impedimento é sucesso.
+    return waitFor(() => {
+      expect(
+        screen.getByText('Já existe solicitação de bloqueio pendente para esta placa.'),
+      ).toBeTruthy()
+    })
   })
 })
