@@ -10,7 +10,46 @@ declare module '@tanstack/react-table' {
   }
 }
 
-export type GenericTableProps<TData> = {
+/**
+ * Props da tabela genérica.
+ *
+ * A expansão de linha é um **par** (sub-conteúdo + rótulos acessíveis): o
+ * componente compartilhado não embute texto de idioma nenhum, então quem liga
+ * a expansão precisa trazer os rótulos traduzidos junto.
+ *
+ * @template TData Tipo dos dados da tabela.
+ */
+export type GenericTableProps<TData> = GenericTableCommonProps<TData> &
+  (
+    | {
+        /**
+         * Sub-conteúdo de uma linha expandida — quando informado, a tabela
+         * ganha uma coluna com o botão de expandir/recolher.
+         *
+         * Sem `onRowClick`, clicar na linha também alterna a expansão (alvo
+         * grande para o balcão); com `onRowClick`, só o botão alterna (o
+         * clique na linha continua sendo a ação da tela). O `role="row"` é
+         * preservado nos dois casos.
+         */
+        renderExpandedRow: (row: TData) => ReactNode
+        /** Rótulos acessíveis do botão de expandir/recolher (i18n do consumidor). */
+        expandLabels: TableExpandLabels
+      }
+    | {
+        /** Tabela sem expansão de linha (o default). */
+        renderExpandedRow?: undefined
+        expandLabels?: TableExpandLabels
+      }
+  )
+
+/**
+ * Props da tabela que não dependem da expansão de linha.
+ *
+ * `GenericTableProps` acrescenta a expansão como um **par**: quem renderiza
+ * linha expandida precisa passar os rótulos traduzidos junto (o componente
+ * compartilhado não embute texto em nenhum idioma).
+ */
+export type GenericTableCommonProps<TData> = {
   /** Dados a serem exibidos na tabela */
   data: TData[]
 
@@ -63,17 +102,6 @@ export type GenericTableProps<TData> = {
   getRowAriaLabel?: (row: TData) => string
 
   /**
-   * Sub-conteúdo de uma linha expandida (opt-in) — quando informado, a tabela
-   * ganha uma coluna com o botão de expandir/recolher.
-   *
-   * Sem `onRowClick`, clicar na linha também alterna a expansão (alvo grande
-   * para o balcão); com `onRowClick`, só o botão alterna (o clique na linha
-   * continua sendo a ação da tela). O `role="row"` é preservado nos dois
-   * casos.
-   */
-  renderExpandedRow?: (row: TData) => ReactNode
-
-  /**
    * Chave **estável** da linha (default: índice).
    *
    * É o que mantém a linha expandida correta quando a lista se reordena ou
@@ -81,14 +109,17 @@ export type GenericTableProps<TData> = {
    */
   getRowKey?: (row: TData) => string
 
-  /** Rótulos acessíveis do botão de expandir/recolher (i18n do consumidor). */
-  expandLabels?: { expand: string; collapse: string }
-
   /** Classes extras para o container da tabela (ex: overflow-x-auto). */
   tableContainerClassName?: string
 
   /** Oculta a barra de paginação (útil para tabelas sem paginação). */
   hidePagination?: boolean
+}
+
+/** Rótulos acessíveis do controle de expandir/recolher (i18n do consumidor). */
+export type TableExpandLabels = {
+  expand: string
+  collapse: string
 }
 
 export type UseGenericTableSearchOptions<TSearch extends Record<string, unknown>> = {

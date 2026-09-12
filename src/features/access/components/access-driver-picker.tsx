@@ -34,10 +34,11 @@ export type AccessDriverPickerProps = {
  *
  * `SearchPicker` com **grupos**: "Vinculados" (até 3, primário primeiro) e
  * "Sugestões" (até 3 pessoas da empresa sem vínculo com o veículo, que só
- * aparecem com busca). Cada item mostra a etiqueta de vínculo e, quando o
- * condutor vinculado não pode dirigir, o aviso em âmbar — o servidor devolve o
- * veredito `ALLOW_WITH_REQUEST` quando ele é escolhido, e a ficha explica que a
- * entrada sai com solicitação.
+ * aparecem com busca). Cada item mostra a etiqueta do **estado do vínculo**
+ * (vinculado, vinculado sem permissão de dirigir, sem vínculo) — o aviso em
+ * âmbar fica reservado a quem não pode dirigir: o servidor devolve o veredito
+ * `ALLOW_WITH_REQUEST` quando ele é escolhido, e a ficha explica que a entrada
+ * sai com solicitação.
  *
  * A busca é por **nome, telefone ou documento** (o backend resolve os dígitos),
  * então o balcão acha a pessoa pelo telefone quando o nome não vem na hora.
@@ -55,16 +56,30 @@ export function AccessDriverPicker({
 }: AccessDriverPickerProps) {
   const { t } = useTranslation('access')
 
-  const toOption = (driver: AccessContextDriver): SearchPickerOption => ({
-    id: driver.id,
-    primary: driver.name,
-    badge: driver.linked
-      ? driver.canDrive
-        ? undefined
-        : t('verdict.drivers.noPermission')
-      : t('verdict.drivers.notLinked'),
-    badgeTone: driver.linked && !driver.canDrive ? 'warning' : 'muted',
-  })
+  const toOption = (driver: AccessContextDriver): SearchPickerOption => {
+    if (!driver.linked) {
+      return {
+        id: driver.id,
+        primary: driver.name,
+        badge: t('verdict.drivers.notLinked'),
+        badgeTone: 'muted',
+      }
+    }
+    if (!driver.canDrive) {
+      return {
+        id: driver.id,
+        primary: driver.name,
+        badge: t('verdict.drivers.noPermission'),
+        badgeTone: 'warning',
+      }
+    }
+    return {
+      id: driver.id,
+      primary: driver.name,
+      badge: t('verdict.drivers.linked'),
+      badgeTone: 'muted',
+    }
+  }
 
   const groups: SearchPickerGroup[] = [
     { label: t('register.driver.linked'), options: linked.map(toOption) },

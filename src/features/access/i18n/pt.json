@@ -291,6 +291,7 @@
       "label": "Condutores vinculados",
       "empty": "Nenhum condutor vinculado",
       "primary": "Principal",
+      "linked": "Vinculado",
       "noPermission": "Sem permissão de dirigir",
       "notLinked": "Sem vínculo"
     },

@@ -258,6 +258,24 @@ describe('PortariaPage', () => {
     )
   })
 
+  it('os filtros sem escolha mostram o rótulo "todos" (sentinela não vai para a query)', () => {
+    currentUser = { permissionCodes: ['REGISTER_ENTRY'] }
+    searchParams = { limit: 20, offset: 0 }
+    useAccessRecordsQuery.mockReturnValue(recordsResult())
+
+    render(<PortariaPage />)
+
+    expect(screen.getByLabelText('records.filters.kind.label').textContent).toContain(
+      'records.filters.kind.all',
+    )
+    // Sem portaria no dispositivo, o filtro mostra "todas" — e nenhuma
+    // portaria vai para a query.
+    expect(screen.getByLabelText('records.filters.entrance.label').textContent).toContain(
+      'records.filters.entrance.all',
+    )
+    expect(useAccessRecordsQuery.mock.calls.at(-1)?.[0].entranceId).toBeUndefined()
+  })
+
   it('os filtros de tipo e portaria refletem a URL e o metadado do feed', () => {
     currentUser = { permissionCodes: ['REGISTER_ENTRY'] }
     localStorage.setItem(DEVICE_ENTRANCE_STORAGE_KEY, 'entrance-1')

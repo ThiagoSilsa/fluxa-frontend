@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 // Services
 import { accessService } from '../services/access.service'
 
-// Types
-import type { OccupancyDepartmentView } from '../types/access.types'
+// Mappers
+import { toOccupancyDepartmentViews } from '../mappers/access.mapper'
 
 /** Chave da query de opções de setor (compartilhada com a troca na ficha). */
 export const DEPARTMENT_OPTIONS_QUERY_KEY = 'access-department-options'
@@ -32,13 +32,6 @@ export function useDepartmentOptionsQuery(enabled: boolean) {
     enabled,
     retry: false,
     staleTime: 60_000,
-    select: (occupancy): OccupancyDepartmentView[] =>
-      occupancy.byDepartment.map((department) => ({
-        departmentId: department.departmentId,
-        name: department.name,
-        occupied: department.occupied,
-        capacity: department.capacity,
-        rate: null,
-      })),
+    select: (occupancy) => toOccupancyDepartmentViews(occupancy.byDepartment),
   })
 }

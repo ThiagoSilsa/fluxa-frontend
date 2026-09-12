@@ -320,6 +320,10 @@ describe('AccessRegisterDialog', () => {
 
     fireEvent.click(screen.getAllByText('register.actions.denial')[0])
     expect(screen.getByText('register.denial.title')).toBeTruthy()
+    // A observação já vem com o texto da negativa (editável).
+    expect(
+      screen.getByLabelText<HTMLTextAreaElement>('register.denial.observation.label').value,
+    ).toBe('verdict.reasons.DENY_BLOCKED.BLOCKED')
 
     // Agora o único botão com esse rótulo é o do formulário.
     fireEvent.click(screen.getByText('register.actions.denial'))
@@ -330,6 +334,50 @@ describe('AccessRegisterDialog', () => {
       reason: 'BLOCKED',
       vehicleId: 'vehicle-1',
       entranceId: 'entrance-1',
+    })
+  })
+
+  it('pré-preenche a observação do impedimento com o texto da negativa e deixa editar', () => {
+    registerDenial.mutate.mockImplementation((_payload, options) => {
+      options?.onSuccess?.({ id: 'denial-1' })
+    })
+
+    renderDialog(buildContext({ verdict: 'DENY_OVERDUE', reasons: ['REQUEST_OVERDUE'] }))
+
+    fireEvent.click(screen.getAllByText('register.actions.denial')[0])
+
+    const observation = screen.getByLabelText<HTMLTextAreaElement>(
+      'register.denial.observation.label',
+    )
+    expect(observation.value).toBe('verdict.reasons.DENY_OVERDUE.REQUEST_OVERDUE')
+
+    // O texto é editável: o que o porteiro digitar é o que vai no payload.
+    fireEvent.change(observation, { target: { value: 'Solicitação vencida há 5 dias' } })
+    fireEvent.click(screen.getByText('register.actions.denial'))
+
+    expect(registerDenial.mutate.mock.calls[0][0]).toMatchObject({
+      plate: 'ABC1D23',
+      reason: 'OVERDUE',
+      observation: 'Solicitação vencida há 5 dias',
+    })
+  })
+
+  it('na negativa sem motivo próprio o "outro" já sai preenchido (observação obrigatória)', () => {
+    registerDenial.mutate.mockImplementation((_payload, options) => {
+      options?.onSuccess?.({ id: 'denial-1' })
+    })
+
+    renderDialog(buildContext({ verdict: 'DENY_INACTIVE', reasons: ['INACTIVE'] }))
+
+    fireEvent.click(screen.getAllByText('register.actions.denial')[0])
+
+    // O motivo sugerido é `OTHER` (observação obrigatória), mas já vem
+    // preenchido com o texto da negativa — o envio passa sem digitar nada.
+    fireEvent.click(screen.getByText('register.actions.denial'))
+
+    expect(registerDenial.mutate.mock.calls[0][0]).toMatchObject({
+      reason: 'OTHER',
+      observation: 'verdict.reasons.DENY_INACTIVE.INACTIVE',
     })
   })
 
@@ -452,6 +500,10 @@ describe('AccessRegisterDialog', () => {
     expect(screen.getByText('register.denial.title')).toBeTruthy()
     // Motivo sugerido para condutor sem vínculo.
     expect(screen.getByLabelText('register.denial.reason.label')).toBeTruthy()
+    // A exceção libera a entrada: não há texto de negativa para pré-preencher.
+    expect(
+      screen.getByLabelText<HTMLTextAreaElement>('register.denial.observation.label').value,
+    ).toBe('')
   })
 
   it('só mostra o checkbox de bloqueio com CREATE_BLOCK_REQUEST', () => {

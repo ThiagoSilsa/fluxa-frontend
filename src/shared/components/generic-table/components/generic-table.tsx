@@ -78,7 +78,10 @@ export function GenericTable<TData>({
 
   /** Coluna do chevron, prependada apenas quando a tabela é expansível. */
   const expanderColumn = useMemo<ColumnDef<TData> | null>(() => {
-    if (!renderExpandedRow) {
+    // O tipo já exige o par (linha expandida + rótulos); a checagem cobre um
+    // chamador sem tipos — melhor tabela sem expansão do que controle sem nome
+    // acessível.
+    if (!renderExpandedRow || !expandLabels) {
       return null
     }
 
@@ -95,7 +98,7 @@ export function GenericTable<TData>({
             rowKey={key}
             isExpanded={expandedKeys.includes(key)}
             onToggle={toggleRow}
-            labels={expandLabels ?? { expand: 'Expandir', collapse: 'Recolher' }}
+            labels={expandLabels}
             controlsId={`row-expanded-${key}`}
           />
         )

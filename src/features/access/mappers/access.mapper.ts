@@ -6,6 +6,8 @@ import type {
   AccessRequestType,
   EntryDenialReason,
   MovementSource,
+  OccupancyDepartmentResponse,
+  OccupancyDepartmentView,
   OccupancyResponse,
   OccupancyViewModel,
   RegisterDenialPayload,
@@ -37,6 +39,29 @@ export function getOccupancyRate(occupied: number, capacity: number): number | n
 }
 
 /**
+ * Converte os departamentos da resposta de ocupação no viewmodel (com o
+ * percentual de cada um).
+ *
+ * Usado pelo painel de ocupação e pelo seletor de setor da ficha — este último
+ * só aproveita `occupied`/`capacity`, mas monta o mesmo viewmodel para não
+ * existirem duas formas de ler a mesma resposta.
+ *
+ * @param departments Ocupação por departamento (`byDepartment`).
+ * @returns Departamentos com `rate` calculado.
+ */
+export function toOccupancyDepartmentViews(
+  departments: OccupancyDepartmentResponse[],
+): OccupancyDepartmentView[] {
+  return departments.map((department) => ({
+    departmentId: department.departmentId,
+    name: department.name,
+    occupied: department.occupied,
+    capacity: department.capacity,
+    rate: getOccupancyRate(department.occupied, department.capacity),
+  }))
+}
+
+/**
  * Converte a resposta de ocupação no viewmodel da tela — adiciona o
  * percentual de cada departamento e o percentual global (para a barra de
  * progresso).
@@ -50,13 +75,7 @@ export function toOccupancyViewModel(response: OccupancyResponse): OccupancyView
     totalCapacity: response.totalCapacity,
     freeSlots: response.freeSlots,
     totalRate: getOccupancyRate(response.totalOccupied, response.totalCapacity),
-    byDepartment: response.byDepartment.map((department) => ({
-      departmentId: department.departmentId,
-      name: department.name,
-      occupied: department.occupied,
-      capacity: department.capacity,
-      rate: getOccupancyRate(department.occupied, department.capacity),
-    })),
+    byDepartment: toOccupancyDepartmentViews(response.byDepartment),
   }
 }
 

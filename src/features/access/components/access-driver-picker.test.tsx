@@ -59,7 +59,7 @@ function renderPicker(overrides: Partial<Parameters<typeof AccessDriverPicker>[0
 }
 
 describe('AccessDriverPicker', () => {
-  it('agrupa vinculados e sugestões com a etiqueta de vínculo', () => {
+  it('agrupa vinculados e sugestões e etiqueta cada estado de vínculo', () => {
     renderPicker()
     fireEvent.focus(screen.getByLabelText('register.driver.label'))
 
@@ -68,6 +68,8 @@ describe('AccessDriverPicker', () => {
     expect(screen.getByText('Marina')).toBeTruthy()
     expect(screen.getByText('Jonas')).toBeTruthy()
     expect(screen.getByText('Paula')).toBeTruthy()
+    // Marina está vinculada e autorizada a dirigir.
+    expect(screen.getByText('verdict.drivers.linked')).toBeTruthy()
     // Jonas está vinculado mas sem permissão de dirigir.
     expect(screen.getByText('verdict.drivers.noPermission')).toBeTruthy()
     // Paula é uma sugestão (pessoa da empresa sem vínculo).

@@ -26,7 +26,7 @@ import { useAccessRecordsQuery } from '../hooks/use-access-records-query'
 
 // Lib
 import {
-  ALL_ENTRANCES_FILTER,
+  ALL_FILTER,
   canRegisterDenial,
   canRegisterEntry,
   canRegisterExit,
@@ -173,7 +173,7 @@ export function PortariaPage() {
   const total = data?.count ?? 0
   const entranceOptions = getRecordEntranceOptions(data?.parameters)
   const columns = useMemo(() => createAccessRecordColumns({ t }), [t])
-  const listEntranceValue = search.entranceId ?? deviceEntranceId ?? ALL_ENTRANCES_FILTER
+  const listEntranceValue = search.entranceId ?? deviceEntranceId ?? ALL_FILTER
 
   if (!canOpenPortaria) {
     return (
@@ -251,10 +251,10 @@ export function PortariaPage() {
                 {t('records.filters.kind.label')}
               </Label>
               <Select
-                value={search.kind ?? ALL_ENTRANCES_FILTER}
+                value={search.kind ?? ALL_FILTER}
                 onValueChange={(value) =>
                   updateSearch({
-                    kind: value === ALL_ENTRANCES_FILTER ? undefined : (value as AccessRecordKind),
+                    kind: value === ALL_FILTER ? undefined : (value as AccessRecordKind),
                   })
                 }
               >
@@ -262,9 +262,7 @@ export function PortariaPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={ALL_ENTRANCES_FILTER}>
-                    {t('records.filters.kind.all')}
-                  </SelectItem>
+                  <SelectItem value={ALL_FILTER}>{t('records.filters.kind.all')}</SelectItem>
                   {KIND_FILTERS.map((kind) => (
                     <SelectItem key={kind} value={kind}>
                       {t(`records.kind.${kind}`)}
@@ -312,9 +310,7 @@ export function PortariaPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={ALL_ENTRANCES_FILTER}>
-                    {t('records.filters.entrance.all')}
-                  </SelectItem>
+                  <SelectItem value={ALL_FILTER}>{t('records.filters.entrance.all')}</SelectItem>
                   {entranceOptions.map((entrance) => (
                     <SelectItem key={entrance.id} value={entrance.id}>
                       {entrance.name}

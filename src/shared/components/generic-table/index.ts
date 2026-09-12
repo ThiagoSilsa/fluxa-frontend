@@ -11,6 +11,7 @@ export type {
   GenericTableProps,
   TableBodyProps,
   TableEmptyProps,
+  TableExpandLabels,
   TableLoadingProps,
   TablePaginationLabels,
   TablePaginationProps,

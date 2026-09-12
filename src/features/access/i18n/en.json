@@ -291,6 +291,7 @@
       "label": "Linked drivers",
       "empty": "No linked driver",
       "primary": "Primary",
+      "linked": "Linked",
       "noPermission": "No permission to drive",
       "notLinked": "Not linked"
     },

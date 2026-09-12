@@ -36,8 +36,11 @@ import {
   canRegisterEntry,
   canRegisterExit,
   canRequestBlock,
+  denialReasonFromVerdict,
   deriveRegistrationScenario,
   getVerdictLabelKey,
+  isVerdictAllow,
+  needsRequestBlock,
 } from '../lib/access.lib'
 
 // Mappers
@@ -282,11 +285,12 @@ export function AccessRegisterDialog({
   const handleStartDenial = (reason: EntryDenialReason) => {
     setExplicitType('DENIAL')
     setDenialReason(reason)
-    // Sem motivo próprio (`INACTIVE`, placa desconhecida) o motivo vira
-    // "outro" — e a observação (obrigatória nesse caso) já sai preenchida com
-    // o texto da negativa, para o porteiro só ajustar.
+    // A negativa já diz o motivo na ficha: a observação sai pré-preenchida
+    // com esse texto — inclusive quando o motivo sugerido tem texto próprio
+    // (`BLOCKED`, `OVERDUE`) — e o porteiro só ajusta. Veredito que libera
+    // (exceção "Não permitir") não tem texto de negativa: observação vazia.
     setDenialObservation(
-      reason === 'OTHER' && context
+      context && !isVerdictAllow(context.verdict)
         ? t(getVerdictLabelKey(context.verdict, context.reasons[0]))
         : '',
     )
@@ -328,7 +332,7 @@ export function AccessRegisterDialog({
   const buildRequestBlock = (
     values: AccessRegistrationFormValues,
   ): RegisterEntryRequestPayload | undefined => {
-    if (!needsRequestBlock) {
+    if (!requestBlockNeeded) {
       return undefined
     }
     return toRegisterRequestBlock(values, { type: scenario, departmentId })
@@ -346,7 +350,7 @@ export function AccessRegisterDialog({
       return
     }
     // Exceção sem solicitação reaproveitável precisa do condutor escolhido.
-    const needsDriverChoice = needsRequestBlock && !isNewDriver && !driverUserId
+    const needsDriverChoice = requestBlockNeeded && !isNewDriver && !driverUserId
     if (needsDriverChoice) {
       return
     }
@@ -446,9 +450,12 @@ export function AccessRegisterDialog({
    * pedida por ele) ou quando o veredito exige solicitação e não há uma aberta
    * para reaproveitar.
    */
-  const needsRequestBlock =
-    isNewDriver || (!!context?.requiresRequest && !context.reusableRequestId)
-  const needsDriver = needsRequestBlock && !isNewDriver && !driverUserId
+  const requestBlockNeeded = needsRequestBlock({
+    isNewDriver,
+    requiresRequest: context?.requiresRequest,
+    reusableRequestId: context?.reusableRequestId,
+  })
+  const needsDriver = requestBlockNeeded && !isNewDriver && !driverUserId
   /**
    * Pedir bloqueio exige `CREATE_BLOCK_REQUEST` (403 sem ela): o checkbox do
    * impedimento só aparece para quem pode pedir.
@@ -643,11 +650,11 @@ export function AccessRegisterDialog({
                       {isPending ? t('register.actions.submitting') : t('register.actions.release')}
                     </Button>
                     {/* Negativa: o caminho é registrar o impedimento. */}
-                    {!isAllow(context.verdict) && allowedTypes.includes('DENIAL') ? (
+                    {!isVerdictAllow(context.verdict) && allowedTypes.includes('DENIAL') ? (
                       <Button
                         type="button"
                         variant="destructive"
-                        onClick={() => handleStartDenial(denialReasonFromVerdict(context))}
+                        onClick={() => handleStartDenial(denialReasonFromVerdict(context.verdict))}
                         disabled={isPending}
                       >
                         {t('register.actions.denial')}
@@ -811,33 +818,4 @@ export function AccessRegisterDialog({
       />
     </>
   )
-}
-
-/**
- * Veredito que libera a entrada?
- *
- * @param verdict Veredito do contexto.
- * @returns `true` para os `ALLOW_*`.
- */
-function isAllow(verdict: AccessContextResponse['verdict']): boolean {
-  return verdict.startsWith('ALLOW')
-}
-
-/**
- * Motivo de impedimento sugerido pela negativa do veredito.
- *
- * `DENY_BLOCKED` e `DENY_OVERDUE` têm motivo próprio; os demais (veículo
- * inativo, placa desconhecida) caem em `OTHER`, cuja observação é obrigatória.
- *
- * @param context Ficha da placa.
- * @returns Motivo do impedimento.
- */
-function denialReasonFromVerdict(context: AccessContextResponse): EntryDenialReason {
-  if (context.verdict === 'DENY_BLOCKED') {
-    return 'BLOCKED'
-  }
-  if (context.verdict === 'DENY_OVERDUE') {
-    return 'OVERDUE'
-  }
-  return 'OTHER'
 }

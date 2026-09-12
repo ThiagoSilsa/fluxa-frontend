@@ -4,6 +4,9 @@ import { ChevronDown, ChevronRight } from 'lucide-react'
 // Shared
 import { Button } from '#/shared/components/ui/button'
 
+// Types
+import type { TableExpandLabels } from '../types/generic-table.types'
+
 export type TableExpanderButtonProps = {
   /** Linha estável que este botão controla. */
   rowKey: string
@@ -12,7 +15,7 @@ export type TableExpanderButtonProps = {
   /** Alterna a expansão. */
   onToggle: (rowKey: string) => void
   /** Rótulos acessíveis (i18n do consumidor). */
-  labels: { expand: string; collapse: string }
+  labels: TableExpandLabels
   /** `id` do conteúdo expandido (usado no `aria-controls`). */
   controlsId: string
 }

@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
-  ALL_ENTRANCES_FILTER,
+  ALL_FILTER,
   canRegisterDenial,
   canRegisterEntry,
   canRegisterExit,
   canRequestBlock,
+  denialReasonFromVerdict,
   deriveRegistrationScenario,
   formatDateTime,
   getDenialReasonLabelKey,
@@ -13,6 +14,7 @@ import {
   getVerdictLabelKey,
   getVerdictReasonNameKey,
   isVerdictAllow,
+  needsRequestBlock,
   resolveEntranceFilter,
   verdictTone,
 } from './access.lib'
@@ -113,6 +115,54 @@ describe('isVerdictAllow', () => {
   })
 })
 
+describe('denialReasonFromVerdict', () => {
+  it('sugere o motivo próprio do bloqueio e do prazo vencido', () => {
+    expect(denialReasonFromVerdict('DENY_BLOCKED')).toBe('BLOCKED')
+    expect(denialReasonFromVerdict('DENY_OVERDUE')).toBe('OVERDUE')
+  })
+
+  it('cai em OTHER na negativa sem motivo próprio (veículo inativo)', () => {
+    expect(denialReasonFromVerdict('DENY_INACTIVE')).toBe('OTHER')
+  })
+})
+
+describe('needsRequestBlock', () => {
+  it('exige o bloco quando o porteiro está cadastrando o condutor', () => {
+    expect(
+      needsRequestBlock({ isNewDriver: true, requiresRequest: false, reusableRequestId: null }),
+    ).toBe(true)
+  })
+
+  it('exige o bloco quando o veredito pede solicitação e não há uma para reaproveitar', () => {
+    expect(
+      needsRequestBlock({ isNewDriver: false, requiresRequest: true, reusableRequestId: null }),
+    ).toBe(true)
+  })
+
+  it('dispensa o bloco quando há solicitação reaproveitável (vai o accessRequestId)', () => {
+    expect(
+      needsRequestBlock({
+        isNewDriver: false,
+        requiresRequest: true,
+        reusableRequestId: 'request-1',
+      }),
+    ).toBe(false)
+  })
+
+  it('dispensa o bloco em entrada normal, sem exceção nem veredito exigindo', () => {
+    expect(
+      needsRequestBlock({ isNewDriver: false, requiresRequest: false, reusableRequestId: null }),
+    ).toBe(false)
+    expect(
+      needsRequestBlock({
+        isNewDriver: false,
+        requiresRequest: undefined,
+        reusableRequestId: undefined,
+      }),
+    ).toBe(false)
+  })
+})
+
 describe('canRegisterEntry/Exit/Denial', () => {
   const all = [
     PermissionCode.REGISTER_ENTRY,
@@ -199,8 +249,8 @@ describe('resolveEntranceFilter', () => {
   })
 
   it('trata all como "todas as portarias", vencendo o dispositivo', () => {
-    expect(resolveEntranceFilter(ALL_ENTRANCES_FILTER, 'entrance-2')).toBeUndefined()
-    expect(resolveEntranceFilter(ALL_ENTRANCES_FILTER, null)).toBeUndefined()
+    expect(resolveEntranceFilter(ALL_FILTER, 'entrance-2')).toBeUndefined()
+    expect(resolveEntranceFilter(ALL_FILTER, null)).toBeUndefined()
   })
 
   it('sem filtro e sem portaria no dispositivo não filtra nada', () => {

@@ -113,6 +113,25 @@ export function isVerdictAllow(verdict: AccessVerdict): boolean {
 }
 
 /**
+ * Motivo de impedimento sugerido pela negativa do veredito.
+ *
+ * `DENY_BLOCKED` e `DENY_OVERDUE` têm motivo próprio; os demais (veículo
+ * inativo, placa desconhecida) caem em `OTHER`, cuja observação é obrigatória.
+ *
+ * @param verdict Veredito devolvido pelo servidor.
+ * @returns Motivo do impedimento.
+ */
+export function denialReasonFromVerdict(verdict: AccessVerdict): EntryDenialReason {
+  if (verdict === 'DENY_BLOCKED') {
+    return 'BLOCKED'
+  }
+  if (verdict === 'DENY_OVERDUE') {
+    return 'OVERDUE'
+  }
+  return 'OTHER'
+}
+
+/**
  * O usuário tem uma permissão do catálogo?
  *
  * @param permissions Permissões da sessão ("permissionCodes").
@@ -203,14 +222,27 @@ export function resolveEntranceFilter(
   searchValue: string | undefined,
   deviceEntranceId: string | null,
 ): string | undefined {
-  if (searchValue === ALL_ENTRANCES_FILTER) {
+  if (searchValue === ALL_FILTER) {
     return undefined
   }
   return searchValue ?? deviceEntranceId ?? undefined
 }
 
-/** Sentinela de "todas as portarias" no filtro do feed (aparece na URL). */
-export const ALL_ENTRANCES_FILTER = 'all'
+/**
+ * Sentinela de "todos" nos filtros (aparece na URL).
+ *
+ * Vale para qualquer filtro de lista (tipo de registro, portaria) — o valor é
+ * o mesmo porque, na URL, "todos" significa "sem filtro".
+ */
+export const ALL_FILTER = 'all'
+
+/**
+ * Sentinela de "sem seleção" nos selects (o Radix não aceita string vazia).
+ *
+ * Compartilhado pelos dois selects com valor anulável — o setor da entrada e a
+ * portaria do dispositivo — para não ficarem dois literais soltos.
+ */
+export const NO_SELECTION_VALUE = 'none'
 
 /**
  * Cenário da solicitação que o registro da portaria vai criar (regra 41).
@@ -236,6 +268,29 @@ export function deriveRegistrationScenario({
     return isNewDriver ? 'NEW_USER' : 'LINK'
   }
   return isNewDriver ? 'BOTH' : 'NEW_VEHICLE'
+}
+
+/**
+ * A entrada precisa criar a solicitação junto (bloco `request`)?
+ *
+ * Sim quando o porteiro está **cadastrando** o condutor/veículo (exceção
+ * pedida por ele) ou quando o veredito exige solicitação e não há uma aberta
+ * para reaproveitar — nesse caso a entrada manda `accessRequestId` em vez do
+ * bloco `request`.
+ *
+ * @param params Exceção pedida pelo porteiro + flags da ficha.
+ * @returns `true` quando o payload deve levar o bloco `request`.
+ */
+export function needsRequestBlock({
+  isNewDriver,
+  requiresRequest,
+  reusableRequestId,
+}: {
+  isNewDriver: boolean
+  requiresRequest: boolean | undefined
+  reusableRequestId: string | null | undefined
+}): boolean {
+  return isNewDriver || (!!requiresRequest && !reusableRequestId)
 }
 
 /**

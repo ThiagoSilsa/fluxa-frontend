@@ -4,6 +4,7 @@ import {
   buildAccessRecordsQuery,
   getOccupancyRate,
   toIsoDayRange,
+  toOccupancyDepartmentViews,
   toOccupancyViewModel,
   toRegisterDenialPayload,
   toRegisterEntryPayload,
@@ -19,6 +20,32 @@ describe('getOccupancyRate', () => {
 
   it('devolve null quando não há capacidade', () => {
     expect(getOccupancyRate(2, 0)).toBeNull()
+  })
+})
+
+describe('toOccupancyDepartmentViews', () => {
+  it('marca o percentual de cada setor', () => {
+    expect(
+      toOccupancyDepartmentViews([
+        { departmentId: 'd1', name: 'Recepção', occupied: 2, capacity: 4 },
+        { departmentId: 'd2', name: 'Operação', occupied: 3, capacity: 10 },
+      ]),
+    ).toEqual([
+      { departmentId: 'd1', name: 'Recepção', occupied: 2, capacity: 4, rate: 50 },
+      { departmentId: 'd2', name: 'Operação', occupied: 3, capacity: 10, rate: 30 },
+    ])
+  })
+
+  it('setor sem capacidade configurada fica sem percentual', () => {
+    expect(
+      toOccupancyDepartmentViews([
+        { departmentId: 'd1', name: 'Recepção', occupied: 3, capacity: 0 },
+      ]),
+    ).toEqual([{ departmentId: 'd1', name: 'Recepção', occupied: 3, capacity: 0, rate: null }])
+  })
+
+  it('lista vazia devolve lista vazia', () => {
+    expect(toOccupancyDepartmentViews([])).toEqual([])
   })
 })
 

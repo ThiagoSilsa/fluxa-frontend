@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next'
 // Types
 import type { OccupancyDepartmentView } from '../types/access.types'
 
+// Lib
+import { NO_SELECTION_VALUE } from '../lib/access.lib'
+
 // Shared
 import {
   Label,
@@ -13,9 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#/shared/components'
-
-/** Valor do item "sem setor" (o `Select` do Radix não aceita string vazia). */
-export const NO_DEPARTMENT_VALUE = 'none'
 
 export type AccessDepartmentSelectProps = {
   /** Setores ativos (opções extras além do padrão do veículo). */
@@ -69,15 +69,15 @@ export function AccessDepartmentSelect({
     <div className="space-y-2">
       <Label htmlFor="register-department">{t('register.department.label')}</Label>
       <Select
-        value={value ?? NO_DEPARTMENT_VALUE}
-        onValueChange={(next) => onChange(next === NO_DEPARTMENT_VALUE ? null : next)}
+        value={value ?? NO_SELECTION_VALUE}
+        onValueChange={(next) => onChange(next === NO_SELECTION_VALUE ? null : next)}
         disabled={disabled}
       >
         <SelectTrigger id="register-department" className="w-full">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={NO_DEPARTMENT_VALUE}>{t('register.department.none')}</SelectItem>
+          <SelectItem value={NO_SELECTION_VALUE}>{t('register.department.none')}</SelectItem>
           {options.map((department) => (
             <SelectItem key={department.departmentId} value={department.departmentId}>
               {department.name}

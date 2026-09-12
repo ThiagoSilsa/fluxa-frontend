@@ -14,8 +14,8 @@ import {
 // Types
 import type { AccessRecordEntranceOption } from '../types/access.types'
 
-/** Valor do item "sem portaria" no select (o `Select` do Radix não aceita `''`). */
-export const NO_DEVICE_ENTRANCE = 'none'
+// Lib
+import { NO_SELECTION_VALUE } from '../lib/access.lib'
 
 export type DeviceEntranceSelectProps = {
   /** Portarias ativas da empresa (`parameters` do feed). */
@@ -54,15 +54,15 @@ export function DeviceEntranceSelect({
         {t('deviceEntrance.label')}
       </Label>
       <Select
-        value={value ?? NO_DEVICE_ENTRANCE}
-        onValueChange={(next) => onChange(next === NO_DEVICE_ENTRANCE ? null : next)}
+        value={value ?? NO_SELECTION_VALUE}
+        onValueChange={(next) => onChange(next === NO_SELECTION_VALUE ? null : next)}
         disabled={disabled}
       >
         <SelectTrigger id="device-entrance" className="w-56" aria-label={t('deviceEntrance.label')}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={NO_DEVICE_ENTRANCE}>{t('deviceEntrance.none')}</SelectItem>
+          <SelectItem value={NO_SELECTION_VALUE}>{t('deviceEntrance.none')}</SelectItem>
           {entrances.map((entrance) => (
             <SelectItem key={entrance.id} value={entrance.id}>
               {entrance.name}
