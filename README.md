@@ -20,21 +20,21 @@ Aplicação **web (SPA)** do sistema **Fluxa** para **controle de acesso de veí
 ![i18next](https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
 
-| Tecnologia | Finalidade |
-|---|---|
-| **React 19** + **TypeScript** | Interface e linguagem (modo estrito) |
-| **TanStack Start** (Vite) | Meta-framework de aplicação sobre Vite (modo SPA) |
-| **TanStack Router** | Roteamento file-based com árvore de rotas gerada |
-| **TanStack Query** | Cache/estado de dados no servidor (hooks de query/mutation) |
-| **Tailwind CSS v4** | Estilização utilitária |
-| **shadcn/ui + Radix UI** | Componentes de interface acessíveis |
-| **React Hook Form + Zod** | Formulários e validação (schemas) |
-| **i18next / react-i18next** | Internacionalização (pt / en) com detecção de idioma |
-| **Recharts** | Gráficos e dashboards |
-| **lucide-react** | Ícones |
-| **sonner** | Notificações (toasts) |
-| **next-themes** | Tema claro/escuro |
-| **Vitest** | Testes unitários |
+| Tecnologia                    | Finalidade                                                  |
+| ----------------------------- | ----------------------------------------------------------- |
+| **React 19** + **TypeScript** | Interface e linguagem (modo estrito)                        |
+| **TanStack Start** (Vite)     | Meta-framework de aplicação sobre Vite (modo SPA)           |
+| **TanStack Router**           | Roteamento file-based com árvore de rotas gerada            |
+| **TanStack Query**            | Cache/estado de dados no servidor (hooks de query/mutation) |
+| **Tailwind CSS v4**           | Estilização utilitária                                      |
+| **shadcn/ui + Radix UI**      | Componentes de interface acessíveis                         |
+| **React Hook Form + Zod**     | Formulários e validação (schemas)                           |
+| **i18next / react-i18next**   | Internacionalização (pt / en) com detecção de idioma        |
+| **Recharts**                  | Gráficos e dashboards                                       |
+| **lucide-react**              | Ícones                                                      |
+| **sonner**                    | Notificações (toasts)                                       |
+| **next-themes**               | Tema claro/escuro                                           |
+| **Vitest**                    | Testes unitários                                            |
 
 ---
 
@@ -104,9 +104,9 @@ cp .env.example .env
 
 Variáveis disponíveis:
 
-| Variável | Descrição |
-|---|---|
-| `VITE_API_URL` | URL base da API consumida pela aplicação |
+| Variável        | Descrição                                 |
+| --------------- | ----------------------------------------- |
+| `VITE_API_URL`  | URL base da API consumida pela aplicação  |
 | `VITE_USE_MOCK` | `true` para usar dados mockados (sem API) |
 
 ### 3. Inicie em modo desenvolvimento
@@ -121,16 +121,16 @@ O servidor de desenvolvimento sobe em `http://localhost:3001`.
 
 ## 🧪 Scripts úteis
 
-| Comando | Descrição |
-|---|---|
-| `npm run dev` | Servidor de desenvolvimento (porta 3001) |
-| `npm run build` | Build de produção |
-| `npm run preview` | Pré-visualização do build |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier + ESLint `--fix` |
-| `npm run check` | Verificação do Prettier (`prettier --check`) |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run test` | Testes unitários (Vitest) |
+| Comando                   | Descrição                                     |
+| ------------------------- | --------------------------------------------- |
+| `npm run dev`             | Servidor de desenvolvimento (porta 3001)      |
+| `npm run build`           | Build de produção                             |
+| `npm run preview`         | Pré-visualização do build                     |
+| `npm run lint`            | ESLint                                        |
+| `npm run format`          | Prettier + ESLint `--fix`                     |
+| `npm run check`           | Verificação do Prettier (`prettier --check`)  |
+| `npm run typecheck`       | `tsc --noEmit`                                |
+| `npm run test`            | Testes unitários (Vitest)                     |
 | `npm run generate-routes` | Regenera a árvore de rotas do TanStack Router |
 
 ---
