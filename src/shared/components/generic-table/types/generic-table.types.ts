@@ -13,34 +13,62 @@ declare module '@tanstack/react-table' {
 /**
  * Props da tabela genérica.
  *
- * A expansão de linha é um **par** (sub-conteúdo + rótulos acessíveis): o
- * componente compartilhado não embute texto de idioma nenhum, então quem liga
- * a expansão precisa trazer os rótulos traduzidos junto.
+ * Duas famílias de props são **pares obrigatórios** por tipo: a expansão de
+ * linha (sub-conteúdo + rótulos acessíveis) e a barra de paginação (rótulos) —
+ * o componente compartilhado não embute texto de idioma nenhum.
  *
  * @template TData Tipo dos dados da tabela.
  */
 export type GenericTableProps<TData> = GenericTableCommonProps<TData> &
-  (
-    | {
-        /**
-         * Sub-conteúdo de uma linha expandida — quando informado, a tabela
-         * ganha uma coluna com o botão de expandir/recolher.
-         *
-         * Sem `onRowClick`, clicar na linha também alterna a expansão (alvo
-         * grande para o balcão); com `onRowClick`, só o botão alterna (o
-         * clique na linha continua sendo a ação da tela). O `role="row"` é
-         * preservado nos dois casos.
-         */
-        renderExpandedRow: (row: TData) => ReactNode
-        /** Rótulos acessíveis do botão de expandir/recolher (i18n do consumidor). */
-        expandLabels: TableExpandLabels
-      }
-    | {
-        /** Tabela sem expansão de linha (o default). */
-        renderExpandedRow?: undefined
-        expandLabels?: TableExpandLabels
-      }
-  )
+  ExpansionProps<TData> &
+  PaginationProps
+
+/**
+ * Expansão de linha (opt-in).
+ *
+ * O par anda junto: quem renderiza a linha expandida traz os rótulos
+ * traduzidos do botão de expandir/recolher.
+ */
+type ExpansionProps<TData> =
+  | {
+      /**
+       * Sub-conteúdo de uma linha expandida — quando informado, a tabela
+       * ganha uma coluna com o botão de expandir/recolher.
+       *
+       * Sem `onRowClick`, clicar na linha também alterna a expansão (alvo
+       * grande para o balcão); com `onRowClick`, só o botão alterna (o clique
+       * na linha continua sendo a ação da tela). O `role="row"` é preservado
+       * nos dois casos.
+       */
+      renderExpandedRow: (row: TData) => ReactNode
+      /** Rótulos acessíveis do botão de expandir/recolher (i18n do consumidor). */
+      expandLabels: TableExpandLabels
+    }
+  | {
+      /** Tabela sem expansão de linha (o default). */
+      renderExpandedRow?: undefined
+      expandLabels?: TableExpandLabels
+    }
+
+/**
+ * Barra de paginação.
+ *
+ * Com a barra visível (o default) os rótulos são obrigatórios: `limit` é o
+ * texto ao lado do seletor de tamanho e os outros quatro nomeiam os botões de
+ * primeira/anterior/próxima/última página.
+ */
+type PaginationProps =
+  | {
+      /** Oculta a barra de paginação (útil para tabelas sem paginação). */
+      hidePagination?: false
+      /** Rótulos da paginação (i18n do consumidor). */
+      paginationLabels: TablePaginationLabels
+    }
+  | {
+      /** Oculta a barra de paginação (útil para tabelas sem paginação). */
+      hidePagination: true
+      paginationLabels?: TablePaginationLabels
+    }
 
 /**
  * Props da tabela que não dependem da expansão de linha.
@@ -92,9 +120,6 @@ export type GenericTableCommonProps<TData> = {
   /** Habilita ordenação nas colunas */
   enableSorting?: boolean
 
-  /** Labels da paginacao (para i18n). */
-  paginationLabels?: TablePaginationLabels
-
   /** Callback disparado ao clicar em uma linha */
   onRowClick?: (row: TData) => void
 
@@ -111,9 +136,6 @@ export type GenericTableCommonProps<TData> = {
 
   /** Classes extras para o container da tabela (ex: overflow-x-auto). */
   tableContainerClassName?: string
-
-  /** Oculta a barra de paginação (útil para tabelas sem paginação). */
-  hidePagination?: boolean
 }
 
 /** Rótulos acessíveis do controle de expandir/recolher (i18n do consumidor). */

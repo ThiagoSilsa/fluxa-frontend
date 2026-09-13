@@ -28,6 +28,13 @@ const columns = [
 
 /** Rótulos do consumidor (a tabela não embute texto de nenhum idioma). */
 const expandLabels = { expand: 'Expand', collapse: 'Collapse' }
+const paginationLabels = {
+  limit: 'Rows per page',
+  first: 'First page',
+  previous: 'Previous page',
+  next: 'Next page',
+  last: 'Last page',
+}
 
 /**
  * Botões do chevron, buscados pelos rótulos que o consumidor passou.
@@ -57,9 +64,11 @@ const baseProps = {
   onPageSizeChange: vi.fn(),
 }
 
-/** Renderiza a tabela sem expansão (só as props comuns). */
+/** Renderiza a tabela sem expansão (só as props comuns) e com paginação. */
 function renderTable(overrides: Partial<GenericTableCommonProps<Row>> = {}) {
-  return render(<GenericTable<Row> {...baseProps} {...overrides} />)
+  return render(
+    <GenericTable<Row> {...baseProps} paginationLabels={paginationLabels} {...overrides} />,
+  )
 }
 
 /** Sub-conteúdo padrão da linha expandida. */
@@ -83,6 +92,7 @@ function expandableTable(
     <GenericTable<Row>
       {...baseProps}
       {...overrides}
+      paginationLabels={paginationLabels}
       getRowKey={(row) => row.id}
       renderExpandedRow={expansion.renderRow ?? expandedObservation}
       expandLabels={expansion.labels ?? expandLabels}
@@ -180,5 +190,34 @@ describe('GenericTable — linha expansível (opt-in)', () => {
     )
 
     expect(getExpanderButtons()).toHaveLength(0)
+  })
+})
+
+describe('GenericTable — rótulos da paginação', () => {
+  it('usa os rótulos do consumidor na barra de paginação', () => {
+    renderTable()
+
+    expect(screen.getByText('Rows per page')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'First page' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Previous page' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Next page' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Last page' })).toBeTruthy()
+  })
+
+  it('paginação sem rótulos não compila (e não renderiza a barra)', () => {
+    render(
+      // @ts-expect-error — o tipo exige `paginationLabels` com a barra visível.
+      <GenericTable<Row> {...baseProps} />,
+    )
+
+    expect(screen.queryByText('Rows per page')).toBeNull()
+  })
+
+  it('com a paginação escondida os rótulos são dispensáveis', () => {
+    render(<GenericTable<Row> {...baseProps} hidePagination />)
+
+    expect(screen.queryByRole('button', { name: 'First page' })).toBeNull()
+    // As linhas continuam na tabela — só a barra sai.
+    expect(screen.getByText('ABC1D23')).toBeTruthy()
   })
 })

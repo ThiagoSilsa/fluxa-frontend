@@ -175,7 +175,9 @@ export function GenericTable<TData>({
         )}
       </div>
 
-      {!hidePagination && (
+      {/* O tipo exige os rótulos com a barra visível; a checagem cobre um
+          chamador sem tipos (melhor sem barra do que com rótulos vazios). */}
+      {!hidePagination && paginationLabels ? (
         <div className="mt-auto pt-6">
           <TablePagination
             total={total}
@@ -183,18 +185,10 @@ export function GenericTable<TData>({
             pageSize={pageSize}
             onPageChange={onPageChange}
             onPageSizeChange={onPageSizeChange}
-            labels={
-              paginationLabels ?? {
-                limit: 'Itens por página',
-                first: 'Primeira página',
-                previous: 'Página anterior',
-                next: 'Próxima página',
-                last: 'Última página',
-              }
-            }
+            labels={paginationLabels}
           />
         </div>
-      )}
+      ) : null}
     </section>
   )
 }
