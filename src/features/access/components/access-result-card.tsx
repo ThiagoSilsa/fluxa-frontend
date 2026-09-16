@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 
 // Lib
-import { formatDateTime, getDenialReasonLabelKey } from '../lib/access.lib'
+import { getDenialReasonLabelKey } from '../lib/access.lib'
 
 // Types
 import type {
@@ -17,6 +17,7 @@ import type {
 
 // Shared
 import { Button, Card, CardContent, CardHeader, CardTitle } from '#/shared/components'
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 
 export type AccessResultCardProps = {
   /** Resultado da entrada (`granted` decide o tom). */

@@ -2,11 +2,11 @@
 import { describe, expect, it } from 'vitest'
 
 // Lib
-import { APP_LANGUAGES, localeToLanguage } from './language.lib'
+import { APP_LANGUAGES, localeToLanguage, toLocaleTag } from './language.lib'
 
 describe('APP_LANGUAGES', () => {
   it('lista os idiomas suportados', () => {
-    expect(APP_LANGUAGES).toEqual(['pt', 'en'])
+    expect(APP_LANGUAGES).toEqual(['pt', 'en', 'es'])
   })
 })
 
@@ -29,13 +29,36 @@ describe('localeToLanguage', () => {
     expect(localeToLanguage('en-GB')).toBe('en')
   })
 
+  it('mapeia es para "es" (qualquer região)', () => {
+    expect(localeToLanguage('es')).toBe('es')
+    expect(localeToLanguage('es-ES')).toBe('es')
+    expect(localeToLanguage('es-AR')).toBe('es')
+    expect(localeToLanguage('es-MX')).toBe('es')
+  })
+
   it('retorna null para idioma não suportado', () => {
     expect(localeToLanguage('fr')).toBeNull()
-    expect(localeToLanguage('es')).toBeNull()
+    expect(localeToLanguage('de-DE')).toBeNull()
   })
 
   it('ignora caixa alta', () => {
     expect(localeToLanguage('PT-BR')).toBe('pt')
     expect(localeToLanguage('EN')).toBe('en')
+    expect(localeToLanguage('ES-AR')).toBe('es')
+  })
+})
+
+describe('toLocaleTag', () => {
+  it('devolve o locale do idioma, com a região de referência', () => {
+    expect(toLocaleTag('pt')).toBe('pt-BR')
+    expect(toLocaleTag('en-GB')).toBe('en-US')
+    expect(toLocaleTag('es-AR')).toBe('es-ES')
+  })
+
+  it('idioma não suportado cai no locale do idioma de fallback', () => {
+    // O texto cai no inglês (`fallbackLng`); a data segue o mesmo caminho.
+    expect(toLocaleTag('fr')).toBe('en-US')
+    expect(toLocaleTag(null)).toBe('en-US')
+    expect(toLocaleTag(undefined)).toBe('en-US')
   })
 })

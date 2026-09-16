@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import {
-  formatDateTime,
   getBlockRequestStatusLabelKey,
   getBlockStatusLabelKey,
   getBlockTypeLabelKey,
@@ -26,19 +25,5 @@ describe('getBlockRequestStatusLabelKey', () => {
     expect(getBlockRequestStatusLabelKey('APPROVED')).toBe('requestStatus.APPROVED')
     expect(getBlockRequestStatusLabelKey('REJECTED')).toBe('requestStatus.REJECTED')
     expect(getBlockRequestStatusLabelKey('CANCELLED')).toBe('requestStatus.CANCELLED')
-  })
-})
-
-describe('formatDateTime', () => {
-  it('formata um instante ISO em data/hora local', () => {
-    // O separador data/hora varia por ambiente/ICU (espaço, vírgula ou ambos).
-    expect(formatDateTime('2026-08-21T14:30:00.000Z')).toMatch(
-      /\d{2}\/\d{2}\/\d{4}[, ]+\d{2}:\d{2}/,
-    )
-  })
-
-  it('devolve traço para null/undefined', () => {
-    expect(formatDateTime(null)).toBe('—')
-    expect(formatDateTime(undefined)).toBe('—')
   })
 })

@@ -12,7 +12,10 @@ import { GoPlus } from 'react-icons/go'
 import { toCreateBlockPayload, toRevokeBlockPayload } from '../mappers/block.mapper'
 
 // Lib
-import { formatDateTime, getBlockTypeLabelKey } from '../lib/block.lib'
+import { getBlockTypeLabelKey } from '../lib/block.lib'
+
+// Shared
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 
 // Hooks
 import { useBlockMutations } from '../hooks/use-block-mutations'

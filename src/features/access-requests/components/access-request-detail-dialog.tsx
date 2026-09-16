@@ -18,7 +18,6 @@ import {
   accessRequestNeedsEmployeeCredentials,
   getAccessRequestUserTypeLabelKey,
 } from '../lib/access-request.lib'
-import { formatDateTime } from './detail-format'
 
 // Mappers
 import { toAcceptAccessRequestPayload } from '../mappers/access-request.mapper'
@@ -58,6 +57,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#/shared/components'
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 
 export type AccessRequestDetailDialogProps = {
   /** Controla a abertura do dialog. */

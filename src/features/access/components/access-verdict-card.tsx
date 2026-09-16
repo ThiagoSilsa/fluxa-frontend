@@ -5,17 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
 
 // Lib
-import {
-  formatDateTime,
-  getVerdictLabelKey,
-  getVerdictReasonNameKey,
-  verdictTone,
-} from '../lib/access.lib'
+import { getVerdictLabelKey, getVerdictReasonNameKey, verdictTone } from '../lib/access.lib'
 
 // Types
 import type { AccessContextResponse } from '../types/access.types'
 
 // Shared
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 import { cn } from '#/shared/lib/utils'
 
 /** Tom do veredito → classes do bloco de veredito. */

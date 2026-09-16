@@ -11,14 +11,10 @@ import type { DeviceDeleteTarget, DeviceEntity } from '../types/devices.types'
 import { Badge, Button } from '#/shared/components'
 
 // Libs
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 import { cn } from '#/shared/lib/utils'
 
 const columnHelper = createColumnHelper<DeviceEntity>()
-
-/** Formata uma data ISO para exibição local (data + hora curta). */
-function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString()
-}
 
 /**
  * Colunas da tabela de dispositivos.

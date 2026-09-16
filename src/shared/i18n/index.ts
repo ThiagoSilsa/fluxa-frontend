@@ -6,12 +6,16 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import commonEn from './locales/en.json'
 import commonPt from './locales/pt.json'
+import commonEs from './locales/es.json'
 import languageSelectorEn from '#/shared/components/language-selector/i18n/en.json'
 import languageSelectorPt from '#/shared/components/language-selector/i18n/pt.json'
+import languageSelectorEs from '#/shared/components/language-selector/i18n/es.json'
 import loginEn from '#/features/login/i18n/en.json'
 import loginPt from '#/features/login/i18n/pt.json'
+import loginEs from '#/features/login/i18n/es.json'
 import mainLayoutEn from '#/widgets/main-layout/i18n/en.json'
 import mainLayoutPt from '#/widgets/main-layout/i18n/pt.json'
+import mainLayoutEs from '#/widgets/main-layout/i18n/es.json'
 import rolesEn from '#/features/roles/i18n/en.json'
 import rolesPt from '#/features/roles/i18n/pt.json'
 import usersEn from '#/features/users/i18n/en.json'
@@ -91,11 +95,18 @@ i18n
         usersImport: usersImportEn,
         userVehiclesImport: userVehiclesImportEn,
       },
+
+      es: {
+        common: commonEs,
+        login: loginEs,
+        languageSelector: languageSelectorEs,
+        mainLayout: mainLayoutEs,
+      },
     },
 
     fallbackLng: 'en',
 
-    supportedLngs: ['pt', 'en'],
+    supportedLngs: ['pt', 'en', 'es'],
 
     ns: [
       'common',

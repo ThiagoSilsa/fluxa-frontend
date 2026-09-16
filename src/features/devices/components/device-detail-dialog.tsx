@@ -23,6 +23,7 @@ import {
 } from '#/shared/components'
 
 // Libs
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 import { cn } from '#/shared/lib/utils'
 
 export type DeviceDetailDialogProps = {
@@ -34,11 +35,6 @@ export type DeviceDetailDialogProps = {
   device: DeviceEntity
   /** Dispara o fluxo de rotação de token (com confirmação na página). */
   onRotate: (device: DeviceEntity) => void
-}
-
-/** Formata uma data ISO para exibição local (data + hora curta). */
-function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString()
 }
 
 /**

@@ -1,0 +1,38 @@
+{
+  "actions": {
+    "logout": "Salir"
+  },
+  "detail": {
+    "back": "Volver"
+  },
+  "home": {
+    "title": "Inicio",
+    "description": "Esta página está en construcción."
+  },
+  "placeholder": {
+    "description": "Esta página está en construcción."
+  },
+  "no-access": {
+    "title": "Sin acceso",
+    "description": "No tienes permiso para acceder a esta página."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La dirección que ingresaste no existe o fue movida.",
+    "action": "Volver al inicio"
+  },
+  "pagination": {
+    "limit": "Elementos por página",
+    "first": "Primera página",
+    "previous": "Página anterior",
+    "next": "Página siguiente",
+    "last": "Última página"
+  },
+  "errors": {
+    "invalidCredentials": "Credenciales inválidas",
+    "validation": "Error de validación",
+    "unexpected": "Error inesperado",
+    "generic": "Ocurrió un error inesperado",
+    "invalid-token": "Sesión inválida o expirada"
+  }
+}

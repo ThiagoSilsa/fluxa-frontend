@@ -3,10 +3,12 @@
   "follow-company": "Padrão",
   "languages": {
     "pt": "Português",
-    "en": "Inglês"
+    "en": "Inglês",
+    "es": "Espanhol"
   },
   "short": {
     "pt": "PT",
-    "en": "EN"
+    "en": "EN",
+    "es": "ES"
   }
 }

@@ -25,6 +25,9 @@ const registerDenial = { mutate: vi.fn(), isPending: false }
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { language: 'pt' } }),
+  // O bootstrap do i18n (importado pela lib de data/hora) monta este plugin:
+  // o mock precisa da mesma superfície do módulo real.
+  initReactI18next: { type: '3rdParty', init: () => {} },
 }))
 
 vi.mock('../hooks/use-access-context-query', () => ({

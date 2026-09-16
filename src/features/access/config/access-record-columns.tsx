@@ -5,7 +5,10 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Badge } from '#/shared/components'
 
 // Lib
-import { formatDateTime, getDenialReasonLabelKey } from '../lib/access.lib'
+import { getDenialReasonLabelKey } from '../lib/access.lib'
+
+// Shared
+import { formatDateTime } from '#/shared/lib/datetime.lib'
 
 // Types
 import type { AccessRecord } from '../types/access.types'

@@ -1,0 +1,50 @@
+{
+  "navbar": {
+    "toggleMenu": "Abrir menú"
+  },
+  "sidebar": {
+    "company": {
+      "label": "Empresa de la sesión"
+    },
+    "language": "Idioma",
+    "logout": "Salir",
+    "search": {
+      "placeholder": "Buscar páginas",
+      "noResults": "No se encontraron páginas"
+    },
+    "items": {
+      "home": "Inicio",
+      "home-desc": "Vista general del panel",
+      "portaria": "Portería",
+      "portaria-desc": "Registra la entrada y salida de vehículos",
+      "ocupacao": "Ocupación",
+      "ocupacao-desc": "Vehículos dentro en tiempo real",
+      "blocks": "Bloqueos",
+      "blocks-desc": "Gestiona bloqueos y solicitudes de bloqueo",
+      "requests": "Solicitudes",
+      "requests-desc": "Solicitudes de acceso",
+      "management": "Gestión",
+      "management-desc": "Gestiona usuarios, cargos y registros",
+      "connections": "Conexiones",
+      "connections-desc": "Dispositivos conectados",
+      "configurations": "Configuración",
+      "configurations-desc": "Importaciones y ajustes",
+      "users": "Usuarios",
+      "users-desc": "Gestiona usuarios del sistema",
+      "roles": "Cargos",
+      "roles-desc": "Gestiona cargos y permisos",
+      "departments": "Departamentos",
+      "departments-desc": "Gestiona departamentos",
+      "entrances": "Porterías",
+      "entrances-desc": "Gestiona porterías",
+      "vehicleTypes": "Tipos de vehículo",
+      "vehicleTypes-desc": "Gestiona tipos de vehículo",
+      "vehicles": "Vehículos",
+      "vehicles-desc": "Gestiona vehículos",
+      "imports": "Importaciones",
+      "imports-desc": "Importaciones en lote",
+      "devices": "Dispositivos",
+      "devices-desc": "Gestiona dispositivos"
+    }
+  }
+}

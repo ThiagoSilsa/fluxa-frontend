@@ -77,6 +77,23 @@ describe('LanguageProvider', () => {
     expect(window.localStorage.getItem(LANGUAGE_OVERRIDE_KEY)).toBe('pt')
   })
 
+  it('o espanhol detectado no navegador vale como idioma da interface', () => {
+    const { result } = render('es-AR')
+
+    expect(result.current.language).toBe('es')
+    expect(result.current.override).toBeNull()
+  })
+
+  it('a escolha manual de espanhol sobrepõe o idioma detectado', () => {
+    const { result } = render('pt')
+
+    act(() => result.current.setLanguage('es'))
+
+    expect(result.current.language).toBe('es')
+    expect(result.current.override).toBe('es')
+    expect(window.localStorage.getItem(LANGUAGE_OVERRIDE_KEY)).toBe('es')
+  })
+
   it('escolher "Padrão" apaga a escolha e volta ao idioma detectado', () => {
     const { result } = render('en')
 
