@@ -14,7 +14,7 @@ import { entrancesService } from '../services/entrance.service'
 import type { CreateEntrancePayload, UpdateEntrancePayload } from '../types/entrances.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de portaria: criar, atualizar e excluir
@@ -40,7 +40,7 @@ export function useEntranceMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -53,7 +53,7 @@ export function useEntranceMutations() {
       toast.success(t('notifications.update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -65,7 +65,7 @@ export function useEntranceMutations() {
       toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

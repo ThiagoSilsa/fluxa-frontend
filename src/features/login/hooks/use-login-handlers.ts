@@ -22,7 +22,7 @@ import { authService } from '../services/auth.service'
 // Lib
 import { buildUserSession } from '#/shared/services/session.service'
 import { parseTokenPayload } from '#/shared/lib/auth-token'
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 // Types
 import type { AuthUser } from '#/shared/types/auth.types'
@@ -99,7 +99,7 @@ export function useLoginHandlers() {
     },
 
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -132,7 +132,7 @@ export function useLoginHandlers() {
   return {
     handleSubmit,
     isSubmitting: mutation.isPending,
-    authError: mutation.error ? tc(getAPIErrorTranslationKey(mutation.error)) : null,
+    authError: mutation.error ? translateApiError(tc, mutation.error) : null,
     clearAuthError: () => mutation.reset(),
     companies,
     chooseCompany,

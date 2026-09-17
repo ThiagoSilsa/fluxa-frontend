@@ -9,8 +9,31 @@ import type {
 } from '../types/access.types'
 
 // Shared
+import { apiErrorKeyMap } from '#/shared/enum/api-error-key'
 import { PermissionCode } from '#/shared/enum/permission-code'
-import { translateServerMessage } from '#/shared/lib/api-error'
+
+/**
+ * Namespace das chaves do conjunto comum, usado ao qualificar um código do
+ * servidor dentro deste módulo.
+ *
+ * Quem exibe o desfecho traduz com o `t` do namespace `access`; sem a
+ * qualificação, `t('errors.server.X')` procura a chave em `access` e devolve a
+ * própria chave crua na tela (defeito corrigido junto do ticket 01).
+ */
+const COMMON_NAMESPACE = 'common'
+
+/**
+ * Chave i18n de um código do servidor, qualificada com o namespace do conjunto
+ * comum.
+ *
+ * @param code Código enviado pelo backend.
+ * @returns Chave i18n qualificada, ou `null` quando o código não tem tradução.
+ */
+function commonKeyOf(code: string | null | undefined): string | null {
+  const key = code ? apiErrorKeyMap[code] : undefined
+
+  return key ? `${COMMON_NAMESPACE}:${key}` : null
+}
 
 /**
  * Mapeia o motivo do impedimento para a chave de tradução do namespace
@@ -29,47 +52,43 @@ export function getDenialReasonLabelKey(reason: EntryDenialReason): string {
  */
 export interface EntryResultMessageInput {
   granted: boolean
-  message: string
+  /** Código do desfecho enviado pelo backend (ADR 0016 §2). */
+  code: string
   denial?: { reason: EntryDenialReason } | null
 }
 
 /**
  * Chave i18n da **mensagem do desfecho da entrada** (a linha da ficha).
  *
- * O backend devolve a mensagem em português no campo `message`, sem código: ela
- * é usada aqui apenas para **achar a tradução** (`translateServerMessage`), com
- * reserva pelo desfecho — liberado usa o texto de entrada registrada e negado
- * usa o rótulo do motivo do impedimento.
- *
- * Limitação conhecida: a resposta da idempotência ("Entrada já registrada.")
- * chega sem campo que a distinga da entrada comum — a distinção só sai do
- * próprio texto (que é o que fazemos) ou de uma mudança no backend (fora do
- * escopo deste ticket).
+ * O código vem do servidor (`code`), que o backend deriva da mensagem de
+ * resultado — o cliente não deriva mais nada a partir de texto (ADR 0001 §3).
+ * Sem tradução para o código, a reserva é o próprio desfecho: liberado usa o
+ * texto de entrada registrada, negado usa o rótulo do motivo do impedimento.
  *
  * @param response Resposta do registro de entrada.
- * @returns Chave i18n do namespace `access`.
+ * @returns Chave i18n pronta para o `t` do namespace `access`.
  */
 export function getEntryResultMessageKey(response: EntryResultMessageInput): string {
   const fallbackKey = response.granted
     ? 'register.result.entry.granted'
     : getDenialReasonLabelKey(response.denial?.reason ?? 'OTHER')
 
-  return translateServerMessage(response.message, fallbackKey)
+  return commonKeyOf(response.code) ?? fallbackKey
 }
 
 /**
  * Chave i18n do aviso de que o **bloqueio não pôde ser pedido** junto do
  * impedimento.
  *
- * `blockRequestError` é um texto cru do backend (sem `code`): a tradução sai do
- * código derivado da própria mensagem (ex.: "já existe solicitação pendente") e,
- * quando a mensagem não tem tradução, de um aviso genérico no idioma ativo.
+ * O código (`blockRequestErrorCode`) vem do servidor; sem tradução para ele — o
+ * caso do código de reserva que o backend usa quando a mensagem não gera código
+ * —, o aviso é o genérico do idioma ativo.
  *
- * @param message Motivo devolvido pelo backend.
- * @returns Chave i18n do namespace `access`.
+ * @param code Código devolvido pelo backend (`null` quando o bloqueio saiu).
+ * @returns Chave i18n pronta para o `t` do namespace `access`.
  */
-export function getBlockRequestErrorKey(message: string): string {
-  return translateServerMessage(message, 'register.result.blockRequestError')
+export function getBlockRequestErrorKey(code: string | null): string {
+  return commonKeyOf(code) ?? 'register.result.blockRequestError'
 }
 
 /**

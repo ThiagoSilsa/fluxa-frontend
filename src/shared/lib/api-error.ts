@@ -2,7 +2,42 @@
 import { apiErrorKeyMap } from '../enum/api-error-key'
 
 // Types
-import type { ApiErrorPayload } from '../types/api-error.types'
+import type { ApiErrorPayload, ValidationDetail } from '../types/api-error.types'
+
+/**
+ * Tradução de uma chave — o suficiente do `t` do i18next para montar o texto
+ * aqui sem esta camada passar a depender do react-i18next (AGENTS.md §6).
+ */
+export type TranslateFn = (
+  key: string,
+  options?: Record<string, string | number | string[]>,
+) => string
+
+/**
+ * Códigos de regra de validação que o backend envia (ADR 0016 §4) — os mesmos
+ * dez de `ValidationRule` no `fluxa-backend`, mais `UNKNOWN_COLUMN`, que a
+ * validação de estrutura da planilha declara. Código fora desta lista cai em
+ * `errors.validation.unknown`: a tela nunca mostra chave crua.
+ */
+export const VALIDATION_RULE_CODES = [
+  'REQUIRED',
+  'MAX_LENGTH',
+  'MIN_LENGTH',
+  'INVALID_EMAIL',
+  'INVALID_FORMAT',
+  'MIN_VALUE',
+  'MAX_VALUE',
+  'INVALID_TYPE',
+  'INVALID_VALUE',
+  'INVALID_DATE',
+  'UNKNOWN_COLUMN',
+] as const
+
+/**
+ * Teto de violações no toast agregado: um formulário com muitos campos errados
+ * estouraria a largura do toast, então as demais viram uma contagem.
+ */
+export const MAX_VALIDATION_ITEMS = 3
 
 /**
  * Classe de erro personalizada para erros de API. Ela estende a classe nativa Error do JavaScript e inclui propriedades adicionais para fornecer mais contexto sobre o erro, como um código de erro, status HTTP e uma carga útil detalhada.
@@ -34,66 +69,14 @@ export function isApiError(value: unknown): value is ApiError {
 }
 
 /**
- * Deriva o código de erro a partir da **mensagem** do backend.
- *
- * Replica o algoritmo do `HttpErrorCodeFilter` do backend (mesma normalização):
- * a mensagem vira um código em maiúsculas, sem acentos e sem pontuação. É usado
- * nas respostas que trazem o texto cru **sem** o campo `code` — hoje, o aviso de
- * bloqueio do impedimento (`blockRequestError`).
- *
- * @param message Mensagem devolvida pelo backend.
- * @returns Código derivado ou `null` quando não há mensagem/normalização útil.
- */
-export function deriveServerCode(message?: string | null): string | null {
-  if (!message) {
-    return null
-  }
-
-  const normalized = message
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-zA-Z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .replace(/_+/g, '_')
-    .toUpperCase()
-
-  if (normalized.length === 0) {
-    return null
-  }
-
-  return /^[0-9]/.test(normalized) ? `ERROR_${normalized}` : normalized
-}
-
-/**
- * Traduz uma **mensagem crua** do backend (sem campo `code`) para a chave do
- * idioma ativo, usando o mesmo código que o backend derivaria daquela mensagem.
- *
- * A mensagem do servidor nunca é exibida: ela serve só para achar a tradução. Se
- * o código derivado não tiver tradução (mensagem nova no backend), a chave de
- * reserva informada é usada — o texto cai no genérico do idioma ativo, nunca em
- * português.
- *
- * @param message Mensagem crua do backend.
- * @param fallbackKey Chave i18n usada quando não há tradução para a mensagem.
- * @returns Chave i18n traduzível.
- */
-export function translateServerMessage(
-  message: string | null | undefined,
-  fallbackKey: string,
-): string {
-  const code = deriveServerCode(message)
-
-  return (code ? apiErrorKeyMap[code] : undefined) ?? fallbackKey
-}
-
-/**
  * Função para traduzir um código de erro de API em uma chave de tradução. Ela verifica se o código de erro existe no mapa de chaves de erro da API e retorna a chave correspondente. Se o código não for encontrado, retorna uma chave genérica para erros.
  *
- * Códigos do backend (derivados da mensagem por `HttpErrorCodeFilter`) têm
- * chave própria em `errors.server.<CODIGO>`; sem texto para aquele código, cai
- * no genérico. Erro de validação do `class-validator` chega como **lista de
- * mensagens e sem `code`** com HTTP 400 — esse caso tem chave própria (antes
- * caía no "erro inesperado").
+ * O código vem **do servidor** (`payload.code`, derivado da mensagem pelo
+ * `HttpErrorCodeFilter` do backend) e tem chave própria em
+ * `errors.server.<CODIGO>`; sem texto para aquele código, cai no genérico — o
+ * cliente não deriva código de texto (ADR 0001 §3). Erro de validação do
+ * `class-validator` chega como **lista de mensagens e sem `code`** com HTTP 400
+ * — esse caso tem chave própria (antes caía no "erro inesperado").
  *
  * @param payload A carga útil do erro, que pode conter um código de erro.
  * @returns A chave de tradução correspondente ao código de erro ou uma chave genérica se o código não for encontrado.
@@ -106,7 +89,7 @@ export function translateApiCodeError(payload?: ApiErrorPayload | null) {
   }
 
   if (payload?.statusCode === 400) {
-    return 'errors.validation'
+    return 'errors.validation.generic'
   }
 
   return 'errors.generic'
@@ -123,4 +106,113 @@ export function getAPIErrorTranslationKey(error: unknown) {
   }
 
   return 'errors.generic'
+}
+
+/**
+ * Uma violação pronta para virar texto.
+ */
+export interface ValidationItem {
+  /** Chave i18n do rótulo do campo (`fields.<propriedade>`). */
+  fieldLabelKey: string
+  /**
+   * Nome técnico da propriedade — reserva do rótulo, usada pelo `defaultValue`
+   * do i18next quando o campo não está no mapa (ADR 0001 §4).
+   */
+  field: string
+  /** Chave i18n do texto da regra (`errors.validation.<CODIGO>`). */
+  ruleKey: string
+  /** O que o texto da regra precisa (`{ max: 100 }`). */
+  params: Record<string, string | number | string[]>
+}
+
+/**
+ * Nome da propriedade a partir do caminho pontuado que o backend envia.
+ *
+ * DTO aninhado chega como `payload.driver.email`: o rótulo é o do **campo**, não
+ * o do objeto que o contém.
+ *
+ * @param field Caminho pontuado da violação.
+ * @returns O último segmento do caminho.
+ */
+export function fieldNameOf(field: string): string {
+  const segments = field.split('.')
+
+  return segments[segments.length - 1] ?? field
+}
+
+/**
+ * Lê as violações de validação da resposta, tolerando o formato antigo.
+ *
+ * Resposta sem `details` (ou com `details` vazio) devolve lista vazia — é o que
+ * mantém o comportamento anterior para os erros 400 que não são de validação de
+ * DTO.
+ *
+ * @param payload Carga útil do erro.
+ * @returns As violações, na ordem em que o servidor as mandou.
+ */
+export function readValidationItems(payload?: ApiErrorPayload | null): ValidationItem[] {
+  const details = payload?.details
+
+  if (!Array.isArray(details)) {
+    return []
+  }
+
+  return details.map((detail: ValidationDetail) => ({
+    fieldLabelKey: `fields.${fieldNameOf(detail.field)}`,
+    field: fieldNameOf(detail.field),
+    ruleKey: (VALIDATION_RULE_CODES as readonly string[]).includes(detail.code)
+      ? `errors.validation.${detail.code}`
+      : 'errors.validation.unknown',
+    params: detail.params ?? {},
+  }))
+}
+
+/**
+ * Monta o texto do toast agregado: `Campo: regra · Campo: regra`.
+ *
+ * O rótulo do campo sai do mapa central (`fields.<propriedade>`) e, sem entrada
+ * nele, do nome técnico da propriedade (`defaultValue` do i18next). Passando do
+ * teto, o resto vira uma contagem — um toast com dez violações não cabe na
+ * tela (ADR 0001 §4).
+ *
+ * @param t Tradução do **conjunto comum** (onde vivem `errors.*` e `fields.*`).
+ * @param items Violações lidas da resposta.
+ * @returns O texto pronto para o toast.
+ */
+export function formatValidationItems(t: TranslateFn, items: ValidationItem[]): string {
+  const shown = items.slice(0, MAX_VALIDATION_ITEMS)
+  const parts = shown.map((item) => {
+    const label = t(item.fieldLabelKey, { defaultValue: item.field })
+
+    return `${label}: ${t(item.ruleKey, item.params)}`
+  })
+
+  const remaining = items.length - shown.length
+  if (remaining > 0) {
+    parts.push(t('errors.validation.more', { count: remaining }))
+  }
+
+  return parts.join(' · ')
+}
+
+/**
+ * Texto do erro de API para exibir ao usuário.
+ *
+ * Erro de validação com `details` vira o texto agregado (o todo do ADR 0001 §4);
+ * os demais casos continuam sendo a tradução do código do servidor, no idioma
+ * ativo. Esta é a função que as telas usam no `onError` das mutations.
+ *
+ * @param t Tradução do **conjunto comum** (`useTranslation('common')`).
+ * @param error Erro capturado da mutation.
+ * @returns O texto pronto para o toast.
+ */
+export function translateApiError(t: TranslateFn, error: unknown): string {
+  const payload = isApiError(error) ? error.payload : undefined
+  const items = readValidationItems(payload)
+
+  if (items.length > 0) {
+    return formatValidationItems(t, items)
+  }
+
+  return t(getAPIErrorTranslationKey(error))
 }

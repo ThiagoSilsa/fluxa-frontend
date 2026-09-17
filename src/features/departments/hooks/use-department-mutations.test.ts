@@ -4,6 +4,9 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useDepartmentMutations } from './use-department-mutations'
 
+import { ApiError } from '#/shared/lib/api-error'
+import i18n from '#/shared/i18n'
+
 import type { ReactNode } from 'react'
 
 // Mocks de i18n, toast e service
@@ -17,14 +20,24 @@ const mockT = vi.fn((key: string) => {
   }
   return translations[key] ?? key
 })
-const mockTc = vi.fn((key: string) => key)
+
+/**
+ * Tradução do conjunto comum **de verdade**: o texto do erro de validação é o
+ * que o usuário lê, então o caminho completo precisa da tradução real (um `t`
+ * de mentira devolveria a chave e o teste passaria sem provar nada).
+ */
+const commonT = i18n.getFixedT('pt', 'common')
 
 vi.mock('react-i18next', () => ({
+  // Forma de módulo de terceiro que o `.use()` do i18next espera: o bootstrap
+  // real (`#/shared/i18n`) é carregado neste teste por causa da tradução de
+  // verdade do conjunto comum.
+  initReactI18next: { type: '3rdParty', init: () => undefined },
   useTranslation: (ns: string | string[]) => {
     const namespace = Array.isArray(ns) ? ns[0] : ns
     return {
-      t: (key: string) => {
-        if (namespace === 'common') return mockTc(key)
+      t: (key: string, params?: Record<string, unknown>) => {
+        if (namespace === 'common') return commonT(key, params)
         return mockT(`${namespace}:${key}`)
       },
     }
@@ -130,6 +143,53 @@ describe('useDepartmentMutations', () => {
 
       expect(mockRemove).toHaveBeenCalledWith('dept-1')
       expect(mockToastSuccess).toHaveBeenCalledWith('Departamento excluído com sucesso.')
+    })
+  })
+
+  describe('erro de validação', () => {
+    it('mostra o campo e a regra num toast só, no idioma ativo', async () => {
+      mockCreate.mockRejectedValue(
+        new ApiError({
+          statusCode: 400,
+          code: 'VALIDATION_ERROR',
+          message: 'Texto do servidor que não deve aparecer.',
+          details: [
+            { field: 'email', code: 'INVALID_EMAIL' },
+            { field: 'parkingSpace', code: 'MIN_VALUE', params: { min: 0 } },
+          ],
+        }),
+      )
+
+      const { result } = renderHook(() => useDepartmentMutations(), {
+        wrapper: createQueryWrapper(),
+      })
+
+      await act(async () => {
+        await result.current.createDepartment
+          .mutateAsync({ name: 'Recepção', parkingSpace: 30 })
+          .catch(() => undefined)
+      })
+
+      expect(mockToastError).toHaveBeenCalledTimes(1)
+      expect(mockToastError).toHaveBeenCalledWith(
+        'E-mail: formato de e-mail inválido · Vagas: valor mínimo: 0',
+      )
+    })
+
+    it('sem details mantém o genérico de validação traduzido', async () => {
+      mockCreate.mockRejectedValue(new ApiError({ statusCode: 400, message: 'Erro de validação' }))
+
+      const { result } = renderHook(() => useDepartmentMutations(), {
+        wrapper: createQueryWrapper(),
+      })
+
+      await act(async () => {
+        await result.current.createDepartment
+          .mutateAsync({ name: 'Recepção', parkingSpace: 30 })
+          .catch(() => undefined)
+      })
+
+      expect(mockToastError).toHaveBeenCalledWith('Erro de validação')
     })
   })
 })

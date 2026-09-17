@@ -39,72 +39,72 @@ describe('getDenialReasonLabelKey', () => {
 })
 
 describe('getEntryResultMessageKey', () => {
-  it('traduz a entrada liberada pela mensagem do servidor', () => {
-    expect(getEntryResultMessageKey({ granted: true, message: 'Entrada registrada.' })).toBe(
-      'errors.server.ENTRADA_REGISTRADA',
+  it('traduz a entrada liberada pelo código do desfecho', () => {
+    expect(getEntryResultMessageKey({ granted: true, code: 'ENTRADA_REGISTRADA' })).toBe(
+      'common:errors.server.ENTRADA_REGISTRADA',
     )
     expect(
-      getEntryResultMessageKey({ granted: true, message: 'Entrada registrada com solicitação.' }),
-    ).toBe('errors.server.ENTRADA_REGISTRADA_COM_SOLICITACAO')
+      getEntryResultMessageKey({ granted: true, code: 'ENTRADA_REGISTRADA_COM_SOLICITACAO' }),
+    ).toBe('common:errors.server.ENTRADA_REGISTRADA_COM_SOLICITACAO')
   })
 
-  it('traduz a idempotência ("já registrada") pela mensagem do servidor', () => {
-    expect(getEntryResultMessageKey({ granted: true, message: 'Entrada já registrada.' })).toBe(
-      'errors.server.ENTRADA_JA_REGISTRADA',
+  it('traduz a idempotência ("já registrada") pelo código do desfecho', () => {
+    expect(getEntryResultMessageKey({ granted: true, code: 'ENTRADA_JA_REGISTRADA' })).toBe(
+      'common:errors.server.ENTRADA_JA_REGISTRADA',
     )
   })
 
-  it('traduz o impedimento pela mensagem do servidor', () => {
+  it('traduz o impedimento pelo código do desfecho', () => {
     expect(
       getEntryResultMessageKey({
         granted: false,
-        message: 'Veículo inativo.',
+        code: 'VEICULO_INATIVO',
         denial: { reason: 'OTHER' },
       }),
-    ).toBe('errors.server.VEICULO_INATIVO')
+    ).toBe('common:errors.server.VEICULO_INATIVO')
     expect(
       getEntryResultMessageKey({
         granted: false,
-        message: 'VEÍCULO PROIBIDO DE ENTRAR',
+        code: 'VEICULO_PROIBIDO_DE_ENTRAR',
         denial: { reason: 'BLOCKED' },
       }),
-    ).toBe('errors.server.VEICULO_PROIBIDO_DE_ENTRAR')
+    ).toBe('common:errors.server.VEICULO_PROIBIDO_DE_ENTRAR')
   })
 
-  it('cai no motivo do impedimento quando a mensagem não tem tradução', () => {
+  it('cai no motivo do impedimento quando o código não tem tradução', () => {
     expect(
       getEntryResultMessageKey({
         granted: false,
-        message: 'Mensagem nova do backend.',
+        code: 'CODIGO_NOVO_DO_BACKEND',
         denial: { reason: 'BLOCKED' },
       }),
     ).toBe('denial.reasons.BLOCKED')
-    expect(getEntryResultMessageKey({ granted: false, message: 'nova' })).toBe(
-      'denial.reasons.OTHER',
-    )
+    expect(getEntryResultMessageKey({ granted: false, code: '' })).toBe('denial.reasons.OTHER')
   })
 
-  it('cai no texto de entrada registrada quando a liberação vem sem mensagem', () => {
-    expect(getEntryResultMessageKey({ granted: true, message: '' })).toBe(
+  it('cai no texto de entrada registrada quando a liberação vem sem código', () => {
+    expect(getEntryResultMessageKey({ granted: true, code: '' })).toBe(
       'register.result.entry.granted',
     )
   })
 })
 
 describe('getBlockRequestErrorKey', () => {
-  it('traduz a mensagem conhecida do backend', () => {
+  it('traduz o código conhecido do backend', () => {
     expect(
-      getBlockRequestErrorKey('Já existe uma solicitação de bloqueio pendente para esta placa.'),
-    ).toBe('errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA')
-    expect(getBlockRequestErrorKey('Permissão insuficiente para solicitar o bloqueio.')).toBe(
-      'errors.server.PERMISSAO_INSUFICIENTE_PARA_SOLICITAR_O_BLOQUEIO',
+      getBlockRequestErrorKey('JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA'),
+    ).toBe('common:errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA')
+    expect(getBlockRequestErrorKey('PERMISSAO_INSUFICIENTE_PARA_SOLICITAR_O_BLOQUEIO')).toBe(
+      'common:errors.server.PERMISSAO_INSUFICIENTE_PARA_SOLICITAR_O_BLOQUEIO',
     )
   })
 
-  it('cai no aviso genérico quando a mensagem não tem tradução', () => {
-    expect(getBlockRequestErrorKey('Mensagem nova do backend.')).toBe(
+  it('cai no aviso genérico sem código ou com código sem tradução', () => {
+    expect(getBlockRequestErrorKey('CODIGO_NOVO_DO_BACKEND')).toBe(
       'register.result.blockRequestError',
     )
+    expect(getBlockRequestErrorKey('UNKNOWN_ERROR')).toBe('register.result.blockRequestError')
+    expect(getBlockRequestErrorKey(null)).toBe('register.result.blockRequestError')
   })
 })
 

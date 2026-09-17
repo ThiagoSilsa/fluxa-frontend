@@ -19,7 +19,7 @@ import type {
 } from '../types/vehicles.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /** Prefixos de query afetados por mutations de veículo (lista + detalhe). */
 const VEHICLE_QUERY_KEYS = ['vehicles', 'vehicle-detail', 'driver-candidates']
@@ -53,7 +53,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -66,7 +66,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -78,7 +78,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -91,7 +91,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.department-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -103,7 +103,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.department-remove-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -116,7 +116,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.driver-add-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -136,7 +136,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.driver-update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -149,7 +149,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.driver-remove-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -162,7 +162,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.block-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -175,7 +175,7 @@ export function useVehicleMutations() {
       toast.success(t('notifications.unblock-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

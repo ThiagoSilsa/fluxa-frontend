@@ -253,7 +253,11 @@ describe('AccessRegisterDialog', () => {
 
   it('pede confirmação de vaga cheia e envia overCapacity', async () => {
     registerEntry.mutate.mockImplementation((_payload, options) => {
-      options?.onSuccess?.({ granted: true, message: 'Entrada registrada.' })
+      options?.onSuccess?.({
+        granted: true,
+        code: 'ENTRADA_REGISTRADA',
+        message: 'Entrada registrada.',
+      })
     })
 
     renderDialog(buildContext({ requiresOverCapacity: true, verdict: 'ALLOW_OVER_CAPACITY' }))
@@ -387,6 +391,7 @@ describe('AccessRegisterDialog', () => {
   it('mostra o resultado inline e volta para a placa em "Registrar outro"', async () => {
     const entryResult: AccessEntryResponse = {
       granted: true,
+      code: 'ENTRADA_REGISTRADA',
       message: 'Entrada registrada.',
     }
     registerEntry.mutate.mockImplementation((_payload, options) => {
@@ -401,7 +406,7 @@ describe('AccessRegisterDialog', () => {
       expect(screen.getByText('register.result.entry.granted')).toBeTruthy()
     })
     // A mensagem do servidor é traduzida pelo desfecho — nunca exibida crua.
-    expect(screen.getByText('errors.server.ENTRADA_REGISTRADA')).toBeTruthy()
+    expect(screen.getByText('common:errors.server.ENTRADA_REGISTRADA')).toBeTruthy()
 
     fireEvent.click(screen.getByText('register.actions.another'))
 
@@ -446,7 +451,11 @@ describe('AccessRegisterDialog', () => {
 
   it('cadastra o condutor novo e libera com o bloco request (NEW_USER)', async () => {
     registerEntry.mutate.mockImplementation((_payload, options) => {
-      options?.onSuccess?.({ granted: true, message: 'Entrada registrada com solicitação.' })
+      options?.onSuccess?.({
+        granted: true,
+        code: 'ENTRADA_REGISTRADA_COM_SOLICITACAO',
+        message: 'Entrada registrada com solicitação.',
+      })
     })
 
     renderDialog(
@@ -526,6 +535,7 @@ describe('AccessRegisterDialog', () => {
         observation: 'Motorista sem vínculo',
         blockRequest: null,
         blockRequestError: 'Já existe uma solicitação de bloqueio pendente para esta placa.',
+        blockRequestErrorCode: 'JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA',
       })
     })
 
@@ -560,7 +570,7 @@ describe('AccessRegisterDialog', () => {
     return waitFor(() => {
       expect(
         screen.getByText(
-          'errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA',
+          'common:errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA',
         ),
       ).toBeTruthy()
     })

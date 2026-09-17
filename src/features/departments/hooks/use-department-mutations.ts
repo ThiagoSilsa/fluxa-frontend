@@ -14,7 +14,7 @@ import { departmentsService } from '../services/department.service'
 import type { CreateDepartmentPayload, UpdateDepartmentPayload } from '../types/departments.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de departamento: criar, atualizar e excluir
@@ -40,7 +40,7 @@ export function useDepartmentMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -58,7 +58,7 @@ export function useDepartmentMutations() {
       toast.success(t('notifications.update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -70,7 +70,7 @@ export function useDepartmentMutations() {
       toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

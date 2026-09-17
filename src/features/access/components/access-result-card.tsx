@@ -75,9 +75,9 @@ export function AccessResultCard({
             {formatDateTime(denial.occurredAt)}
             {denial.blockRequest ? ` · ${t('register.result.blockRequest')}` : null}
           </p>
-          {denial.blockRequestError ? (
+          {denial.blockRequestErrorCode ? (
             <p className="text-xs text-amber-600">
-              {t(getBlockRequestErrorKey(denial.blockRequestError))}
+              {t(getBlockRequestErrorKey(denial.blockRequestErrorCode))}
             </p>
           ) : null}
           <ResultActions onRegisterAnother={onRegisterAnother} onClose={onClose} />

@@ -4,8 +4,7 @@
   "upload": {
     "download-template": "Download XLSX template",
     "select-file": "Select file",
-    "submit": "Import",
-    "line": "Line"
+    "submit": "Import"
   },
   "active-job": {
     "title": "Import in progress",
@@ -30,7 +29,9 @@
     "success": "Successes",
     "errors": "Errors",
     "duration": "Duration",
-    "error": "Error"
+    "error": "Error",
+    "error-generic": "The import could not be completed.",
+    "error-line": "Line {{line}}: this row could not be imported."
   },
   "validation": {
     "file-extension": "Invalid format. Only .xlsx is accepted.",

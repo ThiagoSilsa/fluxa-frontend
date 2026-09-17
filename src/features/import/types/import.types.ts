@@ -19,7 +19,12 @@ export type ImportJobEntity = {
   processedRows: number
   successCount: number
   errorCount: number
+  /** Texto em português do servidor — só para log; a tela traduz pelo código. */
   errorMessage: string | null
+  /** Código da regra de planilha que reprovou a linha (ADR 0016 §6). */
+  errorCode: string | null
+  /** O que o texto da regra precisa (`{ line: 3, min: 2, max: 255 }`). */
+  errorParams: Record<string, string | number> | null
   fileName: string | null
   createdAt: string
   startedAt: string | null
@@ -35,7 +40,10 @@ export type ImportJobViewModel = {
   processedRows: number
   successCount: number
   errorCount: number
+  /** Preservado para log; a tela usa `errorCode`/`errorParams`. */
   errorMessage: string | null
+  errorCode: string | null
+  errorParams: Record<string, string | number> | null
   fileName: string
   createdAt: string
   startedAt: string | null
@@ -43,6 +51,21 @@ export type ImportJobViewModel = {
   duration: string | null
   progressPercent: number
   isFinished: boolean
+}
+
+/** Campos do job usados para montar o texto do erro (o resto não importa). */
+export type ImportJobErrorInput = Pick<
+  ImportJobViewModel,
+  'errorCode' | 'errorParams' | 'errorMessage'
+>
+
+/**
+ * Erro do job pronto para o `t`: a chave i18n (qualificada quando é do conjunto
+ * comum) e os parâmetros do texto.
+ */
+export type ImportJobErrorText = {
+  key: string
+  params: Record<string, string | number>
 }
 
 /** Resposta paginada da API (formato padrão SOMAR). */

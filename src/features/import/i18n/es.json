@@ -4,8 +4,7 @@
   "upload": {
     "download-template": "Descargar modelo XLSX",
     "select-file": "Seleccionar archivo",
-    "submit": "Importar",
-    "line": "Línea"
+    "submit": "Importar"
   },
   "active-job": {
     "title": "Importación en curso",
@@ -30,7 +29,9 @@
     "success": "Éxitos",
     "errors": "Errores",
     "duration": "Duración",
-    "error": "Error"
+    "error": "Error",
+    "error-generic": "No se pudo completar la importación.",
+    "error-line": "Línea {{line}}: no se pudo importar esta línea."
   },
   "validation": {
     "file-extension": "Formato inválido. Solo se acepta .xlsx.",

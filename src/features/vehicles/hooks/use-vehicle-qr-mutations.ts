@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { vehiclesService } from '../services/vehicle.service'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de QR code de um veículo: emitir, reemitir e
@@ -41,7 +41,7 @@ export function useVehicleQrMutations(vehicleId: string) {
       toast.success(t('qr.notifications.emit-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -53,7 +53,7 @@ export function useVehicleQrMutations(vehicleId: string) {
       toast.success(t('qr.notifications.reissue-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -65,7 +65,7 @@ export function useVehicleQrMutations(vehicleId: string) {
       toast.success(t('qr.notifications.revoke-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

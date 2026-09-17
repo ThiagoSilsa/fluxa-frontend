@@ -46,7 +46,7 @@ import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
 import { useGenericTableSearch } from '#/shared/components/generic-table'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /** Acesso tipado aos search params da rota file-based. */
 const routeApi = getRouteApi('/_private/management/devices')
@@ -132,7 +132,7 @@ export function DevicesPage() {
   // --- Toast de erro da listagem ---
   useEffect(() => {
     if (error) {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     }
   }, [error, tc])
 

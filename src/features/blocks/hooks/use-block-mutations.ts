@@ -14,7 +14,7 @@ import { blockService } from '../services/block.service'
 import type { CreateBlockPayload, RevokeBlockPayload } from '../types/blocks.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /** Queries afetadas por mutations de bloqueio (bloqueios + solicitações). */
 const BLOCK_QUERY_KEYS = ['blocks', 'block-requests']
@@ -47,7 +47,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.create-block-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -60,7 +60,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.revoke-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -72,7 +72,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.create-request-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -84,7 +84,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.approve-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -96,7 +96,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.reject-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -108,7 +108,7 @@ export function useBlockMutations() {
       toast.success(t('notifications.cancel-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

@@ -42,7 +42,7 @@ import { useDebouncedValue } from '#/shared/hooks/use-debounced-value'
 import { useEntityListSearch } from '#/shared/components/entity-list'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 import { canAccess } from '#/shared/lib/auth-access'
 import { PermissionCode } from '#/shared/enum/permission-code'
 
@@ -120,7 +120,7 @@ export function EntrancePage() {
   // --- Toast de erro da listagem ---
   useEffect(() => {
     if (error) {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     }
   }, [error, tc])
 

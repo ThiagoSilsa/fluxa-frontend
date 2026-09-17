@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
   ApiError,
-  deriveServerCode,
+  VALIDATION_RULE_CODES,
   getAPIErrorTranslationKey,
   isApiError,
+  readValidationItems,
   translateApiCodeError,
-  translateServerMessage,
+  translateApiError,
 } from './api-error'
 import type { ApiErrorPayload } from '../types/api-error.types'
 import { apiErrorKeyMap } from '../enum/api-error-key'
@@ -70,7 +71,7 @@ describe('translateApiCodeError', () => {
     expect(translateApiCodeError({ code: 'CREDENCIAIS_INVALIDAS' })).toBe(
       'errors.invalidCredentials',
     )
-    expect(translateApiCodeError({ code: 'VALIDATION_ERROR' })).toBe('errors.validation')
+    expect(translateApiCodeError({ code: 'VALIDATION_ERROR' })).toBe('errors.validation.generic')
     expect(translateApiCodeError({ code: 'UNEXPECTED_ERROR' })).toBe('errors.unexpected')
   })
 
@@ -89,59 +90,12 @@ describe('translateApiCodeError', () => {
 
   it('should use the validation key for a 400 without code', () => {
     expect(translateApiCodeError({ statusCode: 400, message: 'Placa inválida' })).toBe(
-      'errors.validation',
+      'errors.validation.generic',
     )
   })
 
   it('should not use the validation key outside a 400', () => {
     expect(translateApiCodeError({ statusCode: 500 })).toBe('errors.generic')
-  })
-})
-
-// ---------------------------------------------------------------------------
-// deriveServerCode
-// ---------------------------------------------------------------------------
-describe('deriveServerCode', () => {
-  it('should derive the code with the backend normalization', () => {
-    expect(deriveServerCode('Veículo não cadastrado.')).toBe('VEICULO_NAO_CADASTRADO')
-    expect(
-      deriveServerCode('Já existe uma solicitação de bloqueio pendente para esta placa.'),
-    ).toBe('JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA')
-    expect(deriveServerCode('Entrada já registrada.')).toBe('ENTRADA_JA_REGISTRADA')
-  })
-
-  it('should prefix codes that start with a digit', () => {
-    expect(deriveServerCode('2 veículos')).toBe('ERROR_2_VEICULOS')
-  })
-
-  it('should return null without a usable message', () => {
-    expect(deriveServerCode(null)).toBeNull()
-    expect(deriveServerCode(undefined)).toBeNull()
-    expect(deriveServerCode('')).toBeNull()
-    expect(deriveServerCode(' ... ')).toBeNull()
-  })
-})
-
-// ---------------------------------------------------------------------------
-// translateServerMessage
-// ---------------------------------------------------------------------------
-describe('translateServerMessage', () => {
-  it('should translate a message the backend knows', () => {
-    expect(translateServerMessage('Entrada registrada.', 'fallback')).toBe(
-      'errors.server.ENTRADA_REGISTRADA',
-    )
-    expect(translateServerMessage('VEÍCULO PROIBIDO DE ENTRAR', 'fallback')).toBe(
-      'errors.server.VEICULO_PROIBIDO_DE_ENTRAR',
-    )
-  })
-
-  it('should use the fallback for a message without translation', () => {
-    expect(translateServerMessage('Mensagem nova do backend.', 'fallback')).toBe('fallback')
-  })
-
-  it('should use the fallback without a message', () => {
-    expect(translateServerMessage(null, 'fallback')).toBe('fallback')
-    expect(translateServerMessage(undefined, 'fallback')).toBe('fallback')
   })
 })
 
@@ -183,5 +137,178 @@ describe('getAPIErrorTranslationKey', () => {
 
   it('should return generic for random value', () => {
     expect(getAPIErrorTranslationKey('string')).toBe('errors.generic')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// readValidationItems
+// ---------------------------------------------------------------------------
+describe('readValidationItems', () => {
+  it('lê campo, regra e parâmetros de cada violação', () => {
+    expect(
+      readValidationItems({
+        details: [
+          { field: 'email', code: 'INVALID_EMAIL' },
+          { field: 'name', code: 'MAX_LENGTH', params: { max: 100 } },
+        ],
+      }),
+    ).toEqual([
+      {
+        fieldLabelKey: 'fields.email',
+        field: 'email',
+        ruleKey: 'errors.validation.INVALID_EMAIL',
+        params: {},
+      },
+      {
+        fieldLabelKey: 'fields.name',
+        field: 'name',
+        ruleKey: 'errors.validation.MAX_LENGTH',
+        params: { max: 100 },
+      },
+    ])
+  })
+
+  it('usa o último segmento do caminho pontuado (DTO aninhado)', () => {
+    const [item] = readValidationItems({
+      details: [{ field: 'payload.driver.email', code: 'REQUIRED' }],
+    })
+
+    expect(item.fieldLabelKey).toBe('fields.email')
+    expect(item.field).toBe('email')
+  })
+
+  it('código de regra desconhecido cai no genérico', () => {
+    const [item] = readValidationItems({ details: [{ field: 'name', code: 'REGRA_NOVA' }] })
+
+    expect(item.ruleKey).toBe('errors.validation.unknown')
+  })
+
+  it('sem details (ou com details vazio) não há violação', () => {
+    expect(readValidationItems(undefined)).toEqual([])
+    expect(readValidationItems(null)).toEqual([])
+    expect(readValidationItems({ statusCode: 400, message: 'Erro de validação' })).toEqual([])
+    expect(readValidationItems({ details: [] })).toEqual([])
+  })
+})
+
+// ---------------------------------------------------------------------------
+// translateApiError
+// ---------------------------------------------------------------------------
+describe('translateApiError', () => {
+  const t = i18n.getFixedT('pt', 'common')
+
+  it('agrega as violações num texto só, com o rótulo do campo', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      code: 'VALIDATION_ERROR',
+      message: 'Texto do servidor que não deve aparecer.',
+      details: [
+        { field: 'email', code: 'INVALID_EMAIL' },
+        { field: 'plate', code: 'REQUIRED' },
+      ],
+    })
+
+    expect(translateApiError(t, error)).toBe(
+      'E-mail: formato de e-mail inválido · Placa: obrigatório',
+    )
+  })
+
+  it('interpola os parâmetros numéricos da regra', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      details: [
+        { field: 'name', code: 'MAX_LENGTH', params: { max: 100 } },
+        { field: 'parkingSpace', code: 'MIN_VALUE', params: { min: 0 } },
+      ],
+    })
+
+    expect(translateApiError(t, error)).toBe(
+      'Nome: máximo de 100 caracteres · Vagas: valor mínimo: 0',
+    )
+  })
+
+  it('limita a quantidade de itens exibidos', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      details: ['name', 'email', 'plate', 'model', 'color'].map((field) => ({
+        field,
+        code: 'REQUIRED',
+      })),
+    })
+
+    expect(translateApiError(t, error)).toBe(
+      'Nome: obrigatório · E-mail: obrigatório · Placa: obrigatório · +2 outros campos',
+    )
+  })
+
+  it('campo fora do mapa usa o nome técnico da propriedade', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      details: [{ field: 'idempotencyKey', code: 'REQUIRED' }],
+    })
+
+    expect(translateApiError(t, error)).toBe('idempotencyKey: obrigatório')
+  })
+
+  it('código de regra desconhecido cai no genérico, nunca em chave crua', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      details: [{ field: 'name', code: 'REGRA_NOVA' }],
+    })
+
+    expect(translateApiError(t, error)).toBe('Nome: valor inválido')
+  })
+
+  it('mostra colunas da planilha (obrigatória e desconhecida)', () => {
+    const error = new ApiError({
+      statusCode: 400,
+      code: 'VALIDATION_ERROR',
+      message: 'Colunas obrigatórias ausentes na planilha: vehiclePlate, userEmail.',
+      details: [
+        { field: 'vehiclePlate', code: 'REQUIRED' },
+        { field: 'userEmail', code: 'REQUIRED' },
+        { field: 'setor', code: 'UNKNOWN_COLUMN' },
+      ],
+    })
+
+    expect(translateApiError(t, error)).toBe(
+      'Placa do veículo: obrigatório · E-mail do usuário: obrigatório · setor: coluna desconhecida',
+    )
+  })
+
+  it('sem details mantém o genérico de validação traduzido', () => {
+    const error = new ApiError({ statusCode: 400, message: 'Erro de validação' })
+
+    expect(translateApiError(t, error)).toBe('Erro de validação')
+  })
+
+  it('erro que não é de validação continua saindo do código do servidor', () => {
+    const error = new ApiError({ code: 'VEICULO_NAO_ENCONTRADO', statusCode: 404 })
+
+    expect(translateApiError(t, error)).toBe('Veículo não encontrado.')
+    expect(translateApiError(t, new Error('boom'))).toBe('Ocorreu um erro inesperado')
+  })
+
+  it('traduz no idioma ativo', () => {
+    const english = i18n.getFixedT('en', 'common')
+    const error = new ApiError({
+      statusCode: 400,
+      details: [{ field: 'email', code: 'REQUIRED' }],
+    })
+
+    expect(translateApiError(english, error)).toBe('E-mail: required')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// regras de validação no i18n
+// ---------------------------------------------------------------------------
+describe('regras de validação', () => {
+  it('todo código de regra do backend tem texto nos três idiomas', () => {
+    for (const code of VALIDATION_RULE_CODES) {
+      for (const lng of ['pt', 'en', 'es']) {
+        expect(i18n.exists(`errors.validation.${code}`, { lng })).toBe(true)
+      }
+    }
   })
 })

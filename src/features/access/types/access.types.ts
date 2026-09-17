@@ -424,6 +424,11 @@ export interface RegisterDenialResponse extends EntryDenialResponse {
    * pendente). O impedimento **permanece** registrado.
    */
   blockRequestError: string | null
+  /**
+   * Código do aviso acima — o contrato de tradução (ADR 0016 §2). É `null`
+   * exatamente quando `blockRequestError` é `null`.
+   */
+  blockRequestErrorCode: string | null
 }
 
 /** Acesso aberto (conferência na saída) — ficha enriquecida na resposta. */
@@ -483,7 +488,10 @@ export interface EntryDenialResponse {
 /** Resposta do registro de entrada — `granted` discrimina liberação vs. impedimento. */
 export interface AccessEntryResponse {
   granted: boolean
+  /** Texto em português do servidor — só para log; a tela traduz pelo `code`. */
   message: string
+  /** Código do desfecho — é o contrato de tradução (ADR 0016 §2). */
+  code: string
   access?: AccessResponse
   movement?: MovementResponse
   previousClosed?: ClosedAccessResponse | null

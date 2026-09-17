@@ -1,18 +1,18 @@
 /**
- * Códigos de erro que o backend devolve às telas, derivados da **mensagem** pelo
- * `HttpErrorCodeFilter` (`'Veículo não cadastrado.'` → `VEICULO_NAO_CADASTRADO`)
- * e das mensagens de desfecho da portaria. Cada código tem texto próprio no
- * conjunto comum (`errors.server.<CODIGO>`) nos três idiomas.
+ * Geração automática — **não edite este arquivo à mão**.
  *
- * A lista é o contrato do que está traduzido: código novo no backend, sem
- * entrada aqui, cai na mensagem genérica de erro (nunca no português do
- * servidor). Ao traduzir uma mensagem nova, adicione o código nas duas pontas
- * (`errors.server` e esta lista).
+ * Rodar `npm run errors:sync` (que varre o `fluxa-backend`, caminho configurável
+ * por `ERROR_CATALOG_BACKEND`) reescreve a lista abaixo, e o teste de staleness
+ * reprova o arquivo que ficar para trás (ADR 0001 §2).
+ *
+ * Cada código é um valor que o backend envia na resposta (ADR 0016): código novo
+ * só aparece aqui depois de rodar o script. Todo código desta lista precisa de
+ * texto próprio em `errors.server.<CODIGO>` nos três idiomas — sem ele a
+ * interface mostra o genérico e o teste de i18n fica vermelho.
  */
 const SERVER_ERROR_CODES = [
   'ACESSO_NEGADO',
   'APENAS_ADMINISTRADORES_PODEM_ATRIBUIR_CARGOS_DE_ADMINISTRACAO',
-  'APENAS_ADMINISTRADORES_PODEM_ATRIBUIR_UM_CARGO_DE_ADMINISTRACAO',
   'APENAS_ADMINISTRADORES_PODEM_GERENCIAR_USUARIOS_ADMINISTRADORES',
   'APENAS_ADMINISTRADORES_PODEM_RETIRAR_CARGOS_DE_ADMINISTRACAO',
   'APENAS_ARQUIVOS_XLSX_SAO_ACEITOS',
@@ -27,11 +27,11 @@ const SERVER_ERROR_CODES = [
   'A_SOLICITACAO_INFORMADA_NAO_E_DESTA_PLACA',
   'BLOQUEIO_JA_ESTA_REVOGADO',
   'BLOQUEIO_NAO_ENCONTRADO',
+  'CAN_DRIVE_INVALID',
   'CARGOS_DE_ADMINISTRACAO_NAO_PODEM_SER_CRIADOS',
   'CARGOS_DE_ADMINISTRACAO_NAO_PODEM_SER_EDITADOS',
   'CARGOS_DE_ADMINISTRACAO_NAO_PODEM_SER_EXCLUIDOS',
   'CARGO_E_OBRIGATORIO_PARA_COLABORADOR',
-  'CARGO_E_OBRIGATORIO_PARA_CRIAR_UM_COLABORADOR',
   'CARGO_NAO_ENCONTRADO',
   'CODIGO_DE_TIPO_DE_VEICULO_JA_CADASTRADO',
   'CONCEDER_LIVRE_ACESSO_EXIGE_PERMISSAO_ESPECIFICA',
@@ -43,21 +43,25 @@ const SERVER_ERROR_CODES = [
   'DEPARTAMENTO_INATIVO_NAO_PODE_SER_DEFINIDO_COMO_PADRAO',
   'DEPARTAMENTO_NAO_ENCONTRADO',
   'DEPARTAMENTO_PADRAO_NAO_DEFINIDO_PARA_O_VEICULO',
+  'DEPARTMENT_DUPLICATE',
+  'DEPARTMENT_NOT_FOUND',
   'DISPOSITIVO_NAO_ENCONTRADO',
   'DOCUMENTO_JA_CADASTRADO',
+  'DOCUMENT_ALREADY_REGISTERED',
+  'EMAIL_ALREADY_LINKED',
+  'EMAIL_REQUIRED',
   'ENTRADA_JA_REGISTRADA',
   'ENTRADA_NEGADA',
   'ENTRADA_REGISTRADA',
   'ENTRADA_REGISTRADA_COM_SOLICITACAO',
   'ERRO_AO_FAZER_PARSING_DO_XLSX_VERIFIQUE_SE_O_ARQUIVO_ESTA_NO_FORMATO_CORRETO',
-  'ERRO_AO_LER_O_ARQUIVO_XLSX_DO_DISCO',
   'ESTE_VEICULO_JA_POSSUI_UM_QR_CODE_ATIVO',
   'ESTE_VEICULO_PLACA_JA_ESTA_BLOQUEADO',
   'E_MAIL_E_OBRIGATORIO_PARA_COLABORADOR',
-  'E_MAIL_E_OBRIGATORIO_PARA_CRIAR_UM_COLABORADOR',
   'E_MAIL_JA_CADASTRADO',
   'E_MAIL_OU_DOCUMENTO_JA_CADASTRADO',
   'FORMATO_DE_ARQUIVO_INVALIDO_APENAS_XLSX_E_ACEITO',
+  'FREE_PASS_INVALID',
   'INFORME_A_OBSERVACAO_DO_IMPEDIMENTO',
   'INFORME_A_SENHA_DO_COLABORADOR',
   'INFORME_A_SOLICITACAO_EXISTENTE_OU_OS_DADOS_DA_NOVA_NAO_AMBOS',
@@ -72,13 +76,16 @@ const SERVER_ERROR_CODES = [
   'INFORME_O_USUARIO_PARA_A_SOLICITACAO_NEW_VEHICLE',
   'INFORME_O_VEICULO_PARA_A_SOLICITACAO_NEW_USER',
   'INFORME_VEICULO_E_USUARIO_PARA_A_SOLICITACAO_LINK',
+  'IS_PRIMARY_INVALID',
   'JA_EXISTE_UMA_SOLICITACAO_DE_ACESSO_ABERTA_PARA_ESTA_PLACA',
   'JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA',
   'JA_EXISTE_UM_PROPRIETARIO_PRIMARIO_PARA_ESTE_VEICULO',
   'JOB_DE_IMPORTACAO_NAO_ENCONTRADO',
+  'LINK_ALREADY_EXISTS',
   'MOTORISTA_JA_AUTORIZADO_A_DIRIGIR_ESTE_VEICULO',
   'MOTORISTA_JA_VINCULADO_A_ESTE_VEICULO',
   'MOTORISTA_NAO_VINCULADO_A_ESTE_VEICULO',
+  'NAME_LENGTH',
   'NAO_E_POSSIVEL_ALTERAR_DADOS_DA_PESSOA_AO_VINCULAR_UM_USUARIO_EXISTENTE',
   'NAO_E_POSSIVEL_REMOVER_O_ULTIMO_ADMINISTRADOR_ATIVO_DA_EMPRESA',
   'NAO_FOI_POSSIVEL_CRIAR_O_DISPOSITIVO_TOKEN_DUPLICADO',
@@ -92,6 +99,7 @@ const SERVER_ERROR_CODES = [
   'O_MOTIVO_DO_BLOQUEIO_E_OBRIGATORIO',
   'O_MOTIVO_E_OBRIGATORIO',
   'O_TELEFONE_DE_CONTATO_E_OBRIGATORIO_NESTA_SOLICITACAO',
+  'PARKING_SPACE_INVALID',
   'PASSAGEIRO_NAO_ENCONTRADO',
   'PERMISSAO_INSUFICIENTE',
   'PERMISSAO_INSUFICIENTE_PARA_SOLICITAR_O_BLOQUEIO',
@@ -100,13 +108,18 @@ const SERVER_ERROR_CODES = [
   'PLACA_EM_FORMATO_INVALIDO',
   'PLACA_INVALIDA',
   'PLACA_JA_CADASTRADA_PARA_ESTA_EMPRESA',
+  'PLATE_ALREADY_REGISTERED',
+  'PLATE_INVALID',
   'PORTARIA_EM_USO_POR_DISPOSITIVOS_E_NAO_PODE_SER_EXCLUIDA',
   'PORTARIA_INATIVA',
   'PORTARIA_INATIVA_NAO_PODE_SER_VINCULADA_A_UM_DISPOSITIVO',
   'PORTARIA_NAO_ENCONTRADA',
+  'PRIMARY_OWNER_EXISTS',
   'QR_CODE_EXPIRADO',
   'QR_CODE_NAO_ENCONTRADO',
   'QR_CODE_NAO_ENCONTRADO_PARA_ESTE_VEICULO',
+  'ROLE_INACTIVE',
+  'ROLE_NOT_FOUND',
   'SELECIONE_O_CARGO_DO_COLABORADOR',
   'SELECIONE_O_CONDUTOR_OU_INFORME_A_SOLICITACAO_DA_ENTRADA',
   'SELECIONE_O_TIPO_DO_VEICULO_PARA_CRIAR_NEW_VEHICLE_BOTH',
@@ -115,10 +128,14 @@ const SERVER_ERROR_CODES = [
   'SOLICITACAO_DE_ACESSO_NAO_ENCONTRADA',
   'SOLICITACAO_DE_ACESSO_VENCIDA',
   'SOLICITACAO_NAO_ENCONTRADA',
+  'SPREADSHEET_EMPTY',
+  'SPREADSHEET_READ_ERROR',
   'TIPO_DE_SOLICITACAO_INVALIDO',
   'TIPO_DE_VEICULO_EM_USO_POR_VEICULOS_E_NAO_PODE_SER_EXCLUIDO',
   'TIPO_DE_VEICULO_INATIVO_NAO_PODE_SER_USADO',
   'TIPO_DE_VEICULO_NAO_ENCONTRADO',
+  'USER_NOT_FOUND_OR_UNLINKED',
+  'USER_TYPE_INVALID',
   'USUARIO_DA_SOLICITACAO_NAO_ENCONTRADO',
   'USUARIO_DA_SOLICITACAO_NAO_INFORMADO',
   'USUARIO_JA_POSSUI_UM_CARGO_NESTA_EMPRESA',
@@ -126,6 +143,9 @@ const SERVER_ERROR_CODES = [
   'USUARIO_NAO_ENCONTRADO',
   'USUARIO_NAO_POSSUI_ESTE_CARGO',
   'VAGA_CHEIA_CONFIRME_PARA_LIBERAR_EXCEDENDO_A_CAPACIDADE_OVERCAPACITY',
+  'VEHICLE_NOT_FOUND',
+  'VEHICLE_TYPE_INACTIVE',
+  'VEHICLE_TYPE_NOT_FOUND',
   'VEICULO_DA_SOLICITACAO_NAO_ENCONTRADO',
   'VEICULO_DA_SOLICITACAO_NAO_INFORMADO',
   'VEICULO_EM_USO_POR_VINCULOS_E_NAO_PODE_SER_EXCLUIDO',
@@ -139,15 +159,16 @@ const SERVER_ERROR_CODES = [
 ]
 
 /**
- * Prefixo das chaves de tradução dos códigos derivados das mensagens do backend
+ * Prefixo das chaves de tradução dos códigos do backend
  * (`errors.server.<CODIGO>` — ver `translateApiCodeError`).
  */
 export const API_ERROR_CODE_KEY_PREFIX = 'errors.server'
 
 /**
- * Chave i18n do código derivado da mensagem do backend.
+ * Chave i18n do código enviado pelo backend.
  *
- * @param code Código devolvido em `payload.code` (ou derivado da mensagem).
+ * @param code Código devolvido em `payload.code`, no desfecho da entrada ou no
+ * aviso de bloqueio do impedimento.
  * @returns Chave no conjunto comum (`errors.server.<CODIGO>`).
  */
 export function apiErrorCodeTranslationKey(code: string): string {
@@ -157,14 +178,14 @@ export function apiErrorCodeTranslationKey(code: string): string {
 /**
  * Mapa código → chave de tradução.
  *
- * Os códigos derivados das mensagens do backend entram primeiro; as chaves
- * **semânticas** vêm depois (texto próprio, sem depender da mensagem do
- * servidor) e por isso vencem — `CREDENCIAIS_INVALIDAS`, por exemplo, usa
- * `errors.invalidCredentials` no lugar do texto do servidor.
+ * Os códigos do backend entram primeiro; as chaves **semânticas** vêm depois
+ * (texto próprio, sem depender da mensagem do servidor) e por isso vencem —
+ * `CREDENCIAIS_INVALIDAS`, por exemplo, usa `errors.invalidCredentials` no lugar
+ * do texto do servidor.
  */
 export const apiErrorKeyMap: Record<string, string> = {
   ...Object.fromEntries(SERVER_ERROR_CODES.map((code) => [code, apiErrorCodeTranslationKey(code)])),
   CREDENCIAIS_INVALIDAS: 'errors.invalidCredentials',
-  VALIDATION_ERROR: 'errors.validation',
+  VALIDATION_ERROR: 'errors.validation.generic',
   UNEXPECTED_ERROR: 'errors.unexpected',
 }

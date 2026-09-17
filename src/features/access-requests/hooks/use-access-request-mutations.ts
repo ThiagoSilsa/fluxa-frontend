@@ -18,7 +18,7 @@ import type {
 } from '../types/access-requests.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /** Queries afetadas por mutations de solicitação (lista). */
 const ACCESS_REQUEST_QUERY_KEYS = ['access-requests']
@@ -56,7 +56,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -69,7 +69,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.create-block-request-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -81,7 +81,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.cancel-block-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -94,7 +94,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.accept-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -107,7 +107,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.reject-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -119,7 +119,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.in-contact-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -131,7 +131,7 @@ export function useAccessRequestMutations() {
       toast.success(t('notifications.cancel-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

@@ -14,7 +14,7 @@ import { usersService } from '../services/user.service'
 import type { CreateUserPayload, UpdateUserPayload } from '../types/users.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de usuário: criar (já vinculado), editar
@@ -40,7 +40,7 @@ export function useUserMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -53,7 +53,7 @@ export function useUserMutations() {
       toast.success(t('notifications.update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -65,7 +65,7 @@ export function useUserMutations() {
       toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -77,7 +77,7 @@ export function useUserMutations() {
       toast.success(t('notifications.password-reset-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

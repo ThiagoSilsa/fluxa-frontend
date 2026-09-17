@@ -74,8 +74,8 @@ vi.mock('#/shared/lib/auth-token', () => ({
 }))
 
 vi.mock('#/shared/lib/api-error', () => ({
-  getAPIErrorTranslationKey: (error: unknown) =>
-    (error as { key?: string })?.key ?? 'errors.generic',
+  translateApiError: (t: (key: string) => string, error: unknown) =>
+    t((error as { key?: string })?.key ?? 'errors.generic'),
 }))
 
 // ---------------------------------------------------------------------------

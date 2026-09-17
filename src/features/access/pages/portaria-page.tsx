@@ -66,7 +66,7 @@ import { useGenericTableSearch } from '#/shared/components/generic-table'
 
 // Shared libs
 import { canAccess } from '#/shared/lib/auth-access'
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 import { PermissionCode } from '#/shared/enum/permission-code'
 
 // Providers
@@ -165,7 +165,7 @@ export function PortariaPage() {
 
   useEffect(() => {
     if (error) {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     }
   }, [error, tc])
 

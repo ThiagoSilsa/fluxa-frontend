@@ -23,7 +23,7 @@ import type {
 } from '../types/access.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey, isApiError } from '#/shared/lib/api-error'
+import { isApiError, translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Queries afetadas por mutations de acesso: o feed da portaria, a conferência
@@ -66,7 +66,7 @@ export function useAccessMutations() {
       if (isApiError(error) && error.statusCode === 409) {
         return
       }
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -78,7 +78,7 @@ export function useAccessMutations() {
       invalidateAccess()
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -88,16 +88,17 @@ export function useAccessMutations() {
     onSuccess: (data: RegisterDenialResponse) => {
       toast.success(t('notifications.denial-success'))
       // O impedimento é sucesso mesmo quando o bloqueio não pôde ser pedido: o
-      // aviso vem à parte (`blockRequestError`), sem contaminar o registro.
-      if (data.blockRequestError) {
-        toast.warning(t(getBlockRequestErrorKey(data.blockRequestError)))
+      // aviso vem à parte (`blockRequestError` + `blockRequestErrorCode`), sem
+      // contaminar o registro.
+      if (data.blockRequestErrorCode) {
+        toast.warning(t(getBlockRequestErrorKey(data.blockRequestErrorCode)))
       } else if (data.blockRequest) {
         toast.success(t('notifications.block-request-success'))
       }
       invalidateAccess()
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 

@@ -17,6 +17,8 @@ describe('normalizeImportJob', () => {
     successCount: 10,
     errorCount: 0,
     errorMessage: null,
+    errorCode: null,
+    errorParams: null,
     fileName: 'departamentos.xlsx',
     createdAt: '2026-08-20T10:00:00.000Z',
     startedAt: '2026-08-20T10:00:00.000Z',

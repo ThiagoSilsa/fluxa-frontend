@@ -23,6 +23,8 @@ export function normalizeImportJob(entity: ImportJobEntity): ImportJobViewModel 
     successCount: entity.successCount,
     errorCount: entity.errorCount,
     errorMessage: entity.errorMessage,
+    errorCode: entity.errorCode,
+    errorParams: entity.errorParams,
     fileName: entity.fileName ?? '-',
     createdAt: entity.createdAt,
     startedAt: entity.startedAt,

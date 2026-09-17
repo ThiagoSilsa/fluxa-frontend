@@ -14,7 +14,7 @@ import { devicesService } from '../services/device.service'
 import type { CreateDevicePayload, UpdateDevicePayload } from '../types/devices.types'
 
 // Shared libs
-import { getAPIErrorTranslationKey } from '#/shared/lib/api-error'
+import { translateApiError } from '#/shared/lib/api-error'
 
 /**
  * Hook que expõe as mutations de dispositivo: criar, atualizar, excluir e
@@ -44,7 +44,7 @@ export function useDeviceMutations() {
       toast.success(t('notifications.create-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -57,7 +57,7 @@ export function useDeviceMutations() {
       toast.success(t('notifications.update-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -69,7 +69,7 @@ export function useDeviceMutations() {
       toast.success(t('notifications.delete-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
@@ -81,7 +81,7 @@ export function useDeviceMutations() {
       toast.success(t('notifications.rotate-success'))
     },
     onError: (error) => {
-      toast.error(tc(getAPIErrorTranslationKey(error)))
+      toast.error(translateApiError(tc, error))
     },
   })
 
