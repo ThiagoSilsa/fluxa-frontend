@@ -1,0 +1,98 @@
+{
+  "title": "Tipos de vehículo",
+  "subtitle": "Gestiona los tipos de vehículo de la empresa.",
+  "search": {
+    "placeholder": "Buscar por código o nombre"
+  },
+  "filters": {
+    "status": {
+      "label": "Estado",
+      "all": "Todos",
+      "active": "Activos",
+      "inactive": "Inactivos"
+    },
+    "isFleet": {
+      "label": "Flota",
+      "all": "Todos",
+      "fleet": "Flota",
+      "non-fleet": "Particular"
+    }
+  },
+  "toolbar": {
+    "create": "Nuevo tipo",
+    "edit": "Editar",
+    "view": "Ver",
+    "delete": "Eliminar"
+  },
+  "empty": {
+    "title": "Ningún tipo encontrado",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "fleet": {
+    "true": "Flota",
+    "false": "Particular"
+  },
+  "card": {
+    "code": "Código"
+  },
+  "dialog": {
+    "create": {
+      "title": "Crear tipo de vehículo",
+      "description": "Completa los datos para crear el tipo."
+    },
+    "edit": {
+      "title": "Editar tipo de vehículo",
+      "description": "Actualiza la información del tipo."
+    }
+  },
+  "form": {
+    "code": {
+      "label": "Código",
+      "placeholder": "Ej.: UTILITARIO"
+    },
+    "name": {
+      "label": "Nombre",
+      "placeholder": "Informa el nombre del tipo"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Informa la descripción del tipo"
+    },
+    "isFleet": {
+      "label": "Clasificación de flota",
+      "description": "Se usa en informes — no cambia la ocupación de lugares."
+    },
+    "status": {
+      "label": "Estado",
+      "create-hint": "La creación ya comienza con el tipo activo.",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "code-required": "Informa el código.",
+      "code-max": "El código debe tener como máximo 50 caracteres.",
+      "name-required": "Informa el nombre.",
+      "name-max": "El nombre debe tener como máximo 100 caracteres.",
+      "description-max": "La descripción debe tener como máximo 2000 caracteres."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar tipo de vehículo",
+      "description": "¿Seguro que quieres eliminar el tipo \"{{name}}\"? Si hay vehículos que usan este tipo, la eliminación se bloqueará. Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Tipo de vehículo creado correctamente.",
+    "update-success": "Tipo de vehículo actualizado correctamente.",
+    "delete-success": "Tipo de vehículo eliminado correctamente."
+  }
+}

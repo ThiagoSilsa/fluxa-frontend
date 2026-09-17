@@ -18,34 +18,49 @@ import mainLayoutPt from '#/widgets/main-layout/i18n/pt.json'
 import mainLayoutEs from '#/widgets/main-layout/i18n/es.json'
 import rolesEn from '#/features/roles/i18n/en.json'
 import rolesPt from '#/features/roles/i18n/pt.json'
+import rolesEs from '#/features/roles/i18n/es.json'
 import usersEn from '#/features/users/i18n/en.json'
 import usersPt from '#/features/users/i18n/pt.json'
+import usersEs from '#/features/users/i18n/es.json'
 import vehicleTypesEn from '#/features/vehicle-types/i18n/en.json'
 import vehicleTypesPt from '#/features/vehicle-types/i18n/pt.json'
+import vehicleTypesEs from '#/features/vehicle-types/i18n/es.json'
 import departmentsEn from '#/features/departments/i18n/en.json'
 import departmentsPt from '#/features/departments/i18n/pt.json'
+import departmentsEs from '#/features/departments/i18n/es.json'
 import entrancesEn from '#/features/entrances/i18n/en.json'
 import entrancesPt from '#/features/entrances/i18n/pt.json'
+import entrancesEs from '#/features/entrances/i18n/es.json'
 import importEn from '#/features/import/i18n/en.json'
 import importPt from '#/features/import/i18n/pt.json'
+import importEs from '#/features/import/i18n/es.json'
 import departmentsImportEn from '#/features/import/sub-pages/departments-import/i18n/en.json'
 import departmentsImportPt from '#/features/import/sub-pages/departments-import/i18n/pt.json'
+import departmentsImportEs from '#/features/import/sub-pages/departments-import/i18n/es.json'
 import vehiclesImportEn from '#/features/import/sub-pages/vehicles-import/i18n/en.json'
 import vehiclesImportPt from '#/features/import/sub-pages/vehicles-import/i18n/pt.json'
+import vehiclesImportEs from '#/features/import/sub-pages/vehicles-import/i18n/es.json'
 import usersImportEn from '#/features/import/sub-pages/users-import/i18n/en.json'
 import usersImportPt from '#/features/import/sub-pages/users-import/i18n/pt.json'
+import usersImportEs from '#/features/import/sub-pages/users-import/i18n/es.json'
 import userVehiclesImportEn from '#/features/import/sub-pages/user-vehicles-import/i18n/en.json'
 import userVehiclesImportPt from '#/features/import/sub-pages/user-vehicles-import/i18n/pt.json'
+import userVehiclesImportEs from '#/features/import/sub-pages/user-vehicles-import/i18n/es.json'
 import vehiclesEn from '#/features/vehicles/i18n/en.json'
 import vehiclesPt from '#/features/vehicles/i18n/pt.json'
+import vehiclesEs from '#/features/vehicles/i18n/es.json'
 import devicesEn from '#/features/devices/i18n/en.json'
 import devicesPt from '#/features/devices/i18n/pt.json'
+import devicesEs from '#/features/devices/i18n/es.json'
 import accessEn from '#/features/access/i18n/en.json'
 import accessPt from '#/features/access/i18n/pt.json'
+import accessEs from '#/features/access/i18n/es.json'
 import accessRequestsEn from '#/features/access-requests/i18n/en.json'
 import accessRequestsPt from '#/features/access-requests/i18n/pt.json'
+import accessRequestsEs from '#/features/access-requests/i18n/es.json'
 import blocksEn from '#/features/blocks/i18n/en.json'
 import blocksPt from '#/features/blocks/i18n/pt.json'
+import blocksEs from '#/features/blocks/i18n/es.json'
 
 i18n
   .use(LanguageDetector)
@@ -101,6 +116,21 @@ i18n
         login: loginEs,
         languageSelector: languageSelectorEs,
         mainLayout: mainLayoutEs,
+        access: accessEs,
+        accessRequests: accessRequestsEs,
+        blocks: blocksEs,
+        roles: rolesEs,
+        users: usersEs,
+        vehicleTypes: vehicleTypesEs,
+        departments: departmentsEs,
+        entrances: entrancesEs,
+        vehicles: vehiclesEs,
+        devices: devicesEs,
+        import: importEs,
+        departmentsImport: departmentsImportEs,
+        vehiclesImport: vehiclesImportEs,
+        usersImport: usersImportEs,
+        userVehiclesImport: userVehiclesImportEs,
       },
     },
 

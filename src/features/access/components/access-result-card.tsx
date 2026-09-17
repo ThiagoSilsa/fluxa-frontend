@@ -5,7 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 
 // Lib
-import { getDenialReasonLabelKey } from '../lib/access.lib'
+import {
+  getBlockRequestErrorKey,
+  getDenialReasonLabelKey,
+  getEntryResultMessageKey,
+} from '../lib/access.lib'
 
 // Types
 import type {
@@ -72,7 +76,9 @@ export function AccessResultCard({
             {denial.blockRequest ? ` · ${t('register.result.blockRequest')}` : null}
           </p>
           {denial.blockRequestError ? (
-            <p className="text-xs text-amber-600">{denial.blockRequestError}</p>
+            <p className="text-xs text-amber-600">
+              {t(getBlockRequestErrorKey(denial.blockRequestError))}
+            </p>
           ) : null}
           <ResultActions onRegisterAnother={onRegisterAnother} onClose={onClose} />
         </CardContent>
@@ -139,7 +145,7 @@ export function AccessResultCard({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
-          <p className="text-muted-foreground text-xs">{entry.message}</p>
+          <p className="text-muted-foreground text-xs">{t(getEntryResultMessageKey(entry))}</p>
           <ResultRow
             label={t('register.result.plate')}
             value={entry.movement?.plateSnapshot ?? entry.access?.temporaryPlate ?? '—'}

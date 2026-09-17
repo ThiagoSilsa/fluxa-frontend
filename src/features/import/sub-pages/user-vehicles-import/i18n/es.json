@@ -1,0 +1,52 @@
+{
+  "tab": {
+    "label": "Vínculo usuario-vehículo"
+  },
+  "upload": {
+    "title": "Importar vínculo usuario-vehículo",
+    "description": "Envía un archivo XLSX siguiendo el modelo para vincular conductores a vehículos en lote (por placa y correo)."
+  },
+  "history": {
+    "empty": "Ninguna importación de vínculos realizada todavía"
+  },
+  "notifications": {
+    "upload-success": "¡Archivo enviado! Sigue el progreso abajo."
+  },
+  "template": {
+    "filename": "modelo-importacion-vinculos-usuario-vehiculo.xlsx",
+    "sheets": {
+      "rules": "Reglas"
+    }
+  },
+  "example": {
+    "vehiclePlate": "ABC1234",
+    "userEmail": "conductor@empresa.local",
+    "isPrimary": "true",
+    "canDrive": "true"
+  },
+  "columns": {
+    "fileName": "Archivo",
+    "status": "Estado",
+    "rows": "Líneas",
+    "success": "Éxitos",
+    "errors": "Errores",
+    "createdAt": "Creado el",
+    "duration": "Duración"
+  },
+  "pagination": {
+    "limit": "Elementos por página",
+    "first": "Primera",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "last": "Última"
+  },
+  "rules": {
+    "headers": {
+      "column": "Columna",
+      "required": "Obligatoria",
+      "rules": "Reglas"
+    },
+    "yes": "Sí",
+    "no": "No"
+  }
+}

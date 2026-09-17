@@ -1,0 +1,174 @@
+{
+  "title": "Solicitudes de acceso",
+  "subtitle": "Evalúa y resuelve las solicitudes de acceso de los porteros.",
+  "toolbar": { "create": "Nueva solicitud" },
+  "filters": {
+    "status": { "label": "Estado", "all": "Todos" },
+    "search": { "placeholder": "Buscar por placa" }
+  },
+  "empty": {
+    "title": "Ninguna solicitud encontrada",
+    "description": "Ajusta los filtros o crea una nueva solicitud."
+  },
+  "mine": {
+    "title": "Mis solicitudes",
+    "accessTitle": "Solicitudes de acceso",
+    "blockTitle": "Solicitudes de bloqueo",
+    "empty": "Ninguna solicitud todavía.",
+    "error": "No se pudieron cargar tus solicitudes."
+  },
+  "columns": {
+    "plate": "Placa",
+    "type": "Tipo",
+    "status": "Estado",
+    "requestedBy": "Solicitado por",
+    "requestedAt": "Fecha",
+    "actions": "Acciones"
+  },
+  "actions": {
+    "view": "Ver",
+    "open": "Abrir",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "inContact": "En contacto",
+    "close": "Cerrar"
+  },
+  "type": {
+    "NEW_USER": "Nuevo conductor",
+    "NEW_VEHICLE": "Nuevo vehículo",
+    "LINK": "Vincular",
+    "BOTH": "Conductor y vehículo",
+    "BLOCK": "Bloqueo"
+  },
+  "userType": {
+    "EMPLOYEE": "Colaborador",
+    "VISITOR": "Visitante"
+  },
+  "status": {
+    "PENDING": "Pendiente",
+    "IN_CONTACT": "En contacto",
+    "REGISTERED": "Registrada",
+    "REJECTED": "Rechazada",
+    "CANCELLED": "Cancelada"
+  },
+  "blockStatus": {
+    "PENDING": "Pendiente",
+    "APPROVED": "Aprobada",
+    "REJECTED": "Rechazada",
+    "CANCELLED": "Cancelada"
+  },
+  "detail": {
+    "title": "Solicitud {{plate}}",
+    "driver": "Conductor",
+    "userType": "Tipo de usuario del conductor",
+    "vehicle": "Vehículo",
+    "requestedBy": "Solicitado por",
+    "requestedAt": "Solicitado el",
+    "handledBy": "Atendido por",
+    "handledAt": "Atendido el",
+    "contactChannel": "Canal",
+    "contactPhone": "Teléfono",
+    "departmentId": "Departamento",
+    "observation": "Observación",
+    "entryAuthorized": "Entrada autorizada",
+    "yes": "Sí",
+    "no": "No",
+    "notHandled": "—",
+    "resolvedUser": "Usuario creado/vinculado",
+    "resolvedVehicle": "Vehículo creado/vinculado",
+    "acceptTitle": "Aceptar y autorizar entrada",
+    "acceptHint": "Aceptar crea/vincula los registros (resolución retroactiva) y autoriza la entrada.",
+    "vehicleType": { "label": "Tipo del vehículo a crear", "placeholder": "Selecciona el tipo" },
+    "role": { "label": "Cargo", "placeholder": "Selecciona el cargo" },
+    "password": { "label": "Contraseña", "placeholder": "Mínimo 6 caracteres" },
+    "rejectHint": "Rechazar la solicitud (con observación opcional).",
+    "inContactHint": "Marcar como en contacto extiende el plazo de espera."
+  },
+  "create": {
+    "title": "Nueva solicitud de acceso",
+    "description": "Selecciona el escenario y completa los datos.",
+    "block": {
+      "title": "Solicitar bloqueo",
+      "description": "El portero solicita a la administración el bloqueo de un vehículo.",
+      "plate": { "label": "Placa", "placeholder": "Ej.: ABC1D23" },
+      "reason": { "label": "Motivo", "placeholder": "Ej.: Robo sospechoso" },
+      "submit": "Solicitar",
+      "submitting": "Solicitando..."
+    },
+    "type": { "label": "Escenario" },
+    "plate": { "label": "Placa", "placeholder": "Ej.: ABC1D23" },
+    "vehicle": {
+      "label": "Vehículo (ya registrado)",
+      "search": "Buscar por placa o modelo",
+      "none": "Ningún vehículo encontrado",
+      "selected": "Vehículo seleccionado"
+    },
+    "user": {
+      "label": "Usuario (ya registrado)",
+      "search": "Buscar por nombre o correo",
+      "none": "Ningún usuario encontrado",
+      "selected": "Usuario seleccionado"
+    },
+    "contactChannel": { "label": "Canal de contacto" },
+    "contactPhone": { "label": "Teléfono de contacto", "placeholder": "Ej.: 11999999999" },
+    "driver": {
+      "title": "Datos del conductor (se creará)",
+      "userType": {
+        "label": "Tipo de usuario",
+        "employeeHint": "El colaborador tiene acceso al sistema — correo obligatorio (el cargo y la contraseña se definen en la aceptación).",
+        "visitorHint": "El visitante no accede al sistema — el correo es opcional."
+      },
+      "name": { "label": "Nombre", "placeholder": "Nombre completo" },
+      "email": { "label": "Correo electrónico", "placeholder": "correo@empresa.com" },
+      "document": { "label": "Documento", "placeholder": "Documento (opcional)" },
+      "phone": { "label": "Teléfono", "placeholder": "Teléfono (opcional)" }
+    },
+    "vehicleData": {
+      "title": "Datos del vehículo (se creará)",
+      "model": { "label": "Modelo", "placeholder": "Ej.: Gol" },
+      "color": { "label": "Color", "placeholder": "Ej.: Negro" }
+    },
+    "submit": "Crear solicitud",
+    "submitting": "Creando..."
+  },
+  "form": {
+    "errors": {
+      "plate-required": "Informa la placa.",
+      "plate-max": "La placa debe tener como máximo 10 caracteres.",
+      "plate-invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23).",
+      "vehicle-required": "Selecciona el vehículo.",
+      "vehicle-invalid": "Selección de vehículo inválida.",
+      "user-required": "Selecciona el usuario.",
+      "user-invalid": "Selección de usuario inválida.",
+      "vehicle-type-required": "Selecciona el tipo del vehículo.",
+      "role-required": "Selecciona el cargo del colaborador.",
+      "password-required": "Informa la contraseña del colaborador.",
+      "password-min": "La contraseña debe tener al menos 6 caracteres.",
+      "password-max": "La contraseña debe tener como máximo 128 caracteres.",
+      "driver-name-required": "Informa el nombre del conductor.",
+      "driver-email-required": "Informa el correo del conductor.",
+      "vehicle-model-required": "Informa el modelo del vehículo.",
+      "contact-required": "Informa el teléfono de contacto.",
+      "reason-required": "Informa el motivo.",
+      "reason-max": "El motivo debe tener como máximo 2000 caracteres."
+    }
+  },
+  "confirm": {
+    "cancel-title": "Cancelar solicitud",
+    "cancel-description": "¿Confirmas la cancelación de esta solicitud?",
+    "reject-title": "Rechazar solicitud",
+    "reject-description": "¿Confirmas el rechazo de esta solicitud?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "notifications": {
+    "create-success": "Solicitud creada.",
+    "create-block-request-success": "Solicitud de bloqueo creada.",
+    "cancel-block-success": "Solicitud de bloqueo cancelada.",
+    "accept-success": "Solicitud aceptada y entrada autorizada.",
+    "reject-success": "Solicitud rechazada.",
+    "in-contact-success": "Solicitud marcada como en contacto.",
+    "cancel-success": "Solicitud cancelada."
+  }
+}

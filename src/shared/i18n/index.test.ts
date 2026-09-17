@@ -94,9 +94,10 @@ describe('registro dos arquivos de tradução', () => {
       Object.entries(expected).forEach(([namespace, content]) => {
         const translated = bundles[namespace]
 
-        // Namespace ainda não traduzido é omissão do idioma como um todo; quem
-        // cobre é o teste de registro acima, que exige o arquivo do idioma.
+        // Namespace ausente é a forma mais grave de tradução faltando: a tela
+        // inteira cai no idioma de fallback sem que nada acuse.
         if (translated === undefined) {
+          problems.push(`${namespace} (${language}): namespace não registrado`)
           return
         }
 

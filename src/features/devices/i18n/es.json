@@ -1,0 +1,101 @@
+{
+  "title": "Dispositivos",
+  "subtitle": "Gestiona los dispositivos de la app del portero.",
+  "search": { "placeholder": "Buscar por nombre" },
+  "filters": {
+    "status": { "label": "Estado", "all": "Todos", "active": "Activos", "inactive": "Inactivos" }
+  },
+  "toolbar": { "create": "Nuevo dispositivo", "edit": "Editar", "delete": "Eliminar" },
+  "empty": {
+    "title": "Ningún dispositivo encontrado",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": { "active": "Activo", "inactive": "Inactivo" },
+  "columns": {
+    "name": "Nombre",
+    "platform": "Plataforma",
+    "entrance": "Portería",
+    "appVersion": "Versión de la app",
+    "lastSyncAt": "Última sincronización",
+    "status": "Estado",
+    "createdAt": "Creado el"
+  },
+  "dialog": {
+    "create": {
+      "title": "Registrar dispositivo",
+      "description": "Completa los datos para registrar el dispositivo. El token se mostrará una única vez."
+    },
+    "edit": {
+      "title": "Editar dispositivo",
+      "description": "Actualiza la información del dispositivo."
+    }
+  },
+  "form": {
+    "name": { "label": "Nombre", "placeholder": "Ej.: Tablet Portería 1" },
+    "platform": {
+      "label": "Plataforma",
+      "placeholder": "Selecciona la plataforma",
+      "immutable-hint": "La plataforma es inmutable después de la creación."
+    },
+    "entrance": {
+      "label": "Portería vinculada",
+      "placeholder": "Selecciona la portería",
+      "none": "Sin portería",
+      "hint": "El vínculo completa la portería de los eventos registrados por el dispositivo."
+    },
+    "status": {
+      "label": "Estado",
+      "active-hint": "Activo — el token del dispositivo es válido para la sincronización.",
+      "inactive-hint": "Inactivo — el token deja de valer y la app limpia el caché local."
+    },
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "name-required": "Informa el nombre del dispositivo.",
+      "name-max": "El nombre debe tener como máximo 100 caracteres.",
+      "platform-required": "Selecciona la plataforma."
+    }
+  },
+  "detail": {
+    "title": "Dispositivo {{name}}",
+    "description": "Detalles del dispositivo, portería vinculada y sincronización.",
+    "ariaLabel": "Ver detalles del dispositivo {{name}}",
+    "platform": "Plataforma",
+    "entrance": "Portería",
+    "appVersion": "Versión de la app",
+    "lastSyncAt": "Última sincronización",
+    "status": "Estado",
+    "createdAt": "Creado el",
+    "close": "Cerrar",
+    "rotate-token": "Rotar token"
+  },
+  "token": {
+    "title": "Token del dispositivo",
+    "description": "Token del dispositivo \"{{name}}\" — guárdalo ahora, no se mostrará de nuevo.",
+    "label": "Token de sincronización",
+    "warning": "Este token identifica el dispositivo en la sincronización. Si se pierde, rótalo para generar uno nuevo.",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "close": "Cerrar"
+  },
+  "confirm": {
+    "rotate": {
+      "title": "Rotar token",
+      "description": "¿Seguro que quieres rotar el token del dispositivo \"{{name}}\"? El token actual dejará de valer y el nuevo se mostrará una única vez.",
+      "confirm": "Sí, rotar",
+      "cancel": "Cancelar"
+    },
+    "delete": {
+      "title": "Eliminar dispositivo",
+      "description": "¿Seguro que quieres eliminar el dispositivo \"{{name}}\"? Esta acción no se puede deshacer y el dispositivo dejará de ser reconocido.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Dispositivo registrado correctamente.",
+    "update-success": "Dispositivo actualizado correctamente.",
+    "delete-success": "Dispositivo eliminado correctamente.",
+    "rotate-success": "Token rotado correctamente."
+  }
+}

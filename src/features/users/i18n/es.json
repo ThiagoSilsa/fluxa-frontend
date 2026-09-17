@@ -1,0 +1,144 @@
+{
+  "title": "Usuarios",
+  "subtitle": "Gestiona los usuarios y los accesos de la empresa.",
+  "search": {
+    "placeholder": "Buscar por nombre o correo"
+  },
+  "filters": {
+    "status": {
+      "label": "Estado",
+      "all": "Todos",
+      "active": "Activos",
+      "inactive": "Inactivos"
+    },
+    "type": {
+      "label": "Tipo",
+      "all": "Todos los tipos"
+    }
+  },
+  "toolbar": {
+    "create": "Nuevo usuario",
+    "edit": "Editar",
+    "view": "Ver",
+    "delete": "Eliminar"
+  },
+  "empty": {
+    "title": "Ningún usuario encontrado",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "types": {
+    "EMPLOYEE": "Colaborador",
+    "VISITOR": "Visitante"
+  },
+  "card": {
+    "no-role": "Sin cargo",
+    "no-email": "Sin correo"
+  },
+  "dialog": {
+    "create": {
+      "title": "Crear usuario",
+      "description": "Completa los datos para crear el usuario ya vinculado a la empresa."
+    },
+    "edit": {
+      "title": "Editar usuario",
+      "description": "Actualiza la información del usuario."
+    }
+  },
+  "form": {
+    "read-only-hint": "Este usuario es administrador y solo puede gestionarlo otro administrador.",
+    "sections": {
+      "general": {
+        "title": "General",
+        "description": "Nombre, correo, contraseña y datos del vínculo"
+      },
+      "role": {
+        "title": "Cargo",
+        "description": "El cargo define los permisos del usuario"
+      }
+    },
+    "name": {
+      "label": "Nombre",
+      "placeholder": "Informa el nombre"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Informa el correo",
+      "checking": "Verificando la dirección...",
+      "optional-hint": "Opcional para visitante.",
+      "already-registered": "Este correo ya tiene cuenta en el sistema. El registro pasa a ser un vínculo: el nombre y la contraseña siguen siendo de la persona."
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Informa la contraseña",
+      "create-hint": "Mínimo de 6 caracteres.",
+      "editPlaceholder": "Déjalo en blanco para mantener la contraseña actual",
+      "resetPlaceholder": "Informa la nueva contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña"
+    },
+    "reset-password": {
+      "label": "Restablecer contraseña"
+    },
+    "phone": {
+      "label": "Teléfono",
+      "placeholder": "Informa el teléfono"
+    },
+    "document": {
+      "label": "Documento",
+      "placeholder": "Informa el documento"
+    },
+    "type": {
+      "label": "Tipo"
+    },
+    "role": {
+      "label": "Cargo",
+      "placeholder": "Ninguno seleccionado",
+      "no-role": "Sin cargo",
+      "admin-hint": "Este cargo da acceso total de administración.",
+      "select-hint": "El usuario tendrá un único cargo en esta empresa."
+    },
+    "status": {
+      "label": "Estado",
+      "create-hint": "La creación ya comienza con el usuario activo.",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "link-action": "Vincular",
+    "visitor-hint": "El visitante no accede al sistema: sin contraseña y sin cargo.",
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "name-required": "Informa el nombre.",
+      "name-min": "El nombre debe tener al menos 2 caracteres.",
+      "name-max": "El nombre debe tener como máximo 255 caracteres.",
+      "email-required": "Informa el correo.",
+      "email-invalid": "Informa un correo válido.",
+      "email-max": "El correo debe tener como máximo 255 caracteres.",
+      "password-required": "Informa la contraseña.",
+      "password-min": "La contraseña debe tener al menos 6 caracteres.",
+      "password-max": "La contraseña debe tener como máximo 128 caracteres.",
+      "phone-max": "El teléfono debe tener como máximo 32 caracteres.",
+      "document-max": "El documento debe tener como máximo 32 caracteres.",
+      "type-invalid": "Tipo inválido.",
+      "roleId-required": "Selecciona un cargo."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar usuario",
+      "description": "¿Seguro que quieres eliminar a \"{{name}}\"? El vínculo con esta empresa se eliminará definitivamente; si esta es la única empresa de la persona, se eliminará del sistema. Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Usuario creado correctamente.",
+    "update-success": "Usuario actualizado correctamente.",
+    "delete-success": "Usuario eliminado correctamente.",
+    "password-reset-success": "Contraseña restablecida correctamente."
+  }
+}

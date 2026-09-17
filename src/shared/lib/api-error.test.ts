@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { ApiError, isApiError, translateApiCodeError, getAPIErrorTranslationKey } from './api-error'
+import {
+  ApiError,
+  deriveServerCode,
+  getAPIErrorTranslationKey,
+  isApiError,
+  translateApiCodeError,
+  translateServerMessage,
+} from './api-error'
 import type { ApiErrorPayload } from '../types/api-error.types'
+import { apiErrorKeyMap } from '../enum/api-error-key'
+
+// i18n
+import i18n from '#/shared/i18n'
 
 // ---------------------------------------------------------------------------
 // ApiError
@@ -65,6 +76,95 @@ describe('translateApiCodeError', () => {
 
   it('should return generic key for unknown code', () => {
     expect(translateApiCodeError({ code: 'UNKNOWN_CODE_XYZ' })).toBe('errors.generic')
+  })
+
+  it('should translate a code derived from a backend message', () => {
+    expect(translateApiCodeError({ code: 'VEICULO_NAO_ENCONTRADO', statusCode: 404 })).toBe(
+      'errors.server.VEICULO_NAO_ENCONTRADO',
+    )
+    expect(translateApiCodeError({ code: 'QR_CODE_EXPIRADO', statusCode: 400 })).toBe(
+      'errors.server.QR_CODE_EXPIRADO',
+    )
+  })
+
+  it('should use the validation key for a 400 without code', () => {
+    expect(translateApiCodeError({ statusCode: 400, message: 'Placa inválida' })).toBe(
+      'errors.validation',
+    )
+  })
+
+  it('should not use the validation key outside a 400', () => {
+    expect(translateApiCodeError({ statusCode: 500 })).toBe('errors.generic')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// deriveServerCode
+// ---------------------------------------------------------------------------
+describe('deriveServerCode', () => {
+  it('should derive the code with the backend normalization', () => {
+    expect(deriveServerCode('Veículo não cadastrado.')).toBe('VEICULO_NAO_CADASTRADO')
+    expect(
+      deriveServerCode('Já existe uma solicitação de bloqueio pendente para esta placa.'),
+    ).toBe('JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA')
+    expect(deriveServerCode('Entrada já registrada.')).toBe('ENTRADA_JA_REGISTRADA')
+  })
+
+  it('should prefix codes that start with a digit', () => {
+    expect(deriveServerCode('2 veículos')).toBe('ERROR_2_VEICULOS')
+  })
+
+  it('should return null without a usable message', () => {
+    expect(deriveServerCode(null)).toBeNull()
+    expect(deriveServerCode(undefined)).toBeNull()
+    expect(deriveServerCode('')).toBeNull()
+    expect(deriveServerCode(' ... ')).toBeNull()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// translateServerMessage
+// ---------------------------------------------------------------------------
+describe('translateServerMessage', () => {
+  it('should translate a message the backend knows', () => {
+    expect(translateServerMessage('Entrada registrada.', 'fallback')).toBe(
+      'errors.server.ENTRADA_REGISTRADA',
+    )
+    expect(translateServerMessage('VEÍCULO PROIBIDO DE ENTRAR', 'fallback')).toBe(
+      'errors.server.VEICULO_PROIBIDO_DE_ENTRAR',
+    )
+  })
+
+  it('should use the fallback for a message without translation', () => {
+    expect(translateServerMessage('Mensagem nova do backend.', 'fallback')).toBe('fallback')
+  })
+
+  it('should use the fallback without a message', () => {
+    expect(translateServerMessage(null, 'fallback')).toBe('fallback')
+    expect(translateServerMessage(undefined, 'fallback')).toBe('fallback')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// apiErrorKeyMap
+// ---------------------------------------------------------------------------
+describe('apiErrorKeyMap', () => {
+  it('tem texto nos três idiomas para cada código mapeado', () => {
+    const codes = Object.keys(apiErrorKeyMap).map((code) => apiErrorKeyMap[code])
+
+    for (const lng of ['pt', 'en', 'es']) {
+      const untranslated = codes.filter((key) => !i18n.exists(key, { lng }))
+      expect(untranslated).toEqual([])
+    }
+  })
+
+  it('mapeia todos os códigos traduzidos no conjunto comum', () => {
+    const bundle = i18n.getResourceBundle('pt', 'common') as {
+      errors: { server: Record<string, string> }
+    }
+    const unmapped = Object.keys(bundle.errors.server).filter((code) => !(code in apiErrorKeyMap))
+
+    expect(unmapped).toEqual([])
   })
 })
 

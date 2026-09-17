@@ -7,7 +7,9 @@ import {
   canRequestBlock,
   denialReasonFromVerdict,
   deriveRegistrationScenario,
+  getBlockRequestErrorKey,
   getDenialReasonLabelKey,
+  getEntryResultMessageKey,
   getOccupancyTone,
   getRecordEntranceOptions,
   getVerdictLabelKey,
@@ -33,6 +35,76 @@ describe('getDenialReasonLabelKey', () => {
     )
     expect(getDenialReasonLabelKey('OVERDUE')).toBe('denial.reasons.OVERDUE')
     expect(getDenialReasonLabelKey('OTHER')).toBe('denial.reasons.OTHER')
+  })
+})
+
+describe('getEntryResultMessageKey', () => {
+  it('traduz a entrada liberada pela mensagem do servidor', () => {
+    expect(getEntryResultMessageKey({ granted: true, message: 'Entrada registrada.' })).toBe(
+      'errors.server.ENTRADA_REGISTRADA',
+    )
+    expect(
+      getEntryResultMessageKey({ granted: true, message: 'Entrada registrada com solicitação.' }),
+    ).toBe('errors.server.ENTRADA_REGISTRADA_COM_SOLICITACAO')
+  })
+
+  it('traduz a idempotência ("já registrada") pela mensagem do servidor', () => {
+    expect(getEntryResultMessageKey({ granted: true, message: 'Entrada já registrada.' })).toBe(
+      'errors.server.ENTRADA_JA_REGISTRADA',
+    )
+  })
+
+  it('traduz o impedimento pela mensagem do servidor', () => {
+    expect(
+      getEntryResultMessageKey({
+        granted: false,
+        message: 'Veículo inativo.',
+        denial: { reason: 'OTHER' },
+      }),
+    ).toBe('errors.server.VEICULO_INATIVO')
+    expect(
+      getEntryResultMessageKey({
+        granted: false,
+        message: 'VEÍCULO PROIBIDO DE ENTRAR',
+        denial: { reason: 'BLOCKED' },
+      }),
+    ).toBe('errors.server.VEICULO_PROIBIDO_DE_ENTRAR')
+  })
+
+  it('cai no motivo do impedimento quando a mensagem não tem tradução', () => {
+    expect(
+      getEntryResultMessageKey({
+        granted: false,
+        message: 'Mensagem nova do backend.',
+        denial: { reason: 'BLOCKED' },
+      }),
+    ).toBe('denial.reasons.BLOCKED')
+    expect(getEntryResultMessageKey({ granted: false, message: 'nova' })).toBe(
+      'denial.reasons.OTHER',
+    )
+  })
+
+  it('cai no texto de entrada registrada quando a liberação vem sem mensagem', () => {
+    expect(getEntryResultMessageKey({ granted: true, message: '' })).toBe(
+      'register.result.entry.granted',
+    )
+  })
+})
+
+describe('getBlockRequestErrorKey', () => {
+  it('traduz a mensagem conhecida do backend', () => {
+    expect(
+      getBlockRequestErrorKey('Já existe uma solicitação de bloqueio pendente para esta placa.'),
+    ).toBe('errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA')
+    expect(getBlockRequestErrorKey('Permissão insuficiente para solicitar o bloqueio.')).toBe(
+      'errors.server.PERMISSAO_INSUFICIENTE_PARA_SOLICITAR_O_BLOQUEIO',
+    )
+  })
+
+  it('cai no aviso genérico quando a mensagem não tem tradução', () => {
+    expect(getBlockRequestErrorKey('Mensagem nova do backend.')).toBe(
+      'register.result.blockRequestError',
+    )
   })
 })
 

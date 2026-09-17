@@ -1,0 +1,225 @@
+{
+  "title": "Vehículos",
+  "subtitle": "Gestiona los vehículos de la empresa.",
+  "search": {
+    "placeholder": "Buscar por placa o modelo"
+  },
+  "filters": {
+    "status": {
+      "label": "Estado",
+      "all": "Todos",
+      "active": "Activos",
+      "inactive": "Inactivos"
+    },
+    "freePass": {
+      "label": "Libre acceso",
+      "all": "Todos",
+      "free": "Con libre acceso",
+      "no-free": "Sin libre acceso"
+    },
+    "type": {
+      "label": "Tipo",
+      "all": "Todos los tipos"
+    },
+    "department": {
+      "label": "Departamento",
+      "all": "Todos los departamentos"
+    }
+  },
+  "toolbar": {
+    "create": "Nuevo vehículo",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "empty": {
+    "title": "Ningún vehículo encontrado",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "freePass": {
+    "yes": "Libre acceso",
+    "no": "Común"
+  },
+  "columns": {
+    "plate": "Placa",
+    "model": "Modelo",
+    "color": "Color",
+    "type": "Tipo",
+    "status": "Estado",
+    "createdAt": "Creado el",
+    "freePass": "Acceso"
+  },
+  "dialog": {
+    "create": {
+      "title": "Registrar vehículo",
+      "description": "Completa los datos para registrar el vehículo."
+    },
+    "edit": {
+      "title": "Editar vehículo",
+      "description": "Actualiza la información del vehículo."
+    }
+  },
+  "form": {
+    "plate": {
+      "label": "Placa",
+      "placeholder": "Ej.: ABC1D23"
+    },
+    "model": {
+      "label": "Modelo",
+      "placeholder": "Informa el modelo"
+    },
+    "color": {
+      "label": "Color",
+      "placeholder": "Informa el color"
+    },
+    "type": {
+      "label": "Tipo de vehículo",
+      "placeholder": "Selecciona el tipo"
+    },
+    "department": {
+      "label": "Departamento predeterminado",
+      "placeholder": "Sin departamento",
+      "hint": "Definido como departamento predeterminado del vehículo.",
+      "empty": "Ningún departamento disponible"
+    },
+    "observation": {
+      "label": "Observación",
+      "placeholder": "Informa una observación (opcional)"
+    },
+    "freePass": {
+      "label": "Libre acceso",
+      "no-permission": "Conceder libre acceso exige un permiso específico."
+    },
+    "status": {
+      "label": "Estado",
+      "create-hint": "La creación ya comienza con el vehículo activo.",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "plate-required": "Informa la placa.",
+      "plate-max": "La placa debe tener como máximo 10 caracteres.",
+      "plate-invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23).",
+      "type-required": "Selecciona el tipo de vehículo.",
+      "model-max": "El modelo debe tener como máximo 100 caracteres.",
+      "color-max": "El color debe tener como máximo 50 caracteres.",
+      "observation-max": "La observación debe tener como máximo 2000 caracteres."
+    }
+  },
+  "detail": {
+    "title": "Vehículo {{plate}}",
+    "description": "Detalles del vehículo, departamento predeterminado y conductores.",
+    "loading": "Cargando detalles...",
+    "blocked": "Bloqueado",
+    "model": "Modelo",
+    "color": "Color",
+    "createdAt": "Creado el",
+    "ariaLabel": "Ver detalles del vehículo {{plate}}",
+    "department": {
+      "title": "Departamento predeterminado",
+      "placeholder": "Selecciona el departamento",
+      "save": "Vincular",
+      "remove": "Quitar"
+    },
+    "drivers": {
+      "title": "Conductores",
+      "add": "Agregar",
+      "search": "Buscar persona",
+      "search-placeholder": "Buscar por nombre",
+      "candidate-placeholder": "Selecciona la persona",
+      "no-candidates": "Ninguna persona disponible",
+      "confirm-add": "Vincular",
+      "empty": "Ningún conductor vinculado.",
+      "primary": "Principal",
+      "canDrive": "Puede conducir",
+      "make-primary": "Definir como principal",
+      "remove": "Quitar conductor"
+    }
+  },
+  "qr": {
+    "section": {
+      "title": "Código QR",
+      "hint": "QR permanente impreso/pegado en el vehículo — sigue válido aunque cambien los datos.",
+      "open": "Ver código QR"
+    },
+    "title": "Código QR del vehículo {{plate}}",
+    "description": "QR permanente — identifica el vehículo, no sus datos de registro.",
+    "loading": "Cargando QR...",
+    "generating": "Generando imagen...",
+    "aria-qr": "Código QR del vehículo",
+    "no-qr": {
+      "title": "Ningún QR emitido",
+      "description": "Emite el QR para imprimir y pegar en el vehículo. La imagen se genera a partir de un token permanente.",
+      "emit": "Emitir QR"
+    },
+    "status": {
+      "active": "QR activo",
+      "inactive": "QR expirado"
+    },
+    "print": "Imprimir",
+    "reissue": "Reemitir",
+    "revoke": "Revocar",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "reissue-confirm": {
+      "title": "Reemitir código QR",
+      "description": "El QR actual del vehículo \"{{plate}}\" dejará de valer y se generará uno nuevo (calcomanía nueva). ¿Continuar?",
+      "confirm": "Sí, reemitir"
+    },
+    "revoke-confirm": {
+      "title": "Revocar código QR",
+      "description": "El QR del vehículo \"{{plate}}\" se desactivará (ya no se resuelve — expirado) sin generar otro. ¿Continuar?",
+      "confirm": "Sí, revocar"
+    },
+    "notifications": {
+      "emit-success": "Código QR emitido correctamente.",
+      "reissue-success": "Código QR reemitido correctamente.",
+      "revoke-success": "Código QR revocado correctamente."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar vehículo",
+      "description": "¿Seguro que quieres eliminar el vehículo \"{{plate}}\"? Si hay vínculos (departamento predeterminado o conductores), la eliminación se bloqueará. Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Vehículo registrado correctamente.",
+    "update-success": "Vehículo actualizado correctamente.",
+    "delete-success": "Vehículo eliminado correctamente.",
+    "department-success": "Departamento predeterminado vinculado correctamente.",
+    "department-remove-success": "Departamento predeterminado quitado correctamente.",
+    "driver-add-success": "Conductor vinculado correctamente.",
+    "driver-update-success": "Conductor actualizado correctamente.",
+    "driver-remove-success": "Conductor quitado correctamente.",
+    "block-success": "Vehículo bloqueado.",
+    "unblock-success": "Vehículo desbloqueado."
+  },
+  "block": {
+    "action": "Bloquear",
+    "unblock": "Desbloquear",
+    "status-blocked": "Vehículo bloqueado",
+    "status-free": "Vehículo liberado",
+    "status-blocked-hint": "Este vehículo está bloqueado. Revoca el bloqueo para liberarlo.",
+    "status-free-hint": "Bloquea el vehículo para impedir la entrada.",
+    "title": "Bloquear vehículo",
+    "description": "Informa el motivo del bloqueo de {{plate}}.",
+    "reason-label": "Motivo",
+    "reason-placeholder": "Ej.: conductor sospechoso",
+    "reason-required": "Informa el motivo del bloqueo.",
+    "confirm": "Confirmar bloqueo",
+    "unblock-title": "Desbloquear vehículo",
+    "unblock-description": "Informa el motivo del desbloqueo de {{plate}}.",
+    "unblock-reason-label": "Motivo del desbloqueo",
+    "unblock-reason-placeholder": "Ej.: bloqueo indebido",
+    "unblock-reason-required": "Informa el motivo del desbloqueo.",
+    "unblock-confirm": "Confirmar desbloqueo"
+  }
+}

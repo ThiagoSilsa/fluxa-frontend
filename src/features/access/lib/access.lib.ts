@@ -10,6 +10,7 @@ import type {
 
 // Shared
 import { PermissionCode } from '#/shared/enum/permission-code'
+import { translateServerMessage } from '#/shared/lib/api-error'
 
 /**
  * Mapeia o motivo do impedimento para a chave de tradução do namespace
@@ -20,6 +21,55 @@ import { PermissionCode } from '#/shared/enum/permission-code'
  */
 export function getDenialReasonLabelKey(reason: EntryDenialReason): string {
   return `denial.reasons.${reason}`
+}
+
+/**
+ * Campos da resposta de entrada usados na mensagem do desfecho (a ficha recebe
+ * a resposta inteira; o teste precisa só destes).
+ */
+export interface EntryResultMessageInput {
+  granted: boolean
+  message: string
+  denial?: { reason: EntryDenialReason } | null
+}
+
+/**
+ * Chave i18n da **mensagem do desfecho da entrada** (a linha da ficha).
+ *
+ * O backend devolve a mensagem em português no campo `message`, sem código: ela
+ * é usada aqui apenas para **achar a tradução** (`translateServerMessage`), com
+ * reserva pelo desfecho — liberado usa o texto de entrada registrada e negado
+ * usa o rótulo do motivo do impedimento.
+ *
+ * Limitação conhecida: a resposta da idempotência ("Entrada já registrada.")
+ * chega sem campo que a distinga da entrada comum — a distinção só sai do
+ * próprio texto (que é o que fazemos) ou de uma mudança no backend (fora do
+ * escopo deste ticket).
+ *
+ * @param response Resposta do registro de entrada.
+ * @returns Chave i18n do namespace `access`.
+ */
+export function getEntryResultMessageKey(response: EntryResultMessageInput): string {
+  const fallbackKey = response.granted
+    ? 'register.result.entry.granted'
+    : getDenialReasonLabelKey(response.denial?.reason ?? 'OTHER')
+
+  return translateServerMessage(response.message, fallbackKey)
+}
+
+/**
+ * Chave i18n do aviso de que o **bloqueio não pôde ser pedido** junto do
+ * impedimento.
+ *
+ * `blockRequestError` é um texto cru do backend (sem `code`): a tradução sai do
+ * código derivado da própria mensagem (ex.: "já existe solicitação pendente") e,
+ * quando a mensagem não tem tradução, de um aviso genérico no idioma ativo.
+ *
+ * @param message Motivo devolvido pelo backend.
+ * @returns Chave i18n do namespace `access`.
+ */
+export function getBlockRequestErrorKey(message: string): string {
+  return translateServerMessage(message, 'register.result.blockRequestError')
 }
 
 /**

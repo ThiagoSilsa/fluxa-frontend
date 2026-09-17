@@ -1,0 +1,463 @@
+{
+  "title": "Portería",
+  "subtitle": "Lo que pasó por la portería: entradas, salidas e impedimentos.",
+  "tabs": {
+    "entry": "Entrada",
+    "exit": "Salida"
+  },
+  "status": {
+    "INSIDE": "Adentro",
+    "OUT": "Afuera",
+    "NO_EXIT": "Sin entrada",
+    "MANUAL_CLOSED": "Cerrado manualmente"
+  },
+  "form": {
+    "entry": {
+      "title": "Registrar entrada",
+      "description": "Informa la placa del vehículo (o lee el QR) y confirma la entrada.",
+      "plate": {
+        "label": "Placa",
+        "placeholder": "Ej.: ABC1D23"
+      },
+      "accessRequestId": {
+        "label": "Solicitud autorizada (ID)",
+        "placeholder": "UUID de la solicitud (opcional)"
+      },
+      "temporaryDriverName": {
+        "label": "Conductor temporal",
+        "placeholder": "Nombre del conductor (opcional)"
+      },
+      "qr": {
+        "label": "Leer QR",
+        "hint": "Resuelve el código del vehículo y completa la placa."
+      },
+      "submit": "Registrar entrada",
+      "submitting": "Registrando...",
+      "errors": {
+        "plate-required": "Informa la placa.",
+        "plate-max": "La placa debe tener como máximo 10 caracteres.",
+        "plate-invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23).",
+        "access-request-invalid": "El ID de la solicitud debe ser un UUID válido."
+      }
+    },
+    "exit": {
+      "title": "Registrar salida",
+      "description": "Informa la placa, confirma quién está adentro y registra la salida.",
+      "plate": {
+        "label": "Placa",
+        "placeholder": "Ej.: ABC1D23"
+      },
+      "temporaryDriverName": {
+        "label": "Pasajero",
+        "placeholder": "Nombre del pasajero (obligatorio si no hay entrada)"
+      },
+      "consult": "Consultar quién está adentro",
+      "consulting": "Consultando...",
+      "submit": "Registrar salida",
+      "submitting": "Registrando...",
+      "errors": {
+        "plate-required": "Informa la placa.",
+        "plate-max": "La placa debe tener como máximo 10 caracteres.",
+        "plate-invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23)."
+      }
+    }
+  },
+  "qr": {
+    "title": "Leer QR code",
+    "description": "Pega el código del vehículo (token del QR) para completar la placa automáticamente.",
+    "code": {
+      "label": "Código del QR",
+      "placeholder": "Token permanente del vehículo"
+    },
+    "resolve": "Resolver",
+    "resolving": "Resolviendo...",
+    "cancel": "Cancelar",
+    "not-found": "QR no encontrado o sin permiso.",
+    "resolved": "Vehículo resuelto: {{plate}}"
+  },
+  "open": {
+    "title": "Quién está adentro",
+    "empty": "Ningún acceso abierto para esta placa.",
+    "driver": "Conductor",
+    "entryAt": "Entrada",
+    "department": "Sector",
+    "plate": "Placa"
+  },
+  "result": {
+    "entry": {
+      "granted": {
+        "title": "Entrada liberada",
+        "message": "Acceso registrado correctamente."
+      },
+      "denied": {
+        "title": "Entrada impedida",
+        "message": "El acceso fue denegado."
+      },
+      "plate": "Placa",
+      "driver": "Conductor",
+      "entryAt": "Entrada",
+      "previousClosed": "Acceso anterior cerrado",
+      "status": "Estado"
+    },
+    "exit": {
+      "title": "Salida registrada",
+      "closed": "Accesos cerrados",
+      "noExit": "Salida sin entrada registrada (NO_EXIT)",
+      "driver": "Conductor",
+      "entryAt": "Entrada",
+      "exitAt": "Salida",
+      "plate": "Placa"
+    }
+  },
+  "denial": {
+    "title": "Motivo",
+    "observation": "Observación",
+    "plate": "Placa",
+    "reasons": {
+      "BLOCKED": "Vehículo bloqueado",
+      "UNREGISTERED": "Vehículo no registrado",
+      "UNAUTHORIZED_DRIVER": "Conductor no autorizado",
+      "OVERDUE": "Solicitud vencida",
+      "OTHER": "Otro motivo"
+    }
+  },
+  "notifications": {
+    "entry-success": "Entrada registrada.",
+    "exit-success": "Salida registrada.",
+    "denial-success": "Impedimento registrado.",
+    "block-request-success": "Solicitud de bloqueo enviada.",
+    "over-capacity-title": "Sin lugares disponibles",
+    "over-capacity-description": "La capacidad está agotada. ¿Confirmas la liberación excediendo la capacidad?",
+    "over-capacity-confirm": "Liberar de todos modos",
+    "over-capacity-cancel": "Cancelar"
+  },
+  "occupancy": {
+    "title": "Ocupación",
+    "subtitle": "Vehículos adentro de la empresa en tiempo real.",
+    "refresh": "Se actualiza automáticamente cada 3 segundos.",
+    "cards": {
+      "total": {
+        "label": "Vehículos adentro",
+        "value": "{{count}}"
+      },
+      "free": {
+        "label": "Lugares libres",
+        "value": "{{count}}"
+      },
+      "capacity": {
+        "label": "Capacidad",
+        "value": "{{count}}"
+      }
+    },
+    "totalRate": "Ocupación global",
+    "byDepartment": {
+      "title": "Ocupación por departamento",
+      "empty": "Ningún departamento activo con capacidad.",
+      "columns": {
+        "department": "Departamento",
+        "occupied": "Adentro",
+        "capacity": "Lugares",
+        "rate": "Ocupación"
+      }
+    },
+    "noCapacity": "Sin capacidad",
+    "loading": "Cargando ocupación...",
+    "error": "No se pudo cargar la ocupación."
+  },
+  "records": {
+    "register": "Registrar",
+    "columns": {
+      "kind": "Tipo",
+      "plate": "Placa",
+      "driver": "Conductor",
+      "vehicle": "Vehículo / Sector",
+      "entrance": "Portería",
+      "doorman": "Portero",
+      "reason": "Motivo",
+      "occurredAt": "Ocurrido"
+    },
+    "kind": {
+      "ENTRY": "Entrada",
+      "EXIT": "Salida",
+      "DENIAL": "Impedimento"
+    },
+    "filters": {
+      "plate": {
+        "placeholder": "Buscar placa"
+      },
+      "kind": {
+        "label": "Tipo",
+        "all": "Todos"
+      },
+      "period": {
+        "label": "Período",
+        "from": "Fecha inicial",
+        "to": "Fecha final"
+      },
+      "entrance": {
+        "label": "Portería",
+        "all": "Todas"
+      }
+    },
+    "observation": {
+      "label": "Observación",
+      "empty": "Sin observación."
+    },
+    "expand": {
+      "expand": "Ver observación",
+      "collapse": "Ocultar observación"
+    },
+    "aria": {
+      "row": "Registro de la placa {{plate}}"
+    },
+    "empty": {
+      "title": "Ningún registro",
+      "description": "Ajusta los filtros o espera un nuevo movimiento en la portería."
+    }
+  },
+  "deviceEntrance": {
+    "label": "Portería de este dispositivo",
+    "none": "Sin portería"
+  },
+  "verdict": {
+    "labels": {
+      "ALLOW": "Entrada liberada",
+      "ALLOW_WITH_REQUEST": "Entrada con solicitud",
+      "ALLOW_OVER_CAPACITY": "Sin lugares en el sector",
+      "ALLOW_FORCED_REENTRY": "El vehículo ya está adentro",
+      "DENY_BLOCKED": "VEHÍCULO PROHIBIDO DE ENTRAR",
+      "DENY_OVERDUE": "Solicitud vencida",
+      "DENY_INACTIVE": "Vehículo inactivo"
+    },
+    "reasons": {
+      "ALLOW": {
+        "FREE_PASS": "Pase libre: entra sin informar el conductor",
+        "DRIVER_ALLOWED": "Conductor autorizado a conducir este vehículo"
+      },
+      "ALLOW_WITH_REQUEST": {
+        "REQUEST_OPEN": "Solicitud de la placa en análisis",
+        "REQUEST_PRE_AUTHORIZED": "Entrada preautorizada por la administración",
+        "DRIVER_NOT_ALLOWED": "Conductor vinculado, pero sin permiso para conducir",
+        "UNREGISTERED_VEHICLE": "Vehículo no registrado",
+        "UNREGISTERED_DRIVER": "Conductor sin vínculo con este vehículo"
+      },
+      "ALLOW_OVER_CAPACITY": {
+        "CAPACITY_FULL": "Todos los lugares del sector están ocupados"
+      },
+      "ALLOW_FORCED_REENTRY": {
+        "REENTRY": "Existe una entrada abierta para esta placa"
+      },
+      "DENY_BLOCKED": {
+        "BLOCKED": "Vehículo bloqueado"
+      },
+      "DENY_OVERDUE": {
+        "REQUEST_OVERDUE": "La solicitud pasó del plazo"
+      },
+      "DENY_INACTIVE": {
+        "INACTIVE": "Vehículo desactivado"
+      }
+    },
+    "reasonNames": {
+      "BLOCKED": "Bloqueado",
+      "INACTIVE": "Inactivo",
+      "FREE_PASS": "Pase libre",
+      "DRIVER_ALLOWED": "Conductor autorizado",
+      "REENTRY": "Reingreso",
+      "REQUEST_OPEN": "Solicitud en análisis",
+      "REQUEST_OVERDUE": "Solicitud vencida",
+      "REQUEST_PRE_AUTHORIZED": "Preautorizada",
+      "UNREGISTERED_VEHICLE": "Vehículo no registrado",
+      "UNREGISTERED_DRIVER": "Conductor no identificado",
+      "DRIVER_NOT_ALLOWED": "Sin permiso para conducir",
+      "CAPACITY_FULL": "Sin lugares"
+    },
+    "vehicle": {
+      "label": "Vehículo",
+      "unregistered": "Vehículo no registrado",
+      "freePass": "Pase libre",
+      "inactive": "Inactivo",
+      "noModel": "Sin modelo"
+    },
+    "block": {
+      "label": "Bloqueo activo",
+      "since": "Desde {{date}}"
+    },
+    "department": {
+      "label": "Sector",
+      "free": "Sin sector definido",
+      "places": "{{occupied}} de {{capacity}} lugares"
+    },
+    "drivers": {
+      "label": "Conductores vinculados",
+      "empty": "Ningún conductor vinculado",
+      "primary": "Principal",
+      "linked": "Vinculado",
+      "noPermission": "Sin permiso para conducir",
+      "notLinked": "Sin vínculo"
+    },
+    "requests": {
+      "label": "Solicitud de la placa",
+      "days": "hace {{count}} días",
+      "preAuthorized": "Preautorizada",
+      "status": {
+        "PENDING": "En análisis",
+        "IN_CONTACT": "En contacto",
+        "REGISTERED": "Registrada",
+        "REJECTED": "Rechazada",
+        "CANCELLED": "Cancelada"
+      }
+    },
+    "open": {
+      "label": "Ya adentro desde {{date}}"
+    }
+  },
+  "register": {
+    "title": "Registrar en la portería",
+    "description": "Informa la placa (o lee el QR), confirma la ficha y confirma la acción.",
+    "plate": {
+      "label": "Placa",
+      "placeholder": "Ej.: ABC1D23",
+      "invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23).",
+      "search": "Buscar",
+      "change": "Cambiar placa"
+    },
+    "qr": {
+      "label": "Leer QR"
+    },
+    "type": {
+      "label": "Registro",
+      "ENTRY": "Entrada",
+      "EXIT": "Salida",
+      "DENIAL": "Impedimento",
+      "inferred": "Sugerido por la ficha"
+    },
+    "loading": "Consultando la placa...",
+    "error": "No se pudo consultar la placa.",
+    "driver": {
+      "label": "Quién va a conducir",
+      "placeholder": "Buscar por nombre, teléfono o documento",
+      "empty": "Ningún conductor vinculado a este vehículo.",
+      "required": "Selecciona el conductor.",
+      "selected": "Conductor seleccionado",
+      "linked": "Vinculados",
+      "suggestions": "Sugerencias",
+      "noResults": "Ningún conductor encontrado",
+      "new": "Registrar nuevo conductor",
+      "back": "Volver a buscar conductor"
+    },
+    "department": {
+      "label": "Sector",
+      "none": "Sin sector (lugares libres)"
+    },
+    "newDriver": {
+      "driverTitle": "Datos del conductor",
+      "vehicleTitle": "Datos del vehículo",
+      "userType": {
+        "label": "Tipo",
+        "VISITOR": "Visitante",
+        "EMPLOYEE": "Colaborador"
+      },
+      "name": { "label": "Nombre", "placeholder": "Nombre completo" },
+      "email": { "label": "Correo electrónico", "placeholder": "correo@empresa.com" },
+      "document": { "label": "Documento", "placeholder": "Documento de identidad" },
+      "phone": { "label": "Teléfono", "placeholder": "(11) 99999-0000" },
+      "contactPhone": {
+        "label": "Teléfono de contacto",
+        "placeholder": "(11) 99999-0000"
+      },
+      "model": { "label": "Modelo", "placeholder": "Ej.: Onix" },
+      "color": { "label": "Color", "placeholder": "Ej.: Plata" },
+      "fromRequest": {
+        "label": "Completar a partir de una solicitud de la placa",
+        "placeholder": "Elegir solicitud",
+        "unknown": "Solicitud sin nombre"
+      },
+      "errors": {
+        "name-required": "Informa el nombre del conductor.",
+        "email-required": "Informa el correo del colaborador.",
+        "email-invalid": "Correo electrónico inválido.",
+        "contact-required": "Informa el teléfono de contacto.",
+        "model-required": "Informa el modelo del vehículo."
+      }
+    },
+    "request": {
+      "reuse": "La entrada va a usar la solicitud abierta de esta placa.",
+      "create": "La entrada va a crear la solicitud del conductor junto con el registro (excepción registrada en la portería).",
+      "blocked": "Falta elegir el conductor para registrar la excepción."
+    },
+    "exit": {
+      "open": "Abierto desde {{date}}",
+      "driver": "Conductor",
+      "department": "Sector",
+      "noExit": "No hay entrada registrada para esta placa.",
+      "passenger": {
+        "label": "Pasajero",
+        "placeholder": "Nombre de quien está saliendo",
+        "required": "Informa el pasajero (salida sin entrada registrada)."
+      },
+      "passengerFreePass": "Pase libre: el pasajero es opcional."
+    },
+    "actions": {
+      "release": "Liberar entrada",
+      "exit": "Registrar salida",
+      "denial": "Registrar impedimento",
+      "refuse": "No permitir",
+      "back": "Volver",
+      "close": "Cerrar",
+      "another": "Registrar otro",
+      "submitting": "Registrando..."
+    },
+    "confirm": {
+      "overCapacity": {
+        "title": "Sin lugares en el sector",
+        "description": "Los lugares del sector están ocupados. ¿Liberar la entrada de todos modos?",
+        "confirm": "Liberar de todos modos"
+      },
+      "reentry": {
+        "title": "El vehículo ya está adentro",
+        "description": "Ya existe una entrada abierta para la placa {{plate}}. La entrada anterior será cerrada.",
+        "confirm": "Cerrar y liberar"
+      }
+    },
+    "denial": {
+      "title": "Registrar impedimento",
+      "reason": {
+        "label": "Motivo"
+      },
+      "observation": {
+        "label": "Observación",
+        "placeholder": "Describe lo ocurrido",
+        "required": "Informa la observación."
+      },
+      "requestBlock": {
+        "label": "Solicitar bloqueo del vehículo",
+        "hint": "La administración analiza el pedido. El impedimento queda registrado de todos modos.",
+        "reasonLabel": "Motivo del bloqueo",
+        "reasonPlaceholder": "Ej.: reincidencia de acceso indebido",
+        "reasonHint": "En blanco, usamos la observación de arriba."
+      }
+    },
+    "result": {
+      "entry": {
+        "granted": "Entrada registrada",
+        "denied": "Entrada impedida"
+      },
+      "exit": {
+        "title": "Salida registrada",
+        "none": "Salida registrada sin entrada"
+      },
+      "denial": {
+        "title": "Impedimento registrado"
+      },
+      "plate": "Placa",
+      "driver": "Conductor",
+      "department": "Sector",
+      "entryAt": "Entrada",
+      "exitAt": "Salida",
+      "reason": "Motivo",
+      "previousClosed": "Entrada anterior cerrada",
+      "blockRequest": "Solicitud de bloqueo enviada — esperando la administración.",
+      "blockRequestError": "No fue posible solicitar el bloqueo del vehículo."
+    }
+  }
+}

@@ -456,7 +456,8 @@
       "exitAt": "Saída",
       "reason": "Motivo",
       "previousClosed": "Entrada anterior encerrada",
-      "blockRequest": "Solicitação de bloqueio enviada — aguardando a administração."
+      "blockRequest": "Solicitação de bloqueio enviada — aguardando a administração.",
+      "blockRequestError": "Não foi possível pedir o bloqueio do veículo."
     }
   }
 }

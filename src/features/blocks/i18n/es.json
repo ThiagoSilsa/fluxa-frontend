@@ -1,0 +1,87 @@
+{
+  "title": "Bloqueos",
+  "subtitle": "Gestiona los bloqueos de vehículos y las solicitudes del portero.",
+  "tabs": {
+    "blocks": "Bloqueos",
+    "requests": "Solicitudes de bloqueo"
+  },
+  "toolbar": {
+    "createBlock": "Bloquear vehículo",
+    "createRequest": "Solicitar bloqueo"
+  },
+  "filters": {
+    "status": { "label": "Estado", "all": "Todos" },
+    "search": { "placeholder": "Buscar por placa" }
+  },
+  "empty": {
+    "title": "Ningún registro encontrado",
+    "description": "Ajusta los filtros o crea uno nuevo."
+  },
+  "columns": {
+    "plate": "Placa",
+    "reason": "Motivo",
+    "status": "Estado",
+    "requestedBy": "Solicitado por",
+    "requestedAt": "Fecha",
+    "actions": "Acciones"
+  },
+  "actions": {
+    "revoke": "Revocar",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "create": "Nuevo"
+  },
+  "blockStatus": { "ACTIVE": "Activo", "REVOKED": "Revocado" },
+  "blockType": { "MANUAL": "Manual", "AUTOMATIC": "Automático" },
+  "requestStatus": {
+    "PENDING": "Pendiente",
+    "APPROVED": "Aprobada",
+    "REJECTED": "Rechazada",
+    "CANCELLED": "Cancelada"
+  },
+  "createBlock": {
+    "title": "Bloquear vehículo",
+    "description": "Informa la placa y el motivo del bloqueo.",
+    "submit": "Bloquear",
+    "submitting": "Bloqueando..."
+  },
+  "createRequest": {
+    "title": "Solicitar bloqueo",
+    "description": "El portero solicita a la administración el bloqueo de un vehículo.",
+    "submit": "Solicitar",
+    "submitting": "Solicitando..."
+  },
+  "revoke": {
+    "title": "Revocar bloqueo",
+    "description": "Informa el motivo de la revocación del bloqueo de {{plate}}.",
+    "submit": "Revocar",
+    "submitting": "Revocando..."
+  },
+  "form": {
+    "plate": { "label": "Placa", "placeholder": "Ej.: ABC1D23" },
+    "reason": { "label": "Motivo", "placeholder": "Ej.: Robo sospechoso" },
+    "errors": {
+      "plate-required": "Informa la placa.",
+      "plate-max": "La placa debe tener como máximo 10 caracteres.",
+      "plate-invalid": "Placa en formato inválido (usa ABC1234 o ABC1D23).",
+      "reason-required": "Informa el motivo.",
+      "reason-max": "El motivo debe tener como máximo 2000 caracteres."
+    }
+  },
+  "confirm": {
+    "approve-title": "Aprobar solicitud",
+    "approve-description": "Aprobar crea el bloqueo del vehículo {{plate}}.",
+    "reject-title": "Rechazar solicitud",
+    "reject-description": "¿Confirmas el rechazo de la solicitud de {{plate}}?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "notifications": {
+    "create-block-success": "Vehículo bloqueado.",
+    "revoke-success": "Bloqueo revocado.",
+    "create-request-success": "Solicitud de bloqueo creada.",
+    "approve-success": "Solicitud aprobada y bloqueo creado.",
+    "reject-success": "Solicitud rechazada.",
+    "cancel-success": "Solicitud cancelada."
+  }
+}

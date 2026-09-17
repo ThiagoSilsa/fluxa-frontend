@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next'
 // Services
 import { accessService } from '../services/access.service'
 
+// Lib
+import { getBlockRequestErrorKey, getEntryResultMessageKey } from '../lib/access.lib'
+
 // Types
 import type {
   AccessEntryResponse,
@@ -53,8 +56,8 @@ export function useAccessMutations() {
     mutationFn: (payload: RegisterEntryPayload) => accessService.registerEntry(payload),
     onSuccess: (data: AccessEntryResponse) => {
       if (data.granted) {
-        // A mensagem do servidor distingue a exceção ("...com solicitação").
-        toast.success(data.message || t('notifications.entry-success'))
+        // A mensagem sai traduzida do desfecho (a do servidor vem em português).
+        toast.success(t(getEntryResultMessageKey(data)))
       }
       invalidateAccess()
     },
@@ -87,7 +90,7 @@ export function useAccessMutations() {
       // O impedimento é sucesso mesmo quando o bloqueio não pôde ser pedido: o
       // aviso vem à parte (`blockRequestError`), sem contaminar o registro.
       if (data.blockRequestError) {
-        toast.warning(data.blockRequestError)
+        toast.warning(t(getBlockRequestErrorKey(data.blockRequestError)))
       } else if (data.blockRequest) {
         toast.success(t('notifications.block-request-success'))
       }

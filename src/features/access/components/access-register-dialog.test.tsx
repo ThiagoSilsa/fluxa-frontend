@@ -400,7 +400,8 @@ describe('AccessRegisterDialog', () => {
     await waitFor(() => {
       expect(screen.getByText('register.result.entry.granted')).toBeTruthy()
     })
-    expect(screen.getByText('Entrada registrada.')).toBeTruthy()
+    // A mensagem do servidor é traduzida pelo desfecho — nunca exibida crua.
+    expect(screen.getByText('errors.server.ENTRADA_REGISTRADA')).toBeTruthy()
 
     fireEvent.click(screen.getByText('register.actions.another'))
 
@@ -524,7 +525,7 @@ describe('AccessRegisterDialog', () => {
         reason: 'UNAUTHORIZED_DRIVER',
         observation: 'Motorista sem vínculo',
         blockRequest: null,
-        blockRequestError: 'Já existe solicitação de bloqueio pendente para esta placa.',
+        blockRequestError: 'Já existe uma solicitação de bloqueio pendente para esta placa.',
       })
     })
 
@@ -555,10 +556,12 @@ describe('AccessRegisterDialog', () => {
       entranceId: 'entrance-1',
     })
 
-    // O aviso de bloqueio pendente aparece à parte — o impedimento é sucesso.
+    // O aviso de bloqueio pendente aparece à parte, traduzido — o impedimento é sucesso.
     return waitFor(() => {
       expect(
-        screen.getByText('Já existe solicitação de bloqueio pendente para esta placa.'),
+        screen.getByText(
+          'errors.server.JA_EXISTE_UMA_SOLICITACAO_DE_BLOQUEIO_PENDENTE_PARA_ESTA_PLACA',
+        ),
       ).toBeTruthy()
     })
   })

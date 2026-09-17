@@ -1,0 +1,57 @@
+{
+  "title": "Porterías",
+  "subtitle": "Gestiona las porterías de la empresa.",
+  "search": { "placeholder": "Buscar por nombre" },
+  "filters": {
+    "status": { "label": "Estado", "all": "Todas", "active": "Activas", "inactive": "Inactivas" }
+  },
+  "toolbar": {
+    "create": "Nueva portería",
+    "edit": "Editar",
+    "view": "Ver",
+    "delete": "Eliminar"
+  },
+  "empty": {
+    "title": "Ninguna portería encontrada",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": { "active": "Activa", "inactive": "Inactiva" },
+  "dialog": {
+    "create": {
+      "title": "Crear portería",
+      "description": "Completa los datos para crear la portería."
+    },
+    "edit": {
+      "title": "Editar portería",
+      "description": "Actualiza la información de la portería."
+    }
+  },
+  "form": {
+    "name": { "label": "Nombre", "placeholder": "Informa el nombre de la portería" },
+    "status": {
+      "label": "Estado",
+      "create-hint": "La creación ya comienza con la portería activa.",
+      "active": "Activa",
+      "inactive": "Inactiva"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "name-required": "Informa el nombre.",
+      "name-max": "El nombre debe tener como máximo 100 caracteres."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar portería",
+      "description": "¿Seguro que quieres eliminar la portería \"{{name}}\"? Si hay dispositivos vinculados a esta portería, la eliminación se bloqueará. Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Portería creada correctamente.",
+    "update-success": "Portería actualizada correctamente.",
+    "delete-success": "Portería eliminada correctamente."
+  }
+}

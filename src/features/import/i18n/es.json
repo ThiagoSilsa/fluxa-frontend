@@ -1,0 +1,67 @@
+{
+  "title": "Importaciones",
+  "subtitle": "Registra departamentos, vehículos, usuarios y vínculos usuario-vehículo en lote a partir de planillas XLSX.",
+  "upload": {
+    "download-template": "Descargar modelo XLSX",
+    "select-file": "Seleccionar archivo",
+    "submit": "Importar",
+    "line": "Línea"
+  },
+  "active-job": {
+    "title": "Importación en curso",
+    "description": "Procesando {{fileName}}",
+    "status": "Estado",
+    "pending": "Esperando procesamiento...",
+    "progress": "{{processed}} de {{total}} líneas"
+  },
+  "job-status": {
+    "PENDING": "Pendiente",
+    "PROCESSING": "Procesando",
+    "DONE": "Completado",
+    "FAILED": "Falló"
+  },
+  "history": {
+    "empty": "Ninguna importación realizada todavía"
+  },
+  "detail": {
+    "description": "Importación de {{type}}",
+    "status": "Estado",
+    "rows": "Líneas",
+    "success": "Éxitos",
+    "errors": "Errores",
+    "duration": "Duración",
+    "error": "Error"
+  },
+  "validation": {
+    "file-extension": "Formato inválido. Solo se acepta .xlsx.",
+    "file-too-large": "Archivo demasiado grande. Límite de 50MB."
+  },
+  "notifications": {
+    "upload-success": "¡Archivo enviado! Sigue el progreso abajo."
+  },
+  "columns": {
+    "fileName": "Archivo",
+    "status": "Estado",
+    "rows": "Líneas",
+    "success": "Éxitos",
+    "errors": "Errores",
+    "createdAt": "Creado el",
+    "duration": "Duración"
+  },
+  "pagination": {
+    "limit": "Elementos por página",
+    "first": "Primera",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "last": "Última"
+  },
+  "rules": {
+    "headers": {
+      "column": "Columna",
+      "required": "Obligatoria",
+      "rules": "Reglas"
+    },
+    "yes": "Sí",
+    "no": "No"
+  }
+}

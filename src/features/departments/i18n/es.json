@@ -1,0 +1,71 @@
+{
+  "title": "Departamentos",
+  "subtitle": "Gestiona los departamentos de la empresa.",
+  "search": { "placeholder": "Buscar por nombre" },
+  "filters": {
+    "status": { "label": "Estado", "all": "Todos", "active": "Activos", "inactive": "Inactivos" }
+  },
+  "toolbar": {
+    "create": "Nuevo departamento",
+    "edit": "Editar",
+    "view": "Ver",
+    "delete": "Eliminar"
+  },
+  "empty": {
+    "title": "Ningún departamento encontrado",
+    "description": "Intenta ajustar la búsqueda o los filtros."
+  },
+  "status": { "active": "Activo", "inactive": "Inactivo" },
+  "card": {
+    "vagas": "Lugares de estacionamiento",
+    "vagas-count": "{{count}} lugar",
+    "vagas-count_plural": "{{count}} lugares"
+  },
+  "dialog": {
+    "create": {
+      "title": "Crear departamento",
+      "description": "Completa los datos para crear el departamento."
+    },
+    "edit": {
+      "title": "Editar departamento",
+      "description": "Actualiza la información del departamento."
+    }
+  },
+  "form": {
+    "name": { "label": "Nombre", "placeholder": "Informa el nombre del departamento" },
+    "parkingSpace": { "label": "Lugares de estacionamiento", "placeholder": "Ej.: 30" },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Informa la descripción del departamento"
+    },
+    "status": {
+      "label": "Estado",
+      "create-hint": "La creación ya comienza con el departamento activo.",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "cancel": "Cancelar",
+    "submitting": "Guardando...",
+    "errors": {
+      "name-required": "Informa el nombre.",
+      "name-max": "El nombre debe tener como máximo 100 caracteres.",
+      "parking-space-required": "Informa el número de lugares.",
+      "parking-space-integer": "El número de lugares debe ser un número entero.",
+      "parking-space-min": "El número de lugares debe ser mayor o igual a 0.",
+      "description-max": "La descripción debe tener como máximo 2000 caracteres."
+    }
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar departamento",
+      "description": "¿Seguro que quieres eliminar el departamento \"{{name}}\"? Si hay vehículos vinculados a este departamento, la eliminación se bloqueará. Esta acción no se puede deshacer.",
+      "confirm": "Sí, eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "create-success": "Departamento creado correctamente.",
+    "update-success": "Departamento actualizado correctamente.",
+    "delete-success": "Departamento eliminado correctamente."
+  }
+}

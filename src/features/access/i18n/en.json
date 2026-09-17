@@ -456,7 +456,8 @@
       "exitAt": "Exit",
       "reason": "Reason",
       "previousClosed": "Previous entry closed",
-      "blockRequest": "Block request sent — awaiting the administration."
+      "blockRequest": "Block request sent — awaiting the administration.",
+      "blockRequestError": "Could not request the vehicle block."
     }
   }
 }
