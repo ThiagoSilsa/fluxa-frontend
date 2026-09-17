@@ -134,6 +134,7 @@
       "PLACA_EM_FORMATO_INVALIDO": "Plate in an invalid format.",
       "PLACA_INVALIDA": "Invalid plate.",
       "PLACA_JA_CADASTRADA_PARA_ESTA_EMPRESA": "Plate already registered for this company.",
+      "PLANILHA_DATA_NAO_ENCONTRADA_NO_ARQUIVO_XLSX": "The file is missing the \"data\" sheet.",
       "PLATE_ALREADY_REGISTERED": "Line {{line}}: plate \"{{plate}}\" already registered.",
       "PLATE_INVALID": "Line {{line}}: invalid plate format.",
       "PORTARIA_EM_USO_POR_DISPOSITIVOS_E_NAO_PODE_SER_EXCLUIDA": "The gate is in use by devices and cannot be deleted.",

@@ -134,6 +134,7 @@
       "PLACA_EM_FORMATO_INVALIDO": "Placa en formato inválido.",
       "PLACA_INVALIDA": "Placa inválida.",
       "PLACA_JA_CADASTRADA_PARA_ESTA_EMPRESA": "Placa ya registrada para esta empresa.",
+      "PLANILHA_DATA_NAO_ENCONTRADA_NO_ARQUIVO_XLSX": "El archivo no tiene la hoja \"data\".",
       "PLATE_ALREADY_REGISTERED": "Línea {{line}}: la placa \"{{plate}}\" ya está registrada.",
       "PLATE_INVALID": "Línea {{line}}: formato de placa inválido.",
       "PORTARIA_EM_USO_POR_DISPOSITIVOS_E_NAO_PODE_SER_EXCLUIDA": "La portería está en uso por dispositivos y no puede eliminarse.",
